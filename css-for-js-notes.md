@@ -930,3 +930,183 @@ input {
 </section>
 
 ```
+
+## Flexbox Recipes
+
+- Practical everyday layouts in flexbox
+
+### Holy Grail Layout
+
+``` html
+---
+<style>
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+  
+  .middle {
+    border: 3px dotted;
+    flex: 1;
+    display: flex;
+  }
+  
+  nav, aside {
+    flex: 1;
+  }
+  
+  main {
+    flex: 3;
+  }
+
+  /* demo styles */
+  .box {
+  border: 3px solid;
+  padding: 16px;
+}
+
+  header.box {
+    border-color: hsl(45deg 100% 50%);
+    background-color: hsl(45deg 100% 50% / 0.2);
+  }
+  nav.box {
+    border-color: hsl(170deg 100% 35%);
+    background-color: hsl(170deg 100% 35% / 0.2);
+  }
+  main.box {
+    border-color: hsl(220deg 100% 50%);
+    background-color: hsl(220deg 100% 50% / 0.2);
+  }
+  aside.box {
+    border-color: hsl(300deg 100% 45%);
+    background-color: hsl(300deg 100% 45% / 0.2);
+  }
+  footer.box {
+    border-color: hsl(350deg 100% 60%);
+    background-color: hsl(350deg 100% 60% / 0.2);
+  }
+
+  body {
+    padding: 0;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+  
+</style>
+
+<div class="wrapper">
+  <header class="box">Header</header>
+  <section class="middle">
+    <nav class="box">Nav</nav>
+    <main class="box">Main Content</main>
+    <aside class="box">Ad unit</aside>
+  </section>
+  <footer class="box">Footer</footer>
+</div>
+
+```
+
+### Sticky Sidebar
+
+``` html
+---
+<style>
+  .wrapper {
+    display: flex;
+  }
+
+  nav {
+    position: sticky;
+    top: 0;
+    border: solid deeppink;
+    align-self: flex-start;
+  }
+
+  main {
+    flex: 1;
+  }
+
+  /* demo styles */
+  body {
+  padding: 0;
+}
+
+  * {
+    box-sizing: border-box;
+  }
+
+  nav, main {
+    padding: 16px;
+  }
+
+  img {
+    display: block;
+    width: 300px;
+    margin: 16px 0 64px;
+  }
+</style>
+
+<section class="wrapper">
+  <nav class="box">
+    <h2>Navigation</h2>
+    <ul>
+      <li>Section One</li>
+      <li>Section Two</li>
+    </ul>
+  </nav>
+  <main class="box">
+    <p>This container contains random stuff to increase its height.</p>
+    <img src="/course-materials/cat-300px.jpg" />
+    <p>Normally, a blog post would exist in this container.</p>
+    <img src="/course-materials/dog-one-300px.jpg" />
+    <p>This container contains random stuff to increase its height.</p>
+    <img src="/course-materials/cat-two-300px.jpg" />
+    <p>Normally, a blog post would exist in this container.</p>
+    <img src="/course-materials/dog-two-300px.jpg" />
+  </main>
+</section>
+```
+
+### Center picture
+
+``` html
+---
+<style>
+  .wrapper {
+    width: 50vw;
+    display: flex;
+    flex-direction: column;
+  }
+  img {
+    display: block;
+    width: 300px;
+    margin-top: 30px;
+    align-self: center;
+  }
+
+  /*demo*/
+
+  body {
+  padding: 32px;
+}
+
+  * {
+    box-sizing: border-box;
+  }
+
+  .wrapper {
+    border: 2px solid;
+    margin: 16px auto;
+  }
+  
+</style>
+
+<section class="wrapper">
+  <p>This is a cat:</p>
+  <img src="/course-materials/cat-300px.jpg" />
+</section>
+
+```
