@@ -5,8 +5,8 @@
 
 - Trick for centering an element using absolute
 
-``` css
- ---
+```CSS
+
   .some-box {
     position: absolute;
     background-color: blue;
@@ -42,7 +42,6 @@
 - add properties to it for the size and position you want
 
 ```css
----
 .perspectiveEffect {
   position: fixed;
   top: 60%;
@@ -197,8 +196,7 @@ if we want to be the worlds leading learning company externally, it needs to sta
 
 ### Styled Components
 
-``` css
----
+```CSS
 const Button = styled.button `
 font-size: 32px;
 `;
@@ -245,7 +243,7 @@ font-size: 32px;
 
 ## Inversion of control nesting
 
-``` css
+```CSS
 const TextLink = styled.a`
   /* Standard styles: */
   color: blue;
@@ -266,8 +264,7 @@ If you use these multiples of 4, then you ensure consistency because you don't h
 
 ## Flexbox
 
-``` css
----
+```CSS
 .wrapper {
   display: flex;
   flex-direction: row; /* row, column */
@@ -278,8 +275,7 @@ If you use these multiples of 4, then you ensure consistency because you don't h
 
 ### CENTERING VERTICAL HEIGHT
 
-``` css
----
+```CSS
 /* set the parent container to 100%, has to be both html and body, html has no parent, so it falls back on view port height */
 html, body {
   height: 100%;
@@ -304,8 +300,7 @@ Long shot but anyone know where to find historical weather data for a lighting s
 
 ### RESPONSIVE NAV
 
-``` html
----
+```HTML
 <style>
   /* mobile styles */
   ul {
@@ -343,8 +338,7 @@ Long shot but anyone know where to find historical weather data for a lighting s
 
 ### Chat app bubbles using Flex
 
-``` html
----
+```HTML
 <style>
   /* Default / cosmetic styles */
 html, body {
@@ -439,8 +433,7 @@ ol {
 
 ### Sample Flex card layout
 
-``` html
----
+```HTML
 <style>
   article {
   margin: 8px;
@@ -506,8 +499,7 @@ ol {
 
 ### Sidebar Layout
 
-``` html
----
+```HTML
 <style>
   nav, main {
   height: 200px;
@@ -553,8 +545,7 @@ ol {
 
 - Flex shorthand set all three properties. Flex grow, Flex shrink, Flex basis
 
-``` html
----
+```HTML
 <style>
   main {
     /* Flex shorthand */
@@ -567,8 +558,7 @@ ol {
 
 - Flex basis will always win in a battle against width
 
- ``` html
----
+ ```HTML
 <style>
   main {
     /* Flex write it out */
@@ -585,8 +575,7 @@ ol {
 
 - Dog demo with cards wrapping
 
- ``` html
----
+ ```HTML
 <style>
   main {
     display: flex;
@@ -654,8 +643,7 @@ ol {
 
 - Card style wrapping, center
 
-``` html
----
+```HTML
 <style>
   main {
     display: flex;
@@ -704,8 +692,7 @@ ol {
 
 **Sample Header**
 
-``` code
----
+```Java
 function Header() {
   return (
     <Wrapper>
@@ -742,8 +729,7 @@ render(<Header />);
 
 - For keyboard accessibility, you can flip the order, so keyboard users can tab through the table of contents. But it's displayed on the right side.
 
-``` html
----
+```HTML
 <style>
   .wrapper {
     display: flex;
@@ -861,8 +847,7 @@ input {
 
 - You can mix multiple layout modes in some cases to create certain situations. For example; scroll and fixed.
 
-``` html
----
+```HTML
 <style>
   section {
     display: flex;
@@ -940,8 +925,7 @@ input {
 
 ### Holy Grail Layout
 
-``` html
----
+```HTML
 <style>
   .wrapper {
     display: flex;
@@ -1014,8 +998,7 @@ input {
 
 ### Sticky Sidebar
 
-``` html
----
+```HTML
 <style>
   .wrapper {
     display: flex;
@@ -1075,8 +1058,7 @@ input {
 
 ### Center picture
 
-``` html
----
+```HTML
 <style>
   .wrapper {
     width: 50vw;
@@ -1135,8 +1117,7 @@ input {
 - Media queries are like if statements in JS
 - This one is saying, anything below 400, update the font-size
 
-``` css
----
+```CSS
   @media (max-width: 400px) {
     .signup-button {
       font-size: 2rem;
@@ -1148,8 +1129,7 @@ input {
 
 - This is how you render media queries with styled components
 
-``` css
----
+```CSS
 const SignupButton = styled.button`
   color: deeppink;
   font-size: 1rem;
@@ -1194,8 +1174,7 @@ Basic stylus digitizers           none fine
 Sip-and-puff switches             none none
 Microsoft Kinect / Wii remote     hover coarse
 
-``` css
----
+```CSS
 @media (hover: hover) and (pointer: fine) {
   button:hover {
     text-decoration: underline;
@@ -1207,8 +1186,7 @@ Microsoft Kinect / Wii remote     hover coarse
 
 - `and` is essentially the same as `&&` in JS. In order for the styles to be applied, all of the queries must be satisfied.
 
-``` css
----
+```CSS
 @media (hover: hover) and (pointer: fine) {
   /* Your Styles */
 }
@@ -1218,8 +1196,7 @@ Microsoft Kinect / Wii remote     hover coarse
 
 - can hook into and access user preferences. Tailer to user's personal preference. For example. light and dark mode.
 
-``` css
----
+```CSS
 @media (prefers-color-scheme: dark) {
   /* Dark-mode styles here */
 }
@@ -1243,8 +1220,7 @@ Microsoft Kinect / Wii remote     hover coarse
 - Decide if you are going desktop first, or mobile first.
 - Desktop First
 
-``` css
----
+```CSS
 /* Default: Desktop monitors, 1501px and up */
 @media (max-width: 1500px) {
   /* Laptop */
@@ -1260,7 +1236,6 @@ Microsoft Kinect / Wii remote     hover coarse
 - Mobile First
 
 ```CSS
----
 /* Default: Phones from 0px to 549px */
 @media (min-width: 550px) {
   /* Tablets */
@@ -1275,8 +1250,7 @@ Microsoft Kinect / Wii remote     hover coarse
 
 - Target exclusive ranges
 
-``` css
----
+```CSS
 @media (min-width: 550px) and (max-width: 1099.99px) {
   /* Tablet-only styles */
 }
