@@ -1,10 +1,12 @@
+
 # CSS for JS Notes
 
 ## Absolute Positioning
 
 - Trick for centering an element using absolute
 
-```css
+``` css
+ ---
   .some-box {
     position: absolute;
     background-color: blue;
@@ -39,7 +41,7 @@
 - add a class to that div with property of `position: fixed` to take it out of normal flow
 - add properties to it for the size and position you want
 
-``` css
+```css
 ---
 .perspectiveEffect {
   position: fixed;
@@ -702,7 +704,7 @@ ol {
 
 **Sample Header**
 
-``` jsx
+``` code
 ---
 function Header() {
   return (
@@ -934,6 +936,7 @@ input {
 ## Flexbox Recipes
 
 - Practical everyday layouts in flexbox
+- [MDN Layout Cookbook Recipes](https://developer.mozilla.org/en-US/docs/Web/CSS/Layout_cookbook)
 
 ### Holy Grail Layout
 
@@ -1109,4 +1112,189 @@ input {
   <img src="/course-materials/cat-300px.jpg" />
 </section>
 
+```
+
+## Shoe store exercise
+
+- Confusing ass `Flex: 1` concepts to center the header. I need to spend more time with that property. I still don't get it.
+- Check out the sole-and-ankle repo for the break down.
+- Very powerful flex options
+- `align-items: baseline` is really cool
+- And you can do so much wiht Flexbox, grid card style layout
+
+## Module 5 - Responsive Design and Behavioral Design
+
+- Great way to test on mobile, your device
+- ngrok, software that will allow you to make a local host publicly available url.
+- Just run your local site, via live-server or whatever the app is.
+- Then in the terminal, run `ngrok http 3000`, the port number should match the port number of whatever app you are running.
+- Then just text yourself the url, to check it out on your phone
+
+### Media queries
+
+- Media queries are like if statements in JS
+- This one is saying, anything below 400, update the font-size
+
+``` css
+---
+  @media (max-width: 400px) {
+    .signup-button {
+      font-size: 2rem;
+    }
+  }
+```
+
+### With styled components
+
+- This is how you render media queries with styled components
+
+``` css
+---
+const SignupButton = styled.button`
+  color: deeppink;
+  font-size: 1rem;
+
+  @media (max-width: 400px) {
+    font-size: 2rem;
+  }
+`;
+```
+
+- We can nest media queries within our component definitions.
+- vs. regular media queries, grouped by viewport size.
+
+### Mobile first vs. desktop first
+
+- It depends, on the device you are designing for.
+- `max-width` for desktop default
+- `mind-width` for mobile first
+- pick one direction and try not to mix and match
+- [Mobile Friendly Modal](https://codesandbox.io/s/exercise-mobile-friendly-modal-d2klo?file=/src/Modal.js)
+
+### Mobile Modal
+
+- [Reach UI](https://reach.tech/dialog)
+- [Code Sandbox](https://codesandbox.io/s/exercise-mobile-friendly-modal-forked-sf7ir?file=/src/Modal.js)
+- [Vanilla A11y Dialog](https://github.com/KittyGiraudel/a11y-dialog)
+
+## Other Media Queries
+
+- [- Interaction Media Queries](https://drafts.csswg.org/mediaqueries-4/#mf-interaction)
+- [Hover on mobile demo](https://loud-magnetic-afrovenator.glitch.me/)
+- What's the difference between "hover" and "pointer"? They actually refer to two distinct capabilities. hover is the ability for a device to move the cursor without also triggering a click/tap on the element underneath; a mouse can do this, but your finger or a stylus can't. pointer refers to the level of control the user has over the position of the cursor.
+- [Can I use Support](https://caniuse.com/css-media-interaction)
+
+### Hover Pointer
+
+Mouse / Trackpad                  hover fine
+Touchscreen (smartphone, tablet)  none coarse
+Keyboard (focus navigation)       none none
+Eye-tracking                      none fine
+Basic stylus digitizers           none fine
+Sip-and-puff switches             none none
+Microsoft Kinect / Wii remote     hover coarse
+
+``` css
+---
+@media (hover: hover) and (pointer: fine) {
+  button:hover {
+    text-decoration: underline;
+  }
+}
+```
+
+### Boolean logic in media queries `and`
+
+- `and` is essentially the same as `&&` in JS. In order for the styles to be applied, all of the queries must be satisfied.
+
+``` css
+---
+@media (hover: hover) and (pointer: fine) {
+  /* Your Styles */
+}
+```
+
+### Preference-based media queries
+
+- can hook into and access user preferences. Tailer to user's personal preference. For example. light and dark mode.
+
+``` css
+---
+@media (prefers-color-scheme: dark) {
+  /* Dark-mode styles here */
+}
+```
+
+### Picking Breakpoint values
+
+- Pick break points that are in device dead zones. Not the exact resolution of a device. That way you can group them into chunks.
+- [Screen resolution stats](https://gs.statcounter.com/screen-resolution-stats)
+- [The right way to do breakpoints](https://www.freecodecamp.org/news/the-100-correct-way-to-do-css-breakpoints-88d6a5ba1862/)
+- The breakdown
+0-550px — Mobile
+550-1100px — Tablet
+1100-1500px — Laptop
+1500+px — Desktop
+
+- Don't bother distinguishing between differ phone sizes, just group all into phone/mobile
+
+### Implementing Breakpoints
+
+- Decide if you are going desktop first, or mobile first.
+- Desktop First
+
+``` css
+---
+/* Default: Desktop monitors, 1501px and up */
+@media (max-width: 1500px) {
+  /* Laptop */
+}
+@media (max-width: 1100px) {
+  /* Tablets */
+}
+@media (max-width: 550px) {
+  /* Phones */
+}
+```
+
+- Mobile First
+
+```CSS
+---
+/* Default: Phones from 0px to 549px */
+@media (min-width: 550px) {
+  /* Tablets */
+}
+@media (min-width: 1100px) {
+  /* Laptop */
+}
+@media (min-width: 1500px) {
+  /* Desktop */
+}
+```
+
+- Target exclusive ranges
+
+``` css
+---
+@media (min-width: 550px) and (max-width: 1099.99px) {
+  /* Tablet-only styles */
+}
+```
+
+- Managing Breakpoints, styled components
+
+```Java
+// constants.js
+// For this example, I'm going mobile-first.
+const BREAKPOINTS = {
+  tabletMin: 550,
+  laptopMin: 1100,
+  desktopMin: 1500,
+}
+const QUERIES = {
+  'tabletAndUp': `(min-width: ${BREAKPOINTS.tabletMin}px)`,
+  'laptopAndUp': `(min-width: ${BREAKPOINTS.laptopMin}px)`,
+  'desktopAndUp': `(min-width: ${BREAKPOINTS.desktopMin}px)`,
+}
 ```
