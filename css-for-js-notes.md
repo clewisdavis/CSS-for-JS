@@ -1147,7 +1147,7 @@ const SignupButton = styled.button`
 
 - It depends, on the device you are designing for.
 - `max-width` for desktop default
-- `mind-width` for mobile first
+- `min-width` for mobile first
 - pick one direction and try not to mix and match
 - [Mobile Friendly Modal](https://codesandbox.io/s/exercise-mobile-friendly-modal-d2klo?file=/src/Modal.js)
 
@@ -1271,4 +1271,445 @@ const QUERIES = {
   'laptopAndUp': `(min-width: ${BREAKPOINTS.laptopMin}px)`,
   'desktopAndUp': `(min-width: ${BREAKPOINTS.desktopMin}px)`,
 }
+```
+
+- To use the breakpoint, import and interpolate the values
+
+```JAVA
+import { QUERIES } from '../../constants';
+const Wrapper = styled.div`
+  padding: 16px;
+  @media ${QUERIES.tabletAndUp} {
+    padding: 32px;
+  }
+`;
+```
+
+### Picking the right unit
+
+- px's or rem's?
+- rems, refresher, unit is based on the base font size. Base value of 16px, but user can adjust via browser settings
+- px, when you used px base units, those setting won't change based on user browser settings
+- screen size / base font size. 1100/16 = 68.75
+
+```CSS
+@media (min-width: 68.75rem) {
+  /* Desktop styles */
+}
+```
+
+- rem base dviewports scale with teh user's chosen default font size. As the font gets bigger, the breakpoints slide up the scale.
+- this gets confusing, use [styled components](https://styled-components.com/docs) to do the math for us
+
+```Java
+// constants.js
+const BREAKPOINTS = {
+  tabletMin: 550,
+  laptopMin: 1100,
+  desktopMin: 1500,
+}
+const QUERIES = {
+  'tabletAndUp': `(min-width: ${BREAKPOINTS.tabletMin / 16}rem)`,
+  'laptopAndUp': `(min-width: ${BREAKPOINTS.laptopMin / 16}rem)`,
+  'desktopAndUp': `(min-width: ${BREAKPOINTS.desktopMin / 16}rem)`,
+}
+```
+
+### One off media query
+
+- Totally fine to have a one off occasional custom value
+- A well matched set of breakpoints values should be used most of the time.
+
+## CSS Variables
+
+- CSS variables function exactly like CSS properties (display, color, etc). You are not setting a variable, you are creating a brand new property.
+
+```CSS
+strong {
+  display: block;
+  color: red;
+  --favorite-food: tomato;
+  --temperature: 18deg;
+}
+```
+
+- Custom properties always start with two dashes (`--`), to differentiate them from built-in properties.
+- No particular reason, [space jam website from 1996](https://www.spacejam.com/1996/)
+
+### Not Global
+
+- A common misconception is that CSS variables are global. When you attach a variable to an element. It is only available on that element and it's children.
+
+- they are often hung on `:root`
+
+```CSS
+:root {
+  --color-primary: red;
+  --color-secondary: green;
+  --color-tertiary: blue;
+}
+```
+
+- `:root` is an alias for `html`, so by hanging them on the top level element, they become globally available.
+- But you can attach CSS variables to any element, not just the root one.
+
+### Default Values, Fallback Value
+
+- `var` function takes two arguments, the second argument is a default value
+
+```CSS
+.btn {
+  padding: var(--inner-spacing, 16px);
+}
+```
+
+- If `inner-spacing` is assigned it will use that property, otherwise it will use the fallback of 16px.
+
+### Reactive properties
+
+- So what? We have had variables in Sass or Less for years.
+- The biggest difference, these are available at runtime. Sass/Less variables are compiled away when you build the site.
+- CSS variables are reactive, when their value changes, any properties that reference taht value also change.
+- For example, you can click on a button to increase font size, or change a color etc.
+
+```HTML
+<style>
+  button {
+    font-size: var(--inflated-size);
+  }
+</style>
+
+<button>Click me</button>
+
+<script>
+  let fontSize = 1;
+  const button = document.querySelector('button');
+
+  button.addEventListener('click', () => {
+    fontSize += 0.25;
+    button.style.setProperty(
+      '--inflated-size',
+      fontSize + 'rem'
+    );
+  });
+</script>
+```
+
+### Responsive value
+
+- You can use CSS variables for responsive design
+- For example, change the size of a button on mobile for recommended min tap size, 44.44px
+
+```JAVA
+const FancyButton = styled.button`
+  /* Other styles omitted for brevity */
+  @media (pointer: coarse) {
+    min-height: 44px;
+  }
+`;
+```
+
+- make a CSS variable for other elements, like input etc.
+- define a global style CSS variable, `--min-tap-height`
+
+```JAVA
+const GlobalStyles = createGlobalStyle`
+  @media (pointer: coarse) {
+    html {
+      --min-tap-height: 44px;
+    }
+  }
+`;
+```
+
+- Then you can use this property inside a styled component
+
+```JAVA
+const FancyButton = styled.button`
+  min-height: var(--min-tap-height);
+`;
+const TextInput = styled.input`
+  min-height: var(--min-tap-height, 32px);
+`;
+```
+
+- Instead of changing the individual properties in a media query. You can update the CSS variable, which will then update the default styles at runtime/realtime.
+- Before being very direct, but when you specify a new value in a media query, all the `var()` keywords will re-run and discover they have a new value in the default style (mobile first or desktop first)
+
+```HTML
+<style>
+  main {
+    --spacing: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing);
+    padding: var(--spacing);
+  }
+  article {
+    border-radius: var(--spacing);
+    padding: var(--spacing);
+  }
+
+  @media (min-width: 350px) {
+    main {
+      /* Notice this is updating the css property, which re-runs the var keyword above */
+      --spacing: 16px;
+    }
+  }
+
+  @media (min-width: 500px) {
+    main {
+      --spacing: 32px;
+    }
+  }
+</style>
+
+<main>
+  <article>Card 1</article>
+  <article>Card 2</article>
+  <article>Card 3</article>
+</main>
+```
+
+### Variable Fragments
+
+- CSS variables can be used as lego blocks.
+
+```HTML
+  <style>
+  body {
+    --standard-border-width: 4px;
+  }
+
+  strong {
+    --border-details: dashed goldenrod;
+    border:
+      var(--standard-border-width)
+      var(--border-details);
+  }
+</style>
+
+<strong>Hello World</strong>
+
+```
+
+- You can combine multiple variables to form a single property value.
+- The result of this property, `border: 4px dashed goldenrod`
+- **This works because CSS variables are evaluated when they are used, NOT when they are defined.**
+- You can take this a step further, and make Composible
+
+```HTML
+
+<style>
+  body {
+    --pink-hue: 340deg;
+    --blue-hue: 275deg;
+    --intense: 100% 50%;
+    
+    --color-primary: hsl(
+      var(--pink-hue)
+      var(--intense)
+    );
+    --color-secondary: hsl(
+      var(--blue-hue)
+      var(--intense)
+    );
+  }
+
+  strong {
+    color: var(--color-primary);
+  }
+  a {
+    color: var(--color-secondary);
+  }
+</style>
+
+<p>
+  Hi <strong>Mario</strong>!
+  <br />
+  The princess is in <a href="">another castle</a>.
+</p>
+
+```
+
+- This helps keep our code EDY and makes it possible to build rich structures that make it easy to tweak entire color schemes. themes.
+
+## Dark Mode
+
+- you can use the `prefers-color-scheme` media query to create an alternative set of colors.
+- Your colors should use the dame values for `hue` and `saturation`
+- This works off of your system preferences dark mode,
+
+```CSS
+ @media (prefers-color-scheme: dark) {
+   /* when you change your system settings to dark mode, these styles are applied */
+
+ }
+```
+
+- If you want to test it out , witout having to toggle system settings, then just use `prefers-color-scheme: light`, just be sure to toggle it back.
+- What is the default? Light mode or dark mode
+
+## The Magic of Calc
+
+- CSS has the ability to do math!
+
+```CSS
+.something {
+  width: calc(100px + 24px);
+  height: calc(50px + 25px * 4);
+}
+```
+
+- You can use 4 mathematical operators, `+ - * /`
+- The real benefit of using `calc` is when we combine it with **CSS Variables**
+- You can use your `--spacing` custome CSS attribute as an input, then transform it using `calc`
+
+```CSS
+article {
+  --spacing: 4px;
+  padding: var(--spacing);
+  border-radius: calc(var(--spacing) / 2);
+}
+```
+
+## Unit Conversion
+
+- You can use `calc` to convert pixels to rems.
+
+```CSS
+h2 {
+  /* 24 / 16 = 1.5 */
+  font-size: 24px;
+}
+```
+
+- Instead of doing the math ourselves, let `calc` do it for us
+
+```CSS
+h2 {
+  font-size: calc(24 / 16 * 1rem);
+}
+```
+
+## Calculating colors and gradients
+
+- HSL color model allows us to manipulate the colors
+- This seems like a bit of overkill
+
+```HTML
+<style>
+:root {
+  --red-hue: 0deg;
+  --intense: 100% 50%;
+
+  --red: hsl(
+    var(--red-hue) var(--intense)
+  );
+  --orange: hsl(
+    calc(var(--red-hue) + 20deg)
+    var(--intense)
+  );
+  --yellow: hsl(
+    calc(var(--red-hue) + 40deg)
+    var(--intense)
+  );
+  --pinkred: hsl(
+    calc(var(--red-hue) - 20deg)
+    var(--intense)
+  );
+  --pink: hsl(
+    calc(var(--red-hue) - 40deg)
+    var(--intense)
+  );
+}
+
+.row {
+  display: flex;
+  padding: 8px;
+  gap: 8px;
+}
+
+.demo-box {
+  width: 50px;
+  height: 50px;
+  border-radius: 4px;
+}
+</style>
+  <div class="row">
+    <div
+      class="demo-box"
+      style="background: var(--pink)"
+    ></div>
+    <div
+      class="demo-box"
+      style="background: var(--pinkred)"
+    ></div>
+    <div
+      class="demo-box"
+      style="background: var(--red)"
+    ></div>
+    <div
+      class="demo-box"
+      style="background: var(--orange)"
+    ></div>
+    <div
+      class="demo-box"
+      style="background: var(--yellow)"
+    ></div>
+</div>
+```
+
+- You can use this technique to build gradients
+- Basic gradient example
+
+```HTML
+<style>
+    .box {
+    width: 150px;
+    height: 150px;
+    border-radius: 2px;
+    background: linear-gradient(
+      45deg,
+      hsl(-30deg 100% 50%),
+      hsl(30deg 100% 50%)
+    );
+    }
+</style>
+
+<div class="box"></div>
+```
+
+```HTML
+<style>
+:root {
+  /*
+    Try changing these values,
+    to create new gradients!
+  */
+  --root-hue: 0deg;
+  --range: 30deg;
+}
+
+.box {
+  --start-color: calc(
+    var(--root-hue) - var(--range)
+  );
+  --end-color: calc(
+    var(--root-hue) + var(--range)
+  );
+  
+  width: 150px;
+  height: 150px;
+  border-radius: 2px;
+  background: linear-gradient(
+    45deg,
+    hsl(var(--start-color) 100% 50%),
+    hsl(var(--end-color) 100% 50%)
+  );
+}
+</style>
+
+<div class="box"></div>
 ```
