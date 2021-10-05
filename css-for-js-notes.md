@@ -1713,3 +1713,179 @@ h2 {
 
 <div class="box"></div>
 ```
+
+- Playground, fun with gradients
+
+```HTML
+<style>
+  html {
+    --box-size: 75px;
+  }
+
+  .box {
+    width: var(--box-size);
+    height: var(--box-size);
+    /*
+      Here's a quick example, to get you started!
+      We use “--index”, a number from 1 to 16,
+      to derive the “hue” for each square.
+      
+      If you're not sure where to start,
+      try tweaking these numbers!
+      
+      One last tip: using a gradient instead
+      of a solid color opens lots of exciting
+      possibilities!
+    */
+    /*
+    background: hsl(
+      calc(var(--index) * -7deg) 100% 50%
+    );
+    */
+    background: linear-gradient(
+      45deg,
+      hsl(calc(var(--index-start) * -7deg) 100% 50%),
+      hsl(calc(var(--index-end) * -7deg) 100% 50%)
+    );
+  }
+
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    width: calc(var(--box-size) * 4);
+    height: calc(var(--box-size) * 4);
+  }
+
+  /*
+    Attach a unique index to each box.
+    Normally, we would do this in JS.
+  */
+  .box:nth-of-type(1) {
+    --index-start: 12;
+    --index-end: 32;
+  }
+  .box:nth-of-type(2) {
+    --index-start: 4;
+    --index-end: 332;
+  }
+  .box:nth-of-type(3) {
+    --index-start: 1;
+    --index-end: 6;
+  }
+  .box:nth-of-type(4) {
+    --index-start: 6;
+    --index-end: 8;
+  }
+  .box:nth-of-type(5) {
+    --index-start: 112;
+    --index-end: 322;
+  }
+  .box:nth-of-type(6) {
+    --index-start: 132;
+    --index-end: 332;
+  }
+  .box:nth-of-type(7) {
+    --index-start: 132;
+    --index-end: 5;
+  }
+  .box:nth-of-type(8) {
+    --index-start: 6;
+    --index-end: 5;
+  }
+  .box:nth-of-type(9) {
+    --index-start: 7;
+    --index-end: 2;
+  }
+  .box:nth-of-type(10) {
+    --index-start: 7;
+    --index-end: 9;
+  }
+  .box:nth-of-type(11) {
+    --index-start: 6;
+    --index-end: 3;
+  }
+  .box:nth-of-type(12) {
+    --index-start: 8;
+    --index-end: -32;
+  }
+  .box:nth-of-type(13) {
+    --index-start: -112;
+    --index-end: 7;
+  }
+  .box:nth-of-type(14) {
+    --index-start: 44;
+    --index-end: -32;
+  }
+  .box:nth-of-type(15) {
+    --index-start: 6;
+    --index-end: 1;
+  }
+  .box:nth-of-type(16) {
+    --index-start: 6;
+    --index-end: 300;
+  }
+  * {
+    box-sizing: border-box;
+  }
+  </style>
+
+  <div class="row">
+    <div class="box"></div>
+    <div class="box"></div>
+    <div class="box"></div>
+    <div class="box"></div>
+    <div class="box"></div>
+    <div class="box"></div>
+    <div class="box"></div>
+    <div class="box"></div>
+    <div class="box"></div>
+    <div class="box"></div>
+    <div class="box"></div>
+    <div class="box"></div>
+    <div class="box"></div>
+    <div class="box"></div>
+    <div class="box"></div>
+    <div class="box"></div>
+ </div>
+```
+
+## Viewport Units
+
+- Every value that you might think to use, like 24px or 10%, has a type. It might be a `<lenght>` or a `<color>`.
+- Teh `<lenght>` type is one of the most common. Properties like `<width>` or `<padding>` accept `<lenght>` values, and it contains units like px or em or rem.
+- It also includes viewport units
+- THERE ARE TWO MAIN VIEWPORT UNITS:
+  - `vw` viewport width
+  - `vh` viewport height
+- `1vw` is equivalent to 1% fo the viewport width. For example.
+
+```CSS
+  .box {
+    width: 10vw; /* 10% of the viewport width */
+    height: 25vh; /* 25% of the viewport height */
+  }
+```
+
+- You can use these units with teh width adn height properties
+- But really cool thing, is we can use them with any property that accepts `<lenght>` units.
+- For example, the distance between letters
+
+```HTML
+<style>
+  .heading {
+  letter-spacing: 2vw;
+}
+</style>
+<h2 class="heading">Resize me!</h2>
+```
+
+## The mobile height issue
+
+- The `vh` unit is often used to solve an annoying problem: making sure that an element is exactly as tall as the viewport. No taller, no shorter
+- Unfortunately, this doesn't work on mobile.
+- Modern mobile browsers have two views, and "expanded" view when the page is loaded.
+  - Expanded view, when the webpage is loaded, the address bar is tall and buttons at the bottom.
+  - Slide away view, making more room for content as users scroll.
+- `vh` unit **always refers to the largest possible height**. The slide away view.
+- So if you set an element to `100vh`, it won't fit on the screen.
+- [See Demo](https://courses.joshwcomeau.com/demos/full-height-vh)
