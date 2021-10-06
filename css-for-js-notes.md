@@ -1889,3 +1889,27 @@ h2 {
 - `vh` unit **always refers to the largest possible height**. The slide away view.
 - So if you set an element to `100vh`, it won't fit on the screen.
 - [See Demo](https://courses.joshwcomeau.com/demos/full-height-vh)
+- **How to work around this?**
+- You can use a JS based solution to change how `vh` units work. Not recommended unless you really really need it.
+- [viewport-units-buggyfill](https://github.com/rodneyrehm/viewport-units-buggyfill)
+- PREFERRED - use the [percent-based trick from Module 1](https://courses.joshwcomeau.com/css-for-js/01-rendering-logic-1/11-height), passing percentages down so that they can be usdd wher eyou need them.
+- Tweak designs so that they don't need to fill the viewport exactly.
+
+## The desktop scrollbar issue
+
+- `vw` unit it's problems
+- It refers to the viewport width NOT counting the scrollbar
+- On mobile , this is fine because the scrollbar floats transpacent above the content
+- On desktop, the scrollbar takes up it's own space, within the viewport. The exact width depents on the platform and styling.
+- This means that if we set an element to stretch 100vw, and our scrollbar is 15px wide. We will end up with 15px of horizontal overflow.
+- [See desktop example](https://courses.joshwcomeau.com/demos/100vw)
+- MacOS treats scroll bars a little differ. It hides them by default. You have to update your system preferences to show always. System Preferences/General/Show scroll bars
+
+## Tracking the scrollbar width
+
+- Using some JS, you can calculate the amount of space eaten up my scrollbar with the following
+
+```JS
+const scrollbarWidth =
+  window.innerWidth - document.documentElement.clientWidth;
+```
