@@ -1913,3 +1913,82 @@ h2 {
 const scrollbarWidth =
   window.innerWidth - document.documentElement.clientWidth;
 ```
+
+- `window.innerWidth` refers to the viewport width, it doesn't care about scrollbars.
+- `documentElement.clientWidth` refers to the usable space within the document.
+
+- For example; our window is 500px wide and scrollbar taking up 20px. `window.innerWidth` wil be 500 and `clientWidth` will be 480. By subtracting we get teh difference of 20
+
+- Now that we knwo how wide the scrollbar is, we can assign it to a CSS variable
+
+```JS
+document.documentElement.style.setProperty(
+  `--scrollbar-width`,
+  scrollbarWidth + 'px'
+);
+```
+
+- By attaching the CSS variable to teh `documentElement`, ew make it globally available, same thing as targeting `html` in CSS
+- Then, we can use `calc` to work the `vw` units without worrying about scrollbars
+
+```CSS
+.wrapper {
+  width: calc(100vw - var(--scrollbar-width));
+}
+```
+
+- You can take this a step further by assigning that `calc` expression to a variable.
+
+```CSS
+html {
+  --full-width: calc(100vw - var(--scrollbar-width));
+}
+
+.wrapper {
+  width: var(--full-width);
+}
+```
+
+- To prevent scrollbar popping up when dynamic content loads. You can pre-emptively set it
+
+```CSS
+  body {
+    overflow-y: scroll;
+  }
+```
+
+- This is a good practice, prevents layout shifts
+
+## Clamping Values
+
+- `clamp` take 3 values:
+- The minumum value
+- The ideal value
+- The maximum value
+
+- Works like the seperate properties of `mind-width`, `width` and `max-width`, and combines into a single property value
+- The two rules below are functionally identical
+
+```CSS
+/* Method 1 */
+.column {
+  min-width: 500px;
+  width: 65%;
+  max-width: 800px;
+}
+/* Method 2 */
+.column {
+  width: clamp(500px, 65%, 800px);
+}
+```
+
+- By moving built in constraints to clamp, we free up `max-width`. This solution combines them
+
+```CSS
+.column {
+  width: clamp(500px, 65%, 800px);
+  max-width: 100%;
+}
+```
+
+- In the snippet, we are applying two maximum widths `800px` and `100%`. Our `.column` element will never be larger then 800px or 100% of available space.
