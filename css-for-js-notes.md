@@ -1910,8 +1910,7 @@ h2 {
 - Using some JS, you can calculate the amount of space eaten up my scrollbar with the following
 
 ```JS
-const scrollbarWidth =
-  window.innerWidth - document.documentElement.clientWidth;
+const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
 ```
 
 - `window.innerWidth` refers to the viewport width, it doesn't care about scrollbars.
@@ -1923,8 +1922,8 @@ const scrollbarWidth =
 
 ```JS
 document.documentElement.style.setProperty(
-  `--scrollbar-width`,
-  scrollbarWidth + 'px'
+  '--scrollbar-width',
+  `${scrollbarWidth}px`,
 );
 ```
 
@@ -1992,3 +1991,189 @@ html {
 ```
 
 - In the snippet, we are applying two maximum widths `800px` and `100%`. Our `.column` element will never be larger then 800px or 100% of available space.
+- `clamp` can be used with any property
+
+## Min and Max
+
+- There are `min` and `max` functions we can use as well
+
+```CSS
+  .box {
+    padding: min(32px, 5vw);
+  }
+```
+
+- This works jsut like `Math.min` in JS, it evaluates to whichever value is smaller
+- In this example, our `.box` will have dynamic padding athta scales with the viewport width, but only until it reaches 32px, no larger then that
+
+## Scrollburglars
+
+- Growth Mindset and product failure
+- Front loading the exercise, being asked to solve a problem before we've covered the technique.
+- Why would Josh ask you to try and solve a problem you won't be able to solve?
+- BECAUSE THEIR IS VALUE IN THE PROCESS. Struggling with a problem si teh best way to ensure that you learn.
+- If you start with the explanation, and you breeze through  the exercises, that knowledge is less likely to be absorbed.
+- This is known as [productive failure](https://www.nature.com/articles/s41539-019-0040-6)
+- In productive failure, the conventional instruction process is reversed so that learners attempt to solve challenging problems ahead of receiving explicit instruction. While students often fail to produce satisfactory solutions, these attempts help learners encode key features and learn better from subsequent instructions.
+- Khan Academy - [Growth Mindset](https://www.khanacademy.org/ela/cc-4th-reading-vocab/x5ea2e43787f7791b:cc-4th-growth-mindset/x5ea2e43787f7791b:building-knowledge/a/growth-mindset--unit-intro-4)
+
+## Exercise 01-recut
+
+- horizontal scrollbar present, because of image overflow issues
+- great way to solve for that, `min` property
+- `min-width: min(28rem, 100%)`
+- pass two values, and it will pick the smallest one
+- as the window gets smaller, it will use the smaller of the two values.
+- Two different `max-width` that apply in two differ situations.
+  - on small screens, we would like the max width to be 100%
+  - on larger screens, that moment that max width is bigger then 28rem we want to stop it from growing any larger.
+- use the `min()` keyword, it will pick the smallest value and pick that
+
+## Exercise 02-warp and weave
+
+- to apply a global fix, you can use `overflow: hidden`, however, if you have a position sticky or fixed further down in the DOM, it will not work.
+- but sometimes you want some overlow for artistic affects.
+
+## CSS samples
+
+- Hero element wall to wall photo
+
+```CSS
+.hero {
+  background: url('/course-materials/night-sky.jpg');
+  background-size: cover;
+  background-position: bottom center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  text-shadow: 0px 0.3em 1em hsl(295deg 100% 10%);
+```
+
+- Stretched Card, make an element stretch wall to wall in it's container, just apply negative margins and put img at 100%
+
+```HTML
+<style>
+  body {
+  background: #222;
+  padding: 32px;
+}
+
+.card {
+  background-color: white;
+  padding: 32px;
+  border-radius: 8px;
+}
+
+.stretch {
+  margin-left: 32px;
+  margin-right: 32px;
+}
+
+img {
+  display: block;
+  width: 100%;
+}
+
+p, img {
+  margin-bottom: 16px;
+}
+</style>
+
+<div class="card">
+  <p>
+    Otters have long, slim bodies and relatively short limbs. Their most striking anatomical features are the powerful webbed feet used to swim, and their seal-like abilities holding breath underwater.
+  </p>
+  <div class="stretch">
+   <img alt="A cute otter in water" src="/course-materials/otter.jpg" />
+  </div>
+  <p>
+    More importantly, otters are glorious water dogs, playful and curious. The otter, no other, is the best animal.
+  </p>
+</div>
+```
+
+- Decorative Effect, [blob background](https://courses.joshwcomeau.com/css-for-js/02-rendering-logic-2/08-reducing-z-index)
+
+- Sticky nav items, [make your sections stick with content](https://courses.joshwcomeau.com/css-for-js/02-rendering-logic-2/15-sticky)
+
+- CREATE A DECORATIVE ELEMENT AND SKEW IT.
+- Check out `skew()` property. You can do both x and y axis. [MDN Skew](https://developer.mozilla.org/en-US/docs/Web/CSS/transform-function/skew())
+
+```HTML
+<style>
+h2 {
+  position: relative;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 16px;
+  margin-top: 48px;
+}
+
+.heading-decoration {
+  position: absolute;
+  top: -25px;
+  right: 0px;
+  width: 75px;
+  height: 75px;
+  background: papayawhip;
+  opacity: 1;
+  transform: translateX(12px) skew(-24deg);
+}
+
+.heading-content {
+  position: relative;
+}
+</style>
+<h2>
+  <span class="heading-decoration"></span>
+  <span class="heading-content">
+  Evaluating friendliness
+  </span>
+</h2>
+```
+
+## Exercise 03 - Blog
+
+- Decorative element, parallelogram, on an element
+- Add overflow hidden to the main, but introduces new problem.
+- If you use position sticky on any ancestor element, it will no longer be sticky, social media icons in this case.
+- Position sticky follow the scroll for a moment then becomes fixed, it starts relative and then becomes fixed.
+- Position fixed doesn't have the same limitation with overflow hidden.
+- An alternative, is to use media queries to change the element to overflow hidden
+
+## Responsive Typography
+
+- We generally want our font size to be 16px, anything less and users have to strain to read, or slows down comprehension.
+- [Important Facts about reading](https://www.smashingmagazine.com/2011/10/16-pixels-body-copy-anything-less-costly-mistake/#important-facts-about-reading), Smashing Magazine
+- Fun Fact, most web apps use the same font size regardless of display size. Facebook and Twitter and Google stick to the same font size, `16px` no matter how big the screen gets.
+- Font size units, dont' use absolute units like `px`
+- So taht users can pick a default font size in the browser
+- When we say the font size should be `16px`, what we are really saying is that it should be `1rem`.
+- `rem` is unit relative to teh root font size, which defaults to `16px` in all browsers
+
+### Small text
+
+- We also have small text for labels and captions
+- Ok to reduce the size if the text is unimportant
+
+```CSS
+figcaption {
+  font-size: 0.75rem;
+  text-align: center;
+  padding-top: 8px;
+}
+```
+
+### Form Fields
+
+- `input` and `select` field sare small by default. Hard to read on mobile devices.
+- To compensate, iOS Safari will automatically zoon in to focus on form fields and small text. It makes the text eaier to read, but is tendious and harder to navigate the page
+- The fix, is to just set all fields to 16px, then Safai wil no longer zoom.
+
+```CSS
+input, select, textarea {
+  font-size: 1rem;
+}
+```
