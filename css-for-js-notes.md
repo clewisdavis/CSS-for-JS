@@ -2177,3 +2177,289 @@ input, select, textarea {
   font-size: 1rem;
 }
 ```
+
+## Headings
+
+- Headings need a differ approach from desktop to mobile
+- Typically you can use media queries to reduce the font size
+
+```CSS
+h1 {
+  font-size: 2.5rem;
+}
+@media (max-width: 550px) {
+  h1 {
+    font-size: 1.75rem;
+  }
+}
+```
+
+- Another option, is to use a fluid value to scale more smoothly
+
+### Fluid Typography
+
+- The idea behind fluid typography instead of creating discrete font size breakpoints, it scales smoothly based on viewport size.
+- This is done with the `vw` unit
+- [MDN](https://developer.mozilla.org/en-US/docs/Learn/CSS/Building_blocks/Values_and_units), `vw` is 1% of viewport width
+- Neat trick but two problems, sizes get ridiculous on small and large screens.
+
+```HTML
+<style>
+h1 {
+  font-size: 6vw;
+  margin-bottom: 0.5em;
+}
+</style>
+<main>
+  <h1>
+    This is a fluid headline!
+  </h1>
+  <p>
+    The heading will grow and shrink with the viewport.
+  </p>
+</main>
+```
+
+- We can solve this problem with the `clamp` to set bounds for big and small
+
+```HTML
+<style>
+  h1 {
+    font-size: clamp(1.5rem, 6vw, 3rem);
+    margin-bottom: 0.5em;
+  }
+</style>
+<main>
+  <h1>
+    This is a fluid headline!
+  </h1>
+  <p>
+    The heading will grow and shrink with the viewport.
+  </p>
+</main>
+```
+
+- `clamp` lets us set a a hard boundary. In this example, text will always be between 1.5rem and 3rem, no matter what the viewport size is.
+- The only problem is, you introduce an accessibility violation. WCAG, says that text should be scalable up to 200%.
+- All kinds of crazy calc functions to get this to work. Not worth it.
+- Use it responsibly, good for headings and decorative, but not body text.
+
+### Fluid Calculator
+
+- You can change the rate at which something changes.
+- The trick is that e can play with the ratio between viewport and relative units.
+
+```HTML
+<style>
+.fluid {
+  font-size: clamp(
+    2rem,
+    5vw + 1rem,
+    5rem
+  );
+}
+.fluid-fast {
+  font-size: clamp(
+    2rem,
+    14vw - 1.5rem,
+    5rem
+  );
+}
+</style>
+
+<h2 class="fluid">Fluid Text</h2>
+<h2 class="fluid-fast">Fluid Text</h2>
+```
+
+- Check out Josh's [fluid calculator](https://courses.joshwcomeau.com/css-for-js/05-responsive-css/16-fluid-calculator)
+- You can also use fluid technique for spacing elements, for example a menu bar item, get the proportions you want from Josh's calculator.
+
+```HTML
+<style>
+  /* template */
+  ul {
+    justify-content: center;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  a {
+    color: black;
+    font-weight: 700;
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+  ul {
+    display: flex;
+    gap: clamp(
+      1rem,
+      11.7vw - 2rem,
+      5rem
+    );
+  }
+</style>
+
+<nav>
+  <ul>
+    <li>
+      <a href="/">News</a>
+    </li>
+    <li>
+      <a href="/">Classifieds</a>
+    </li>
+    <li>
+      <a href="/">Opinion</a>
+    </li>
+  </ul>
+</nav>
+```
+
+## Fluid Design
+
+- The responsive vs. fluid dynamic isn't just a typography thing; becoming increasingly common to use Flexbox/Grid to build "fluid layouts" instead of defining concrete breakpoints.
+- Example of the two [side by side](https://courses.joshwcomeau.com/css-for-js/05-responsive-css/17-fluid-design)
+- Each approach has differ pros and cons depending on what you want to accomplish. Example below.
+
+```HTML
+<style>
+  /* TEMPLATE */
+  .wrapper {
+    padding: 8px;
+    background: white;
+    border-radius: 8px;
+    margin: 16px 0;
+  }
+
+  .description {
+    padding: 5px 16px 8px 8px;
+  }
+
+  .description h2 {
+    margin-bottom: 8px;
+  }
+
+  .bibliography {
+    background: hsl(250deg 20% 90%);
+    padding: 8px;
+    padding-left: 32px;
+    border-radius: 0 4px 4px 0;
+  }
+
+  .bibliography ul {
+    margin: 0;
+    padding: 0;
+  }
+
+  .bibliography li {
+    margin-bottom: 8px;
+  }
+
+  .bibliography a {
+    color: hsl(250deg 100% 50%);
+    text-underline-offset: 3px;
+  }
+
+  body {
+    background: hsl(250deg 20% 20%);
+  }
+  /* RESPONSIVE APPROACH */
+  .wrapper {
+    display: flex;
+  }
+  .description {
+    flex: 1;
+  }
+  .bibliography {
+    flex: 1;
+  }
+  
+  @media (max-width: 32rem) {
+    .wrapper {
+      flex-direction: column;
+    }
+    .bibliography {
+      border-radius: 0 0 4px 4px;
+    }
+  }
+  
+  /* FLUID APPROACH */
+  /*
+  .wrapper {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .description {
+    flex: 1;
+    min-width: 15rem;
+  }
+  .bibliography {
+    flex: 1;
+    min-width: 20rem;
+  }
+  */
+</style>
+
+<div class="wrapper">
+  <div class="description">
+    <h2>Becky Chambers</h2>
+    <p>
+      Becky Chambers is an American science fiction writer, and the author of the Hugo-award winning Wayfarers series. She is known for her imaginative world-building and character-driven stories.
+    </p>
+  </div>
+  <nav class="bibliography">
+    <ul>
+      <li>
+        <a href="/">
+          A Psalm For The Wild-Built
+        </a>
+      </li>
+      <li>
+        <a href="/">
+          The Galaxy, And The Ground Within
+        </a>
+      </li>
+      <li>
+        <a href="/">
+          To Be Taught, If Fortunate
+        </a>
+      </li>
+    </ul>
+  </nav>
+</div>
+<div class="wrapper">
+  <div class="description">
+    <h2>John Scalzi</h2>
+    <p>
+      John Michael Scalzi II is an American science fiction author and former president of the Science Fiction and Fantasy Writers of America. He is best known for his Old Man's War series, three novels of which have been nominated for the Hugo Award.
+    </p>
+  </div>
+  <nav class="bibliography">
+    <ul>
+      <li>
+        <a href="/">
+          Old Man's War
+        </a>
+      </li>
+      <li>
+        <a href="/">
+          Questions For A Soldier
+        </a>
+      </li>
+      <li>
+        <a href="/">
+          The Ghost Brigades
+        </a>
+      </li>
+    </ul>
+  </nav>
+</div>
+```
+
+## Advanced Flex Techniques
+
+- You can use Flexbox to integrate some impressive tricks.
+- This for example, [4 differ layout supported](https://courses.joshwcomeau.com/css-for-js/05-responsive-css/17-fluid-design).
