@@ -2463,3 +2463,30 @@ h1 {
 
 - You can use Flexbox to integrate some impressive tricks.
 - This for example, [4 differ layout supported](https://courses.joshwcomeau.com/css-for-js/05-responsive-css/17-fluid-design).
+
+## Workshop, add responsiveness to Sole & Ankle site
+
+### Exercise 1, set up our breakpoints
+
+- Add pre-defined breakpoints to the project.
+- Convert them to relative units so the breakpoints scale with the browser settings
+- Add it to a constants.js file and import it into your app
+
+```Java
+// CD - Add the breakpoints in px
+export const BREAKPOINTS = {
+  phone: 600,
+  tablet: 950,
+  laptop: 1300,
+};
+
+// CD - Create a query to convert to rems and make it easier to write/call
+// To covert anything to rems, just divide by 16. Rems or relative units, allow the design to scale when users change their font size preferences.
+export const QUERIES = {
+  phoneAndSmaller: `(max-width: ${BREAKPOINTS.phone / 16}rem)`,
+  tabletAndSmaller: `(max-width: ${BREAKPOINTS.tablet / 16}rem)`,
+  laptopAndSmaller: `(max-width: ${BREAKPOINTS.laptop / 16}rem)`,
+};
+```
+
+### Exercise 2: Mobile Header
