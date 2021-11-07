@@ -2490,3 +2490,46 @@ export const QUERIES = {
 ```
 
 ### Exercise 2: Mobile Header
+
+## Exercise 6: CSS variables Benefits
+
+- [Link to workshop](https://courses.joshwcomeau.com/css-for-js/05-responsive-css/19-workshop-solution)
+- Using a platform standard, vs custom
+- Easier to migrate if we need to use a differ tool in the fugure
+- Easier to build differ color themes, we can swap out
+- Being able to compose them in differ ways
+- Strategy for interpellating the colors
+- Use `hsl` format
+- In your constants file, just use the values
+
+```JS
+export const COLORS = {
+  white: '0deg 0% 100%',
+  gray: {
+    100: '185deg 5% 95%',
+    300: '190deg 5% 80%',
+    500: '196deg 4% 60%',
+    700: '220deg 5% 40%',
+    900: '220deg 3% 20%',
+  },
+  primary: '340deg 65% 47%',
+  secondary: '240deg 60% 63%',
+};
+```
+
+- Then within your `globalStyles.js`, import your constants.js and then create css variables.
+
+```JS
+html {
+  --color-white: hsl(${COLORS.white});
+  --color-primary: hsl(${COLORS.primary});
+  --color-secondary: hsl(${COLORS.secondary});
+  --color-gray-100: hsl(${COLORS.gray[100]});
+  --color-gray-300: hsl(${COLORS.gray[300]});
+  --color-gray-500: hsl(${COLORS.gray[500]});
+  --color-gray-700: hsl(${COLORS.gray[700]});
+  --color-gray-900: hsl(${COLORS.gray[900]});
+
+  --color-backdrop: hsl(${COLORS.gray[700]} / 0.8);
+}
+```
