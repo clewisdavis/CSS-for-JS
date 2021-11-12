@@ -2533,3 +2533,132 @@ html {
   --color-backdrop: hsl(${COLORS.gray[700]} / 0.8);
 }
 ```
+
+## Module 6 - Typography and Images
+
+- The secrets of text rendering, from kerning to rasterization
+- Understanding and managing text overflow, and how to do single-line and multi-line ellipses.
+- Two alternative layout modes: floats and columns
+- Web fonts, and how to optimally load them for the best user experience
+- Variable fonts, a magical new font format
+- The best icon solutions in a modern JS context
+- Responsive image-handling with srcset and the <picture> element
+- Modern image formats like .avif, and how to use them while still supporting all browsers.
+- Customizing image placement using object-fit and object-position
+- The intersection of images and Flexbox, and how to sidestep common issues
+
+### Kerning
+
+- Kerning refers to the spacing between individual characters. Characters are nudged left or right so they feel right. Half art and half science.
+- In CSS we can disable kerning `font-kerning: none`, but have no fine-grained control.
+- `letter-spacing` allows us to increase/decrease space between individual characters, acts as a kerning multiplier, amplifies whatever krning the browser decides on.
+
+### Text Rasterization
+
+- The browsers operating system also affects how typography is rendered.
+- Rasterization and anti-aliasing, bitmap vs. vector fonts
+- Bitmap fonts, old school where each letter is a bitmap
+- Vector font ost common format, ttf, otf, svg, woff/woff2.
+- Main benefit of vector, it can be scaled to any size without letters becoming pixellated and blurry.
+- But in order to take vector font onto the screen, browser has to figure out which color to make each pixel, process known as rasterization.
+- This produce pixellated text, to make it appear smooth, the browser can apply anti-aliasing
+
+### Font Smoothing
+
+- `-webkit-font-smoothing` property
+- Allows us to switch which aliasing algorithm the browsers use.
+- But only works on MacOS, and only on Chrome/Safari/Edge (not Firefox)
+- Lots of history on browsers
+
+## Text Overflow
+
+- Browser groups characters in to words
+- Words are seperated by braking characters
+- Called soft wrap opportunities. Each whitespace character is a soft wrap opportunity.
+- When content would sipll outside teh containing block, browser looks for soft wrap opportunity
+
+### Widows
+
+- The current browser algorythm can cause widows.
+- Adobe has made a CSS proposal to suppo rt an alternative text-placement algorithm. JS [polyfill](https://opensource.adobe.com/balance-text/demo/index.html).
+
+- Waht happens it a single word is to long to fit in the container?
+- The browser can only split based on "soft wrap opportunities", and the word `asdfdsafasdfsafadssad` has none.
+- `overflow: auto`, to make is scroll
+- `overflow: hidden` to truncate
+
+### Wrapping on multiple lines
+
+- With the `overflow-wrap` property, we can linewrap longer words/strings
+- `overflow-wrap: break-word` tweaks the text placing algorithm. IF the browser cannot fit the current workd, and doesn't ahve any spare sofft wrap opportunies, this decloration gives teh browser persmissoin to break after any character.
+
+```html
+<style>
+  .wrapper {
+    border: 2px solid;
+    padding: 16px;
+  }
+
+  p:not(:last-of-type) {
+    margin-bottom: 1em;
+  }
+  p {
+    overflow-wrap: break-word;
+  }
+</style>
+
+<div class="wrapper">
+  <p>
+    This is a narrow column of text, with a very long word: antidisestablishmentarianism.
+  </p>
+  <p>
+    The same problem happens with URLs: https://www.somewebsite.com/articles/a1b2c3
+  </p>
+</div>
+```
+
+### Hyphenation
+
+- `overflow-wrap: break-word` splits long words across multiple lines without any visual indecation.
+- In print media, we would add a hyphen
+- A hyphen is a dash character used to join two segments of the same word
+- Adding hyphens is not part of the text-placement algorightm, but we can add it in with teh hyphens property.
+
+```html
+<style>
+  p {
+    overflow-wrap: break-word;
+    hyphens: auto;
+    
+    /* Prefix for Safari */
+    -webkit-hyphens: auto;
+  }
+</style>
+```
+
+- For best results, combine `hyphens` with `overflow-wrap`
+- Hyphens may not always show up but the layout will not break
+- Text selection, hyphens are not selectable. So URLs can be copy/pasted
+
+### Ellipsis
+
+- Another strategy is to trail off, leaving the sentence unfini...
+- You need to use `overflow: hidden` in order for `text-overflow: ellispsis` to work.
+
+```html
+<style>
+  p {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+</style>
+
+<div class="wrapper">
+  <p>
+    This is a narrow column of text, with a very long word: antidisestablishmentarianism.
+  </p>
+  <p>
+    The same problem happens with URLs: https://www.somewebsite.com/articles/a1b2c3
+  </p>
+</div>
+```
