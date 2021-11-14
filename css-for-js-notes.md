@@ -2598,7 +2598,6 @@ html {
     border: 2px solid;
     padding: 16px;
   }
-
   p:not(:last-of-type) {
     margin-bottom: 1em;
   }
@@ -2619,7 +2618,7 @@ html {
 
 ### Hyphenation
 
-- `overflow-wrap: break-word` splits long words across multiple lines without any visual indecation.
+- `overflow-wrap: break-word` splits long words across multiple lines without any visual indication.
 - In print media, we would add a hyphen
 - A hyphen is a dash character used to join two segments of the same word
 - Adding hyphens is not part of the text-placement algorightm, but we can add it in with teh hyphens property.
@@ -2662,3 +2661,59 @@ html {
   </p>
 </div>
 ```
+
+### Single Line ellipsis
+
+- When you want to prevent line wrapping, and add an ellipsis if the string can't fit on single line.
+- `white-space: nowarp`
+- For example, if you have a table, and want to truncate strudnes withlonger names.
+- The overflow management kids in after the line-breaking algorithm.
+- First the browser figures out where to put the line breaks. Then it figures out what to do about the overflow.
+- In order to truncate the content, we need to disable line-wrapping altogether. We do that with `white-space: nowrap`
+- Always consider the usability aspects, when truncating, is the user familiar with the values.
+
+```CSS
+tbody th {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 250px;
+}
+```
+
+### Multi-line ellipsis
+
+- If you want to show a few short lines then add an allipsis afterwards.
+- Modern way to solve this, with `-webkit-line-clamp` property.
+- Works in all major brosers, but does requite some additional declarations
+
+```HTML
+<style>
+  p {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    overflow: hidden;
+    margin-bottom: 1em;
+  }
+  main {
+    border: solid;
+    margin: 0 auto;
+    padding: 16px;
+  }
+</style>
+
+<main>
+  <p>
+    No matter how long this paragraph is, only 3 lines will be shown, the rest concealed, and an ellipsis character will be added to demonstrate that there is more text that is not shown here.
+  </p>
+  <p>
+    Short paragraphs don't get an ellipsis.
+  </p>
+</main>
+```
+
+- Watch out, can be buggy with Flex/Grid. Will show thin slices of truncated text below the ellipsis
+- To avoid this issue, apply clamping to the tag that isn't being used as part of flex/grid. You can always solve by putting a wrapper div
+
+## Print-style Layouts
