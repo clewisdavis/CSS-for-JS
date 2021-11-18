@@ -2666,7 +2666,7 @@ html {
 
 - When you want to prevent line wrapping, and add an ellipsis if the string can't fit on single line.
 - `white-space: nowarp`
-- For example, if you have a table, and want to truncate strudnes withlonger names.
+- For example, if you have a table, and want to truncate students with longer names.
 - The overflow management kids in after the line-breaking algorithm.
 - First the browser figures out where to put the line breaks. Then it figures out what to do about the overflow.
 - In order to truncate the content, we need to disable line-wrapping altogether. We do that with `white-space: nowrap`
@@ -2717,3 +2717,243 @@ tbody th {
 - To avoid this issue, apply clamping to the tag that isn't being used as part of flex/grid. You can always solve by putting a wrapper div
 
 ## Print-style Layouts
+
+- What if you wanted to layout a page like print, in multiple columns?
+- You would use an additional layout mode, Multi-Column Layout
+- This layout mode can automatically split content across multiple columns, in a manner that allows the parent container to grow and shrink.
+- Tweak the sample blow to 3 columns. It breaks it into three columns.
+
+```HTML
+<style>
+  .wrapper {
+  columns: 2;
+  column-gap: 16px;
+  padding: 16px;
+}
+
+p {
+  margin-bottom: 16px;
+}
+</style>
+<main class="wrapper">
+  <p>
+    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
+  </p>
+  <p>
+    It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+  </p>
+  <p>
+    Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.
+  </p>
+  <p>
+    Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source.
+  </p>
+  <p>
+    Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.
+  </p>
+</main>
+```
+
+- If you want to make sure a child isn't broken across columns, you can use `break-inside: avoid;`
+- This will prevent the layout algorithm from splitting the paragraph across multiple columns.
+
+```CSS
+p {
+  break-inside: avoid;
+}
+```
+
+## Floats
+
+- Floats are old school, web of the 00's / early 10s. Damn I feel old.
+- Flexbox pretty much took over floats, much more elegant solution
+- But Floats still have a place on the web.
+- Floats allow content to wrap around an embedded element. Text wrapping around an image.
+- Floated elements is like a boulder in a stream, all teh other content flows smoothly around it.
+- And you can change the side with `left` or `right` property.
+- Add a little margin to the element to create a little space.
+
+```HTML
+<style>
+  img {
+    float: left;
+    margin-right: 16px;
+  }
+</style>
+
+<p>
+  Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+  Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
+  scrambled it to make a type specimen book.
+</p>
+<img src="/course-materials/cat-300px.jpg" />
+<p>
+  It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+</p>
+<p>
+  Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old.
+</p>
+```
+
+## Indentation
+
+- Like reading books, the first line of each paragraph is inset. So our eyes can distiguish one paragraph from another.
+- On the web, we can accomplish this in a couple ways.
+- pseudo element selector of the first word, `:first-letter` and a bit of margin.
+- Useful for drop caps effects
+
+```HTML
+<style>
+p::first-letter {
+  margin-left: 2rem;
+}
+
+p {
+  max-width: 500px;
+  margin: 0 auto;
+}
+</style>
+<p>
+  This is a paragraph that has been indented, using the <em>first-letter</em> pseudo-element. Normally, we can't apply CSS directly to text, but this pseudo-element acts as an invisible "span" that wraps around the first character.
+</p>
+<p>
+  Indentation isn't super common on the web, but it's everywhere in print media! Most published books will use indentation like this, and will only add space between paragraphs at the end of a "section" or sub-chapter.
+</p>
+```
+
+- Or, use th  `text-indent` CSS property
+
+```CSS
+p {
+  text-indent: 2rem;
+}
+
+p {
+  max-width: 500px;
+  margin: 0 auto;
+}
+```
+
+## Justified alignment
+
+- In print, common for text to be justified, spacing between each word is tweaked so that heach line fill the available horizontal space.
+
+```HTML
+<style>
+  p {
+    text-align: justify;
+    padding: 16px;
+  }
+</style>
+
+<p>
+  This paragraph has been justify-aligned. The goal with justify-aligned text is to create a sharp block of text that aligns both on the left and right edges. It accomplishes this goal by tweaking the spacing between each word. Historically, this process was painstakingly done by typographers, using their intuition and a hearty amount of hyphens to create well-formatted text.
+</p>
+```
+
+- Good book reference on [Typogrpahic styles](https://www.goodreads.com/book/show/44735.The_Elements_of_Typographic_Style)
+
+## Exercise, Creating a Book
+
+- Create a book layout with these techniques
+
+```HTML
+
+<style>
+.wrapper {
+  max-width: 64rem;
+  margin: 32px auto;
+  border: 2px solid hsl(35deg 10% 40%);
+  
+  columns: 2;
+  column-gap: 152px;
+  padding: 50px;
+  background: linear-gradient(
+    to right,
+    hsl(35deg, 30%, 90%),
+    hsl(35deg, 30%, 90%) 47%,
+    hsl(35deg, 30%, 70%) 49.5%,
+    hsl(35deg, 20%, 50%) 50%,
+    hsl(35deg, 30%, 70%) 50.5%,
+    hsl(35deg, 30%, 90%) 53%,
+    hsl(35deg, 30%, 90%)
+  );
+}
+
+h2 {
+  margin-bottom: 2em;
+  font-size: 2rems;
+}
+
+p {
+  text-align: justify;
+}
+
+p:not(:first-of-type) {
+  text-indent: 2em;
+}
+
+p:first-of-type:first-letter {
+  color: red;
+  font-size: 3em;
+  float: left;
+  line-height: 1em;
+  margin-right: 0.2em;
+}
+
+* {
+  font-family: 'Merriweather', serif;
+}
+</style>
+
+<main class="wrapper">
+  <h2>Chapter 1</h2>
+  <p class="drop-cap">
+    Outside the space-warp chamber, Rizal's great green sun had already set. Thick olive dusk eddied through the interplanetary transit center. I swore under my breath and slammed shut the warp-hatch switch.
+  </p>
+  <p>
+    Locking bars whispered back. The hatch revolved on its axis, slow as an asteroid eroding. I threw another quick glance at my chrono. It still read the same as before: six Earth hours more… six hours to ferret out the truth or be forever reconditioned.
+  </p>
+  <p>
+    —Six hours, that is, if Controller Alfred Kruze didn't cut it shorter.
+  </p>
+  <p>
+    And if he did, Rizal might very well change status. Today, it was billed as the FedGov's outermost bastion against the Kel. Tomorrow, it could prove man's fatal flaw, the Achilles heel in our whole system of defenses.
+  </p>
+  <p>
+    In which case—
+  </p>
+  <p>
+    Involuntarily, I shivered.
+  </p>
+  <p>
+    “Agent Traynor—?”
+  </p>
+  <p>
+    The voice came from the shadows. A dull, phlegmatic, tranquilized, conditioned voice. I stopped short; turned fast. “Who's asking?”
+  </p>
+  <p>
+    The man shrugged stolidly, not even picking up my tension. “I'm a port rep, Agent Traynor. Port rep second, that is—”
+  <p>
+    “So who told you to come out here? Who said you should meet me?”
+  </p>
+  <p>
+    “Oh…” A pause. “Well, you see, there's this sigman, Agent Traynor. Up in the Interworld Communications section. He had a regular 7-D clearance report that a FedGov Security investigation agent was warping in—you have to file a 7-D on all warpings, you know, Agent Traynor, on account of restrictives. So—well, the rep first was out to eat, so I just notified Rizal Security, just a routine report, and the unit controller there, an Agent Gaylord, he said for me to meet you, and—”
+  </p>
+  <p>
+    I bit down hard and shifted my weight, both at once, wondering if a broken jaw would interfere with the work of a port rep second.
+  </p>
+  <p>
+    Only then, all at once, I caught the unmistakable whish of a grav-car sweeping in.
+  </p>
+  <p>
+    The lights hit us almost in the same instant. Two seconds later a man who said he was Agent Gaylord was jumping down and locking wrists with me in Rizal's traditional greeting.
+  </p>
+  <p>
+    Even that wrist-lock set my teeth on edge. It was too solid, too stolid, too thorough a job of conditioning.
+  </p>
+  <p>
+    Or was it maybe, just a trifle over-done?
+  </p>
+</main>
+```
