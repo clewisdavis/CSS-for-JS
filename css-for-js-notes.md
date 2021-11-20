@@ -2856,6 +2856,7 @@ p {
 ## Exercise, Creating a Book
 
 - Create a book layout with these techniques
+- Initial Letter, in the future drop caps will be a single CSS property `initial-letter: 2;` 2 is number of lines to span
 
 ```HTML
 
@@ -2957,3 +2958,140 @@ p:first-of-type:first-letter {
   </p>
 </main>
 ```
+
+## Masonary Layout with Columns
+
+- Made popular by Pinterest and Unsplash, stacking elements in an asymmetric grid
+- Just one property `column-count: 3` will get you most of the way there.
+- For the column gap, use the `column-gap: 16px` property
+- And for the bottom spacing, just apply it to the li
+
+### Limitations
+
+- Items are laid out from top to bottom
+- We generally read things left to right on the web, not top to bottom
+- This can be jarring for the tab order
+- Adding content dynamically, new content is added to the very last column and everything else is re-distributed
+
+-
+
+```HTML
+<style>
+/* Quick lil' CSS reset */
+body, ul, li {
+  padding: 0;
+  margin: 0;
+}
+ul {
+  list-style-type: none;
+}
+
+/* Real code starts here */
+ul {
+  --gap: 16px;
+  column-count: 3;
+  column-gap: var(--gap);
+  padding: var(--gap);
+}
+
+li {
+  break-inside: avoid;
+}
+
+img {
+  display: block;
+  width: 100%;
+  margin-bottom: var(--gap);
+}
+</style>
+<ul>
+  <li>
+    <a href="">
+      <img src="/course-materials/night-sky.jpg" />
+    </a>
+  </li>
+  <li>
+    <a href="">
+      <img src="/course-materials/nasa-earth-shot.jpg" />
+    </a>
+  </li>
+  <li>
+    <a href="">
+      <img src="/course-materials/cat-four-300px.jpg" />
+    </a>
+  </li>
+  <li>
+    <a href="">
+      <img src="/course-materials/wall-art.jpg" />
+    </a>
+  </li>
+  <li>
+    <a href="">
+      <img src="/course-materials/article-image-balloons.jpg" />
+    </a>
+  </li>
+  <li>
+    <a href="">
+      <img src="/course-materials/article-image-standing.jpg" />
+    </a>
+  </li>
+  <li>
+    <a href="">
+      <img src="/course-materials/article-image-spot.jpg" />
+    </a>
+  </li>
+  <li>
+    <a href="">
+      <img src="/course-materials/otter.jpg" />
+    </a>
+  </li>
+</ul>
+```
+
+### The Future of Masonry
+
+- Browsers are working on a special version of grid for this
+- [No browser support yet](https://caniuse.com/mdn-css_properties_masonry)
+
+```CSS
+.container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: masonry;
+}
+```
+
+## Line Length
+
+- Long line length makes it hard on our eyes. Fatique on our eyes. And when you reach the end of the line, it's hard to figure out which line is next.
+- Research on line length is a bit mixed, but most agree somewhere between 50 and 75 characters per line.
+- And CSS has a built in unit for this. the `ch` unit:
+- `1ch` is equal to the width of teh 0 character at current font size.
+- Depending on your font, can have differ line length.
+- Jsut need to be somewhere between 50-75 characters long
+
+## Text Align
+
+- What role does `text-align` still have to play with grid / flexbox world
+- So what is the difference? Between centering something with `text-align` and `align-items`
+- They do two differ things
+- `text-align` moves all teh individual characters to the middle of each line. Like a RTE.
+- flex box and `align-items` is more about layout alignment. And positions the paragraph as a block. Not individual characters.
+
+## Font Stacks
+
+- `font-family` property is how we change the font for a given elements.
+- You can give multiple comma-seperated values
+
+```CSS
+.title {
+  font-family: 'Lato', Futura, Helvetica, Arial, sans-serif;
+}
+```
+
+- This acts as a preference list. In priority order, and teh last being the category for the font. Like `serif`, `sand-serif`, `monospace`, `cursive`
+- If font is unavailable, it isn't installed on the suer's device, or the font is a web font, and not yet been downloaded
+- Handfull of universally available fonts like
+  - Arial, Courier New, Georgia, Helvetica, Tahoma, Times New Roman
+- [CSS Font Stack](https://www.cssfontstack.com/), to show how common each font is between Windows and MacOS
+- The goal is to provide a font stack to provide a list of fonts that the browser can pick from, making sure everyone ses an acceptable font and and no one sees the ugly default font.
