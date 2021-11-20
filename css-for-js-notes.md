@@ -3070,6 +3070,13 @@ img {
 - Depending on your font, can have differ line length.
 - Jsut need to be somewhere between 50-75 characters long
 
+```CSS
+p {
+  max-width: 50ch;
+  margin-bottom: 1em;
+}
+```
+
 ## Text Align
 
 - What role does `text-align` still have to play with grid / flexbox world
