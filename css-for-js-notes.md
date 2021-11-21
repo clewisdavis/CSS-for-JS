@@ -3102,3 +3102,77 @@ p {
   - Arial, Courier New, Georgia, Helvetica, Tahoma, Times New Roman
 - [CSS Font Stack](https://www.cssfontstack.com/), to show how common each font is between Windows and MacOS
 - The goal is to provide a font stack to provide a list of fonts that the browser can pick from, making sure everyone ses an acceptable font and and no one sees the ugly default font.
+
+## System Font Stacks
+
+- A stack of fonts that default to the nicest default option for each platform
+- Looks like this
+- MacOS and iOS both use the San Francisco font
+- -apple-system and BlinkMacSystemFont are aliases for the current system font on Mac
+- Windows 10 users, won't recongnize the first fonts but will recognize the Segoe UI, Segoe UI is the default font for Windows 10
+- System font stack is nice, because it automatically matches the conventions of the users's device. And modern operating systems use well designed fonts.
+
+```CSS
+p {
+  font-family:
+    -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui,
+    helvetica neue, helvetica, Ubuntu, roboto, noto, arial, sans-serif;
+}
+```
+
+- CSS Variables to the rescue, make a lot easier to manage.
+
+```CSS
+html {
+  --font-sans-serif:
+    -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui,
+    helvetica neue, helvetica, Ubuntu, roboto, noto, arial, sans-serif;
+  --font-serif:
+    Iowan Old Style, Apple Garamond, Baskerville, Times New Roman,
+    Droid Serif, Times, Source Serif Pro, serif, Apple Color Emoji,
+    Segoe UI Emoji, Segoe UI Symbol;
+  /* Set a global default */
+  font-family: var(--font-sans-serif);
+}
+/* Apply different fonts as needed */
+p {
+  font-family: var(--font-serif);
+}
+```
+
+## Web Fonts
+
+- If you want to use a font that isn't on the users system, we can download a system font.
+
+### Google Fonts
+
+- Free online repository of open-source fonts
+- Served from a CDN, they serve from their own servers
+
+```HTML
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@1,400;1,600&display=swap" rel="stylesheet">
+```
+
+- Drop that in the `head` of your HTML file.
+- This snippet will download a stylesheet which downloads a font
+- Then we can access that font in our CSS
+
+```CSS
+.thing {
+  font-family: 'Open Sans', sans-serif;
+}
+```
+
+- Web fonts should be wrapped in quotes `'Open Sans'` not `Open Sans`
+- It's a helpful convention that indecates which fonts in stack are web fonts vs system fonts.
+
+### Web font performance concerns
+
+- Some downsides to webfonts, lots of great fonts are not available on Google
+- and self-hosted fonts can perform better
+- [Gatsby creator Kyle Matthews discovered that self hosting fonts can save 300ms on desktop and 1second plus on mobile 3G](https://bricolage.io/typefaces-easiest-way-to-self-host-fonts/)
+
+## Using modern tooling
+
+-
