@@ -3175,4 +3175,56 @@ p {
 
 ## Using modern tooling
 
--
+- Host a open source font bundled within a npm package, [Fontsource](https://fontsource.org/)
+- Built for modern JS applications, letting you npm install fonts you want to use
+
+## The manual way
+
+- What if your font isn't available on google fonts or fontsource?
+- You can add web fonts from scratch.
+- Skipping over this content, but Josh explains the process as always.
+- [The manual way](https://courses.joshwcomeau.com/css-for-js/06-typography-and-media/08-web-fonts)
+
+## Font Loading UX
+
+- When a person visits your site for the first time, they will need to download the web font files you are using.
+- Some cases, the HTML will load before the fonts
+- You have two main options:
+  - 1. Wait until the web font has been downloaded before showing any text.
+  - 2. Render the text in fallback font, on that is already loaded on the users system.
+- Both options have issues.
+  - 1. we are drpriving the user of the taxt they care about, FOIT, Flash of Invisible Text
+  - 2. Jarring experience, flipping fonts can cause layout shifts, FOUT, Flash of Unstyled Text.
+- As long as a user needs to download web fonts, this problem will exist, but we can improve things with modern CSS
+
+### Works on my machine
+
+- You may have never seen this happen. It's likly that.
+  - On localhost, fonts are downloaded instantly
+  - In prod, user will only notice this the first time you vist a page
+  - You may have already have the font locally
+  - Good internet connection
+- For more realistic picture, [throttle your network speeds](https://developer.chrome.com/docs/devtools/network/#throttle), [disable your local fonts](https://developer.chrome.com/blog/new-in-devtools-86/#emulate-local-fonts)
+
+## The font-display property
+
+- The `font-display` property can control how a font should be rendered before it's avail.
+  
+```CSS
+@font-face {
+  font-family: 'Great Vibes';
+  src: url('/fonts/great-vibes.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap; /* 👈👈👈 */
+}
+```
+
+- To understand how this works, we have to look at the font-display timeline, block, swap, failure timline
+- Block period, text painted in an invisible ink, no text is visible. Render the font ASAP if becomes avail during this period
+- Swap period, during this time, fallback font is rendered, first avail font in the stack. If the web font becomes avail, it gets swapped
+- Failure period, during this time, if font isnt' lodaded during the blcok or swap, it stops trying and will keep showing the fallback font no matter what happens.
+
+- How long does each of these last? The `font-dispaly` property is a way to contorl the length of each window.
+
+### Block
