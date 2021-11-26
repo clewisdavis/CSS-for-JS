@@ -3228,3 +3228,37 @@ p {
 - How long does each of these last? The `font-dispaly` property is a way to contorl the length of each window.
 
 ### Block
+
+- `font-display: block` prioritizes the use of the font over all others, has long block period and infinite swap period. , the block period should be no more then 3 seconds.
+- Should only be used is font is absolutely critical. For example, if you use an icon font, you don't want the text to be shown before the icon.
+- Icons fonts should generally be avoided.
+
+### Swap
+
+- with `font-display: swap` there is little to no block period
+- The goal is to render text as quickly as possible
+- This is the value that Google Fonts uses, it's a good option, but there is a better one for most cases
+
+### Fallback
+
+- `font-display: fallback` is a good balance for most cases
+- Has very short block period, 100ms, and moderate swap period, about 3s
+- This is Josh's preferred value
+- On speedy connections, it's likely that th efont can be downloaded within the block peroid, preventing the flash between font families
+- On slow or intermitten connections, the fallback font is used forever, preventing the random flash between fonts, seconds or minutes after the page has loaded.
+
+### Optional
+
+- `font-display: optional` is a great choice when the font is a subtle improvement, but not really that important. Short block period, 100ms and no swap period at all
+- If the font doesn't load immediately, it will not load at all
+- Mean,s users will see the fallback font for their first page, but the webfont for all following pages
+- The first page view loads teh font in the background, to be applied on teh next page
+
+### Font matching
+
+- When using font-display, with a swap period, good chance rendered text will flip from one font to another.
+- If fonts are differnt size/shape, this can cause wonky layout shifts
+- One solution, align the two fonts to be as close as posssible, with CSS properties, font-size, letter-spacing, line-height
+- [Check out the font style matcher](https://meowni.ca/font-style-matcher/)
+- Tricky, we need these properties to apply before our font is loaded. No way to do that with pure CSS, but can be done with [JS Loading API](https://developer.mozilla.org/en-US/docs/Web/API/CSS_Font_Loading_API). But is this worth it? Not really.
+- However, browsers are working on a new feature called "font descriptors", f-mods.
