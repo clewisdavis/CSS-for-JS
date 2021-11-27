@@ -3262,3 +3262,41 @@ p {
 - [Check out the font style matcher](https://meowni.ca/font-style-matcher/)
 - Tricky, we need these properties to apply before our font is loaded. No way to do that with pure CSS, but can be done with [JS Loading API](https://developer.mozilla.org/en-US/docs/Web/API/CSS_Font_Loading_API). But is this worth it? Not really.
 - However, browsers are working on a new feature called "font descriptors", f-mods.
+
+## Font Optimization
+
+- Let Google do all the hard work for us, little known fact that Gogle Fonts are heavily optimized.
+- For example, the popular font Inter, when downloaded from official site. Each font file is about 99kb to 151kb. That adds up.
+- The same 3 weight fonts on Google Fonts, squeezes them down to one file, at 37kb, 90% smaller
+- [You can self host Google optimized fonts](https://courses.joshwcomeau.com/css-for-js/06-typography-and-media/10-font-optimization). It's a bit of a trick, watch Josh's video to go through the steps.
+- In your browser, dev tools > network tab, see what fonts you are loading and how much it being downloaded.
+- [Google fonts helper](https://google-webfonts-helper.herokuapp.com/fonts), although not sure what this does exaclty. Looks like you can select the fonts you want, and then self host and it gives you the snippets of css.
+- Additional resources, [Reduce WebFont Size](https://web.dev/reduce-webfont-size/)
+
+## Variable Fonts
+
+- With web fonts, each weight and style is it's own file. That can add up and cause unstyled text to flash.
+- Variable Fonts, The idea with variable font is that parameters can be tweaked to control the rendered output. FOnt weight for example.
+- With standard fonts, you can pick 2 or 3 weights, but with variable fonts, there are hundreds of valid values.
+- And it's supported in major browsers.
+- This is a lot of control, and really going down a rabit hole.
+- [Book marking for future reference.](https://courses.joshwcomeau.com/css-for-js/06-typography-and-media/11-variable-fonts)
+
+## Icons
+
+- Two common way sto implement icons: use an icon font or use SVG
+- Of the two, Josh prefer's SVG approach.
+  - SVGs tend to look more crisp and sharp
+  - The are easier to position an duse width instead of font-size
+  - They can be more accessible
+  - They can be multi-color
+  - They can be tweaked and animated.
+- What's an SVG? SVG is a vector image format. This means that instead of storing info about the colors of specific pixels, it stores teh instructions for how to draw the image.
+- You can save it as a file, and reference it like any other iamge format. `<img src="/circle.svg" />, or you can copy and past code directly into your HTML, know as inline SVG
+- WHEN WE INLINE OUR SVGs, we can target sub elements with CSS and JS
+
+### Popular Icon sets
+
+- [Feather icons](https://feathericons.com/)
+- [iconmoon](https://icomoon.io/)
+- [Material Design icons](https://github.com/google/material-design-icons)
