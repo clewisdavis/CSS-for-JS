@@ -3300,3 +3300,153 @@ p {
 - [Feather icons](https://feathericons.com/)
 - [iconmoon](https://icomoon.io/)
 - [Material Design icons](https://github.com/google/material-design-icons)
+
+### Using icons
+
+- Each icon pack, option to download indivisual SVG files
+- If using React, you need to convert each of the SVG files to JSX, so you can use with React components
+- This tool can help, [SVG 2 JSX](https://svg2jsx.com/)
+- In Rewct for example Feathre's creator has created an NPM package, `react-feather`
+
+```JS
+import React from 'react';
+import { HelpCircle } from 'react-feather';
+
+funtion Somthing() {
+  return (
+    <div>
+      <HelpCircle />
+    </div>
+  )
+}
+```
+
+- Similar packagers for [Vue](https://www.npmjs.com/package/vue-feather), [Angular](https://www.npmjs.com/package/angular-feather), and [Svelte](https://www.npmjs.com/package/svelte-feather-icons)
+
+### Icons and Accessibility
+
+- Screen readers don't know how to deal with SVG icons
+- You have to additional text info for folks using a screen reader.
+- See [hiding from screen lesson](https://courses.joshwcomeau.com/css-for-js/02-rendering-logic-2/18-hidden-content#hiding-from-screens)
+
+```HTML
+<button>
+  <HelpCircle />
+  <span class="visually-hidden">
+    Visit the help center
+  </span>
+</button>
+```
+
+### Spacing issues
+
+- Lots of benefits of SVG, but one frustrating issue with them.
+- There is a noticible amount of bottom spacing
+- The problem is SVG elements have a defualt valueof `display: inline`, and inline elements have [magic space](https://courses.joshwcomeau.com/css-for-js/01-rendering-logic-1/09-flow-layout#inline-elements-have-magic-space).
+- Usign an icon pack makes this tricky, no access to underlying SVG element.
+- YOu can solve my using a decendant selector
+
+```JS
+import { Home } from 'react-feather';
+
+function Header() {
+  return <Button><Home /></Button>;
+}
+
+const Button = styled.button`
+  padding: 0;
+
+  & > svg {
+    display: block;
+  }
+`;
+
+render(<Header />);
+```
+
+- Is this bad practice? Gererally not a fan of nesting. Makes it harder to understand where the style is coming from.
+- But with syled-components, all elemtns styles are colocated in one spot.
+
+## Images
+
+- Lots of advancements on working with images in CSS
+- Basics, `img` tage has two required attributes, `src` and `alt`
+- `alt` is a property that allow you to specify alternative text, is teh image fails to load for for folks that cannot see images.
+- Not all images require `alt` attribute, only if the image is purley decorative
+- How do you know when image is decorative? Imagine what the UX would be like if image failed to load. If you cannot see the image, would the product be harder to use?
+- [Smashing Mag article, Your image is probably not decorative](https://www.smashingmagazine.com/2021/06/img-alt-attribute-alternate-description-decorative/)
+
+### Writing effective alt text
+
+- The goal of with alternative text should be to convey the smantic meaing of the image to the user.
+- For example, logo at the top left corner. Instead of alt text saying, brand logo, it should be something like "Return to home".
+- Good alt text helps users understand teh context that the image is in.
+- Check out WebAIM, [guide on writing alt text](https://webaim.org/techniques/alttext/).
+
+### Image vs background-image
+
+- background-image, meant to be used for decorative images in the background. For example, on the spacejam site, the star background texture.
+- Do not use background-image for semantically meaninful imags because they can't be given alt text.
+
+### Fit and Position
+
+- `img` tag is a little strange
+- `img` is known as a replacement element.
+- Images are inline elements, and usually go with the flow. And come with their own size based on demensions of the image file.
+- Images also have intrinsic aspect ratios, you supply one dimension, either width or height, and the other scales up or down as needed to preserve teh aspect ratio
+- What if we provide both a width and height, the image will distort
+- To make images fit, you cuold crop the image, trimming off any excess that can't fit within the specified rectangle.
+- With modern CSS, some tools to help with this, `object-fit`
+- `object-fit` allow us to change what we want to prioritize
+- Three priorities we can have, but we can only ever pick two.
+- 1. aspect ratio
+- 2. see all image data, every pixel
+- 3. can fill the avail space
+- Object Fit, `default`, fills the avial space but doesn't retain aspect ratio
+- `Contain`, preserves the aspect ratio, but does not fil the entire space, scales the img down proportionally until it fits in the box, then just leaves a gap at either end.
+- `Cover`, preserves aspect ratio and fills the entire space, but you cannot see the entire image, crops it.
+- `None`, never used but exist, scales img to be natural size and just crops what doesn't fit
+
+### Object Position
+
+- When using `object-fit: cover` the browser wil crop our image to see the center of the image and trim off edges.
+- But in some cases we want to use a differ anchor point.
+- `object-position` lets us specify how the image should be translated or cripped within the space. Similar to `background-position`
+- Object position takes two numbers, one for horizontal offset and one for vertical offset.
+- We can also use keywords
+
+```CSS
+.thing {
+  /* Anchor to the top-left corner */
+  /* Same as "0% 0%" */
+  object-position: left top;
+}
+```
+
+- Good browser support, supported in every major browser except IE
+
+Exercises
+
+- Make a svg image scale with the monitor size. And crop itself on smaller screens
+- [Link to exercise](https://courses.joshwcomeau.com/css-for-js/06-typography-and-media/14-img-fit)
+
+```HTML
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  img {
+    width: 100%;
+    min-height: 150px;
+    /* TODO */
+    object-fit: cover;
+    object-position: left center;
+  }
+</style>
+<img
+  alt=""
+  src="/course-materials/swoops.svg"
+/>
+```
