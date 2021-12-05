@@ -3450,3 +3450,66 @@ Exercises
   src="/course-materials/swoops.svg"
 />
 ```
+
+- Scaling and vector images, no need to worry about loss in quality like `jpg`, `gif`, `png` bitmap or raster image formats. SVG contains instructions for how to draw the image.
+
+-
+
+### Images and Flexbox
+
+- Because the image is weird, sometimes it doesn't play nicely with layout algorythms.
+- Expecially Flexbox
+- When you have a cross axis in flex, the default alignment is stretch
+- When you have two children of the same row, by default flex stretches the shorter one to be the height of the tallest one.
+- The flex algorythm does this to all elements, even images
+- You can add `align-items: flex-start` to the shorter item to solve the stretch problem.
+- Hypethetical width and min-width for images, you can override that by adding min-width: 0
+- You can get around this, think of image as content, does not belong as a direct child of flex parent.
+- Flex Container, that has blocks of content, with content inside like images, content etc.
+- Wrap the iamges as containers
+- Add a wrapper, then add `width: 100%` to the image itself, as the column changes shape, so does the image. The container controls the image.
+
+``` HTML
+<style>
+body {
+  margin: 0;
+  padding: 0;
+}
+
+main {
+  display: flex;
+  gap: 8px;
+}
+
+.col {
+  flex: 1;
+}
+.twice-as-big {
+  flex: 2;
+}
+
+img {
+  width: 100%;
+}
+</style>
+
+<main>
+  <div class="col">
+    <img
+      alt=""
+      src="/course-materials/size-200-300.png"
+    />
+  </div>
+
+  <div class="col twice-as-big">
+    <img
+      alt=""
+      class=""
+      src="/course-materials/size-200-300.png"
+    />
+  </div>
+
+</main>
+```
+
+### Exercises
