@@ -3513,3 +3513,117 @@ img {
 ```
 
 ### Exercises
+
+- Simple layout with Image on the left that scales and blockquotes o the right.
+- Display `flex` on the main, and add `flex: 1` to the child notes to create equal space for the two.
+- Add `min-width` to each child node to prevent from going to small
+- And `flex-wrap: wrap` on the main to wrap the nodes once it hits the min width size.
+
+```HTML
+<style>
+  main {
+    display: flex;
+    gap: 32px 0;
+    flex-wrap: wrap;
+  }
+
+  .book-img-wrapper, .reviews {
+    flex: 1;
+  }
+
+  .book-img-wrapper img {
+    width: 100%;
+    min-width: 300px;
+    object-position: -32px 0;
+  }
+
+  .reviews {
+    text-align: center;
+    min-width: 300px;
+  }
+
+  .average-rating {
+    font-size: 1.25rem;
+    margin-top: 32px;
+    color: gold;
+    font-style: italic;
+  }
+  body {
+    margin: 0;
+    padding: 0;
+    color: white;
+  }
+
+  .book-img {
+    /*
+      We'll learn more about this fancy
+      property in a future module!
+    */
+    filter:
+      drop-shadow(
+        -8px
+        32px
+        10px
+        hsl(260deg 50% 4% / 0.5)
+      );
+  }
+</style>
+<main>
+<div class="book-img-wrapper">
+<img
+  alt=""
+  class="book-img"
+  src="/course-materials/whispering-owl.png"
+/>
+</div>
+<div class="reviews">
+  <blockquote class="review">
+    A magnificent story about a majestic creature.
+    <footer>
+      <cite class="author">KitKat99</cite>
+    </footer>
+  </blockquote>
+  <blockquote class="review">
+    From the first flap of the wings, it was clear that this book would soar above my expectations. Just terrific.
+    <footer>
+      <cite class="author">TheEagle</cite>
+    </footer>
+  </blockquote>
+  <blockquote class="review">
+    Some have said that it is a real book, but I see no evidence of that.
+    <footer>
+      <cite class="author">Skeptic1977</cite>
+    </footer>
+  </blockquote>
+  <blockquote class="review">
+    If you only read one book about an owl this month, this should be the one.
+    <footer>
+      <cite class="author">knuckles</cite>
+    </footer>
+  </blockquote>
+  <blockquote class="review">
+    A magnificent story about a boy and an owl!
+    <footer>
+      <cite class="author">KitKat99</cite>
+    </footer>
+  </blockquote>
+  <blockquote class="review">
+    A magnificent story about a boy and an owl!
+    <footer>
+      <cite class="author">KitKat99</cite>
+    </footer>
+  </blockquote>
+  <blockquote class="review">
+    A magnificent story about a boy and an owl!
+    <footer>
+      <cite class="author">KitKat99</cite>
+    </footer>
+  </blockquote>
+  <div class="average-rating">
+    ★★★★☆
+    <br />
+    Average Amazon Rating
+  </div>
+</div>
+</main>
+```
