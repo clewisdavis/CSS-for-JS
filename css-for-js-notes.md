@@ -3627,3 +3627,80 @@ img {
 </div>
 </main>
 ```
+
+### Aspect Ratio
+
+- Images have an intrinsic aspect ratio, so you can end up with drastically differ image sizes because of the natural aspect ratios
+- What if we wnated them to have the same aspect ratio?
+- You can do this by giving them all same `width` and `height` and use the `object-fit: cover` to avoid stretching
+- How can we scale our images proportionally, as a certain aspect ratio?
+- You can do that with `aspect-ratio: 1/1` property
+- takes to values like `4/3` or `7/11`
+- This is the ratio of width to height
+- And aspect ratio of `2/1` meand teh image will be twice as wide as it is tall `width / height`
+- Aspect ratio isn't specific to images, can work on any element, even `<video>`
+- Note: not fully supported, [about 79% caniuse](https://caniuse.com/mdn-css_properties_aspect-ratio)
+
+### Padding Fallback
+
+- Aspect ratio isn't fully supported, can we add a fallback?
+- You can do it with padding-bottom, but a bit hacky
+- Kind of a pain, not taking notes on this
+
+### Progressive enhancement
+
+- In most cases, `aspect-ratio` is used to add some polish
+- Since most browsers support it, can we start using it?
+- Yes, you can use progressive enhancement
+- `@supports` is a feature query, works like a media query but instead of targeting window sizes, it targets specific CSS declorations
+
+```HTML
+<style>
+  section {
+  display: flex;
+  gap: 8px;
+  }
+  .image-wrapper {
+    flex: 1;
+  }
+  img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+  }
+
+  @supports (aspect-ratio: 1 / 1) {
+    img {
+      height: revert;
+      aspect-ratio: 1 / 1;
+    }
+  }
+</style>
+
+<section>
+  <div class="image-wrapper">
+    <div class="padding-hack">
+      <img
+        alt="A wide-open outdoor concrete area. Architecture"
+        src="/course-materials/architecture-hugo-sousa.jpg"
+      />
+    </div>
+  </div>
+  <div class="image-wrapper">
+    <div class="padding-hack">
+      <img
+        alt="A modular building against a blue sky. Architecture"
+        src="/course-materials/architecture-joel-filipe.jpg"
+      />
+    </div>
+  </div>
+  <div class="image-wrapper">
+    <div class="padding-hack">
+      <img
+        alt="A unique building with inset curves. Architecture"
+        src="/course-materials/architecture-julien-moreau.jpg"
+      />
+    </div>
+  </div>
+</section>
+```
