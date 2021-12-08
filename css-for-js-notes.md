@@ -3704,3 +3704,99 @@ img {
   </div>
 </section>
 ```
+
+## Responsive Images
+
+- Modern screen come in all sorts of configurations
+- A new iPhone has a 3 to 1 ratio between hardware and sortware pixels. Known as high-DPI displays
+- If we render an image at it's native size on high-DPI display, it's going to be fuzzy.
+- To keep things crisp, we need to serve differ images based on screen's pixel ratio
+- When exporting, common to export 2 or three differ versions, `cat.jpg`, `cat@2x.jpg` or `cat@3.jpg`
+
+### Note
+
+- Image optimization tools like [next/image](https://nextjs.org/docs/api-reference/next/image) or [gatsby-image](https://www.gatsbyjs.com/plugins/gatsby-image/) offer a lot of out of the box features.
+
+### The srcset attribute
+
+- The quickets way to get started with responsive images is to use the `srcset` HTML attribute
+
+```HTML
+<img
+  alt=""
+  src="/course-materials/responsive-diamond.png"
+  srcset="
+    /course-materials/responsive-diamond.png 1x,
+    /course-materials/responsive-diamond@2x.png 2x,
+    /course-materials/responsive-diamond@3x.png 3x
+  "
+/>
+```
+
+- `srcset` is basically a plural version of `src`, the browser will scan thorugh thlist and apply the first one that matches.
+- We keep a redundant `src` property for older browsers.
+- `srcset` enjoys a universal support in modern browsers and the `src` ensures that IE users will see our images.
+- In devTools, it will let you know which one is being served if you hover over the URL in elements pane
+
+### The picture element
+
+- Another way to solve for this problem, the `<picture>` element
+
+```HTML
+<picture>
+  <source
+    srcset="
+      /course-materials/responsive-diamond.png 1x,
+      /course-materials/responsive-diamond@2x.png 2x,
+      /course-materials/responsive-diamond@3x.png 3x
+    "
+  />
+  <img
+    alt=""
+    src="/course-materials/responsive-diamond.png"
+  />
+</picture>
+```
+
+- Similar to the solution above, but moved the `srcset` solution to a new `<source>` element and wrap the whole thing in a `<picture>`
+- The benefit here, is that we can apply differ formats.
+
+```HTML
+<picture>
+  <source
+    type="image/avif"
+    srcset="
+      /course-materials/responsive-diamond.avif 1x,
+      /course-materials/responsive-diamond@2x.avif 2x,
+      /course-materials/responsive-diamond@3x.avif 3x
+    "
+  />
+  <source
+    type="image/webp"
+    srcset="
+      /course-materials/responsive-diamond.webp 1x,
+      /course-materials/responsive-diamond@2x.webp 2x,
+      /course-materials/responsive-diamond@3x.webp 3x
+    "
+  />
+  <img
+    alt=""
+    src="/course-materials/responsive-diamond.png"
+  />
+</picture>
+```
+
+- AVIF format, based on lessons learned form video compression, creates dramatically smaller images
+- Currently low browser support, Chrome and Opera.
+- `<picture>` allows us to use modern image formats in a safe way, providing fallbacks
+- When the browser sees a `<picture>` tag, it scans through the `<source>` children, and the individual `srcset`.
+- The order matters, when the browser finds a match, it will download it and serve to user
+- We want our smallest AVIF files to be at the top
+- Resources articles for more learning:
+  - [AVIF has landed](https://jakearchibald.com/2020/avif-has-landed/)
+  - [Squoosh](https://squoosh.app/), a web app by Google
+  - [Modern Image Formats](https://www.joshwcomeau.com/performance/embracing-modern-image-formats/)
+
+### Why so funky?
+
+-
