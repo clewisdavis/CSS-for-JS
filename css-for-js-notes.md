@@ -3799,4 +3799,60 @@ img {
 
 ### Why so funky?
 
--
+- For backwards compatibility, if a browswer doesn't recognize the tag, it just renders it as a plain ole div
+
+### Styling the targeting picture elements
+
+- Because `<picture>` breaks it into multiple elements, how do we style it? `<picture>`, `<source>`, `<img>`
+- Ignore the `<source>` tags for styling, they are just meta data and not visible.
+- Important to note, no matter which source is selected, the `<img>` tag will always be used. And acts like any other image tag.
+- The souce exist to swap out, the `src` attribute.
+- We want to add additional properties like `alt` text to teh `<img>` tage and not the `<source>` or `<picture>`
+- Finally the `<picture>` element acts liek a `<span>`, inline wrapper around the `<img>` tag
+- The `<picture>` wrapper comes in handy, for example we can use  it inside a Flex container.
+
+```HTML
+<style>
+  main {
+    display: flex;
+    gap: 8px;
+  }
+
+  picture {
+    flex: 1;
+    padding: 8px;
+    border: 2px solid;
+  }
+
+  picture img {
+    display: block;
+    width: 100%;
+  }
+
+  p {
+    flex: 2;
+    border: 2px solid;
+  }
+</style>
+<main>
+  <picture>
+    <source
+      srcset="/course-materials/responsive-diamond@2x.png 2x"
+    />
+    <source
+      srcset="/course-materials/responsive-diamond@3x.png 3x"
+    />
+    <img
+      alt=""
+      src="/course-materials/responsive-diamond.png"
+    />
+  </picture>
+  <p>Hello World</p>
+</main>
+```
+
+### Deciding which to use
+
+- Have to decide which is the best approach for you
+- Exporting all those images manually is tedious and a lot of work
+- Tools do exist, but have their own barier to entry
