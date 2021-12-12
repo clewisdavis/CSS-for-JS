@@ -3856,3 +3856,140 @@ img {
 - Have to decide which is the best approach for you
 - Exporting all those images manually is tedious and a lot of work
 - Tools do exist, but have their own barier to entry
+
+### Background Images
+
+- The `<img>` tag is powerful, but it still cannot tile an image
+- We need CSS background iamge to do that, example
+
+```HTML
+<style>
+  body {
+    background-image:
+      url('/course-materials/geometric-pattern.png');
+  }
+  main {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  }
+  h1 {
+    font-size: 2rem;
+  }
+  body {
+    margin: 0;
+    padding: 0;
+  }
+</style>
+
+<main>
+  <h1>Hello World</h1>
+</main>
+
+```
+
+- This will be rendered at it's native size, tiels across the element
+- Problem is, high DPI, it will look blurry and fuzzy
+- To keep this crisp, we provide differ images for differ divices, scaling up based on pixel ratio.
+- Can do this with media query, `<min-resolution>`
+
+```HTML
+<style>
+  main {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  }
+  h1 {
+    font-size: 2rem;
+  }
+  body {
+    margin: 0;
+    padding: 0;
+  }
+  body {
+    background-image:
+      url('/course-materials/geometric-pattern.png');
+    background-size: 450px;
+  }
+  
+  @media
+    (-webkit-min-device-pixel-ratio: 2),
+    (min-resolution: 2dppx)
+  {
+    body {
+      background-image:
+        url('/course-materials/geometric-pattern@2x.png');
+    }
+  }
+  
+  @media
+    (-webkit-min-device-pixel-ratio: 3),
+    (min-resolution: 3dppx)
+  {
+    body {
+      background-image:
+        url('/course-materials/geometric-pattern@3x.png');
+    }
+  }
+</style>
+
+<main>
+  <h1>Hello World</h1>
+</main>
+```
+
+- `min-resolution` is supported across all major browsers except Safari
+- For Safari, use webkit for support, `--webkit-min-device-pixel-ratio`
+- You have to specify a `background-size` in pixels, or high DPI images will render in their native size, producing much larger images without any additional clarity.
+- The background size shuold match the width of the stardard 1x image.
+
+### Fit and positioning
+
+- The `background-size` property also accepts keywords, `object-fit` for example, can have our background image cover the element
+
+```HTML
+<style>
+  body {
+    background-image:
+      url('/course-materials/geometric-pattern.png');
+    background-size: cover;
+  }
+  main {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  }
+  h1 {
+    font-size: 2rem;
+  }
+  body {
+    margin: 0;
+    padding: 0;
+  }
+</style>
+
+<main>
+  <h1>Hello World</h1>
+</main>
+```
+
+### Background repeat
+
+- By default, the background iamge will be tiled side-by-side, top to bottom.
+- But the pattern wil be truncated at the bottom and on the right.
+- `background-repeat` property allows us to tweak this algorithm, two additional options that can be used.
+- `background-repeat: round`, will scale the image up or down, avoid having the image cut off at bottom or right, and preserves the aspect ratio.
+- `background-repeat: space`, won't tweak the size of the image, btu will leave gaps between the images.
+
+### Generative background
+
+- I addtition to accepting URL to an image file, the `background-image` property accpets gradients
+- Resoruce, pure-CSS background patterns
+- [Magic Pattern, CSS background patterns](https://www.magicpattern.design/tools/css-backgrounds)
+- Adding some ornamental design to your backgrounds
+
+## Workshop: Unsprinkle
