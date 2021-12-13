@@ -3993,3 +3993,23 @@ img {
 - Adding some ornamental design to your backgrounds
 
 ## Workshop: Unsprinkle
+
+### Optimize the Fonts
+
+- Replace the self hosted large font, with the Google version via using `<link>` tag
+- Then self host the optimized Google Font, Network tab > Open in new tab to download > Put in your font directory and rename it
+- Then use the `style` tag to point to the self hosted optimized font
+- Go to Network tab and make sure it's using the local version
+
+```HTML
+<style>
+      @font-face {
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 300 900;
+        font-display: fallback;
+        src: url(/fonts/Inter-variable-optimized-Google.woff2) format('woff2');
+      }
+    </style>
+```
+  
