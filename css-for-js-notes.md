@@ -4012,4 +4012,55 @@ img {
       }
     </style>
 ```
+
+### Improve Images
+
+- Loading your images in a React app with styled components
+- You can use the `replace()` JS method to load your differ image names, as long as they follow same naming convensions.
+
+```HTML
+<script>
+<picture>
+  <source
+    type="image/jpeg"
+    srcSet={`
+              ${src} 1x,
+              ${src.replace('.jpg', '@2x.jpg')} 2x,
+              ${src.replace('.jpg', '@3x.jpg')} 3x,
+            `}
+  />
+  <Image src={src} />
+</picture>
+</scipt>
+```
+
+- File size, you can try the avif image source to optimize image size
+- `.avif` format retains same quality as `.jpeg` but at much smaller file size
+- Converting from `jpeg` to `avif` format reduced the size dramatically, from over 120KB to 10KB
+
+```HTML
+<script>
+<picture>
+          <source 
+            type="image/avif"
+            srcSet={`
+              ${src} 1x,
+              ${src.replace('.jpg', '@2x.avif')} 2x,
+              ${src.replace('.jpg', '@3x.avif')} 3x,
+            `}
+          />
+          <Image src={src} />
+        </picture>
+</script>
+```
+
+- Hardest part of these formats, is the time it takes to generate the alternative versions
+- You can use nextjs or gatsby, but nothing in react native as of yet
+- You can write it into your build script, `avif npm` package
+- [avif-cli](https://www.npmjs.com/package/avif)
+- You can write a script to generate the images when you build the site
+
+### Accessibility Issues
+
+-
   
