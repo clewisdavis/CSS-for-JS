@@ -4062,5 +4062,48 @@ img {
 
 ### Accessibility Issues
 
--
+- Use the [WebAIM extension](https://addons.mozilla.org/en-US/firefox/addon/wave-accessibility-tool/) to audit any issues with the site.
+
+### Tag overflow
+
+- How do you truncate the tags
+- You could use the ellipsis overflow trick
+
+```CSS
+  .tag {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+```
+
+- this doesn't play well with flexbox
+- more of a flow layout thing
+- make the element tag an `display: inline` element
+- on the parent DOM element, add padding to give elements space
+- and margin right to add space between
+
+```HTML
+<style>
+  ul {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 4px 0;
+  }
+
+  li {
+    display: inline;
+    padding: 4px 8px;
+    background: var(--color-gray-300);
+    font-size: 0.875rem;
+    font-weight: 475;
+    color: var(--color-gray-800);
+  
+  }
+  li:not(:last-of-type) {
+    margin-right: 8px;
+  }
+</style>
+```
   
