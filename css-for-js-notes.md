@@ -4106,4 +4106,62 @@ img {
   }
 </style>
 ```
-  
+
+## CSS Grid
+
+- Grid is similar to Flexbox, but instead of one dimensional layouts, it can distrubute children across two dimensions.
+- Sort of like Flexbox's older cousin.
+- In this module will contain
+  - How to be backwards compatible
+  - Create complex layouts, responsive and fliud
+  - Recipes for common CSS Grid Challenges
+
+### Mental Model
+
+- With grid, each elements content box is sliced into rows and columns.
+- If a column is 250px wide, then each cell in that column is 250px
+- Grid doesn't support zig-zag columns, every cell int he same column needs to have the asme width. The same is tru for rows, have the same height.
+- Every row needs to hav ethe same number of columns
+- We can't have a grid where the first row has 1 column and the second row has 2 columns, Holy Grail layout for example.
+- But how is this possible?
+
+### Rows/columsn are invisible markers
+
+- On the web, every layout can be broken down into a combination of divs, spans, sections etc.
+- The web is made up of boxes inside of boxes inside of boxes.
+- For example, this table layout
+
+```HTML
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Axel Duproprio</td>
+      <td>axel@gmail.com</td>
+    </tr>
+    <tr>
+      <td>Beatrice Bouchard</td>
+      <td>beatrice@gmail.com</td>
+    </tr>
+  </tbody>
+</table>
+```
+
+- This table ends up being two rows, with two columns if you add a red outline to it.
+- Grid is different because the structure happens in CSS.
+- No DOM nodes that represent the rows and columns.
+- They are invidible markers, tools our HTML elemetns can use to position themselvdes.
+- Rows and columns are like the lines painted in a parking lot. The lines are guides and the driver decides.
+- This analogy works in a number of ways:
+  - The driver can choose how many spots to take up. Elements can choose to span multiple cells.
+  - Driver can fit into an assigned sport, or only part of it.
+  - A spot can be completely empty, a parking lot with 50 spots and 1 car.
+  - A single grid can have multiple items. 3 motorcycles parked in the same spot.
+- What makes grid so powerful, is the structure can be selectively ignored if you want. This makes all kinds of layouts possible.
+
+### Browser Support
