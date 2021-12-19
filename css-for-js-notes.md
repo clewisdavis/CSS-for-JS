@@ -4165,3 +4165,102 @@ img {
 - What makes grid so powerful, is the structure can be selectively ignored if you want. This makes all kinds of layouts possible.
 
 ### Browser Support
+
+- Not bleeding ege anymore, has good support
+- Check out caniuse for latest support numbers
+- If you apps can use modern browsers, you are good to go!
+- If you have to support the old stuff, you can use progressive enhancement
+
+### Progressive enhancement with feature queries
+
+- Doesn't mean the app has to look the same across all browsers
+- Or the experience has to be equally as good.
+- It means that user is able to accomplish the same tasks.
+- If the app allos us to book vaccine appointments, then all users should be able to book vaccine appointments
+- That's the core idea behind progressive enhancement
+- We start with a baseline experience that works for everybody, and is good enough, and enhance it to be better experieince for modern browsers
+- What this means for grid, give a simplidied layout using flow or flexbox, and improve the layout with grid on modern browsers
+- Can do this with feature queries
+
+```CSS
+.wrapper {
+  display: flex;
+}
+@supports (display: grid) {
+  .wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+}
+```
+
+- A feature query is like a media query
+- Anythign inside the `@supports` statement will be applied if the browser recognizes the decloration. Otherwise it will be ignored.
+- Has to be a real decloration, for example, `spaghetti` will be ignored.
+
+```CSS
+@supports (display: spaghetti) {
+  /*
+    Any CSS put in this block will never be applied,
+    because (at this time of writing) no browser
+    has a "spaghetti" layout mode.
+  */
+}
+```
+
+## Grid Flow and Layout Modes
+
+- Like Flexbox, we enable Grid layout mode with the `display` property
+
+``` CSS
+.wrapper {
+  display: grid;
+}
+```
+
+### Implicit Grid
+
+- If you don't specify what the rows and columns will be, grid will come up with it's own based on the children.
+- For example, the markup below, by default it creates one new row for each eleemnt, because our grid parent is given 3 children, we end up with a 1x3 grid.
+
+```HTML
+<style>
+  .wrapper {
+    display: grid;
+  }
+  
+  header, section, footer {
+    border: 1px solid;
+  }
+</style>
+
+<div class="wrapper">
+  <header>Hello World</header>
+  <section>Stuff here</section>
+  <footer>Copyright notice</footer>
+</div>
+```
+
+- Implicit grids want to fill all available space
+- If you give your grid a fix height, notice each row will behave the same
+- Because our grid is 300px tall, each row ends up being 100px.
+
+```HTML
+<style>
+  header, section, footer {
+  border: 1px solid;
+  }
+  .wrapper {
+    display: grid;
+    height: 300px;
+  }
+</style>
+
+<div class="wrapper">
+  <header>Hello World</header>
+  <section>Stuff here</section>
+  <footer>Copyright notice</footer>
+</div>
+```
+
+### Inspecting grids in the devtools
