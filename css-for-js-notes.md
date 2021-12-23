@@ -4248,7 +4248,7 @@ img {
 ```HTML
 <style>
   header, section, footer {
-  border: 1px solid;
+    border: 1px solid;
   }
   .wrapper {
     display: grid;
@@ -4264,3 +4264,26 @@ img {
 ```
 
 ### Inspecting grids in the devtools
+
+- CSS grid adds an invisible layer of how things are laid out
+- Firefix and Chrome now have grid and inspection tools
+- You should see the grid pill, clicking on it, will show you the grid layout
+- Elements are not always 1 to 1 with their columns
+- In grid, the lines are the primary things we track by
+- Spanning to row line 1 to row line 2
+
+### Grid auto flow
+
+- What is you want to change the flow direction of a grid, from vertical to horizontal?
+- `grid-auto-flow` property `row` (default) and `column`
+- Isn't this like flexbox, flow direction? In flexbox, we are changing which axis is the primary axis, and which one is the cross axis.
+- CSS Grid has no concept of primary or cross axis
+- Instead, CSS Grid has rows and columns.
+- Rows are always arranged in the vertial axis, rows are always stacked on on top of the other
+- Columns are always arranged along the inline axis, horizontally.
+- CSS Grid is like flow layout, Rows are distrubuted along teh block axis, just like block level elements in FLow
+- When we change `grid-auto-flow` from `row` to `column` we are just changing our grid to have multiple columns insteaad of multiple rows.
+
+### Layout modes
+
+- Note: **`display: flex` and `display: grid` change the layout mode it's children use, not the element it's declared on**
