@@ -4287,3 +4287,97 @@ img {
 ### Layout modes
 
 - Note: **`display: flex` and `display: grid` change the layout mode it's children use, not the element it's declared on**
+
+### Grid Construction
+
+- The real magic of grid happens when we **explicitly** define our own grids.
+- Define some columns, with `grid-template-columns`
+
+```HTML
+<style>
+  .wrapper {
+    display: grid;
+    grid-template-columns: 25% 75%;
+  }
+  aside, main {
+  border: 1px solid;
+  }
+</style>
+
+<div class="wrapper">
+  <aside>On the side</aside>
+  <main>Main content</main>
+</div>
+```
+
+- This does two things
+  - 1. The number of colums we want our grid to have
+  - The individual widths of each column
+
+- In thsi case, we hav ea 2-column grid, first column takes up 25% of space, and the second column takes up 75% of space.
+- UNLIKE flexbox, these values are not **suggestions** they are hard limits.
+- One problem is a column happens to have a large image, it will overflow by default.
+
+### Flexible columns
+
+- What if we wante our columns to grow to grow if their contents won't fit?
+- For that, we use the `fr` unit
+- In this example, we are saying the first column should take up ` unit of space, and the second column should take up 2 units.
+- There are 3 units total, first column is 1/3, the second 2/3 space.
+
+```HTML
+<style>
+  .wrapper {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+  }
+  aside, main {
+  border: 1px solid;
+  }
+  img {
+    display: block;
+    width: 150px;
+  }
+</style>
+
+<div class="wrapper">
+  <aside>
+    <img
+      alt="Curious-looking dog"
+      src="/course-materials/dog-one-300px.jpg"
+    />
+  </aside>
+  <main>Main content</main>
+</div>
+```
+
+- The `fr` unit brings Flexbox style flexibility ro CSS Grid, kinda like `flex-grow`
+- Except it's operating on the columns and not on the actaul child elements
+- `fr` stand for "fraction"
+- Like `flex-grow`, the `fr` unit is flexible, in the example above, the first column wants to take up 1/3 space, but its child is to wide, so it grows to accommodate it.
+- This only happens with the `fr` unit, as well as `auto`. Pixels, rems, and percentages are hard limits.
+- the other thing to note, the `fr` unit distrubutes available space, consider the example below.
+
+```HTML
+<style>
+  .wrapper {
+    display: grid;
+    grid-template-columns: 200px 2fr 1fr;
+  }
+  aside, main, section {
+  border: 1px solid;
+  }
+</style>
+
+<div class="wrapper">
+  <aside>1</aside>
+  <main>2</main>
+  <section>3</section>
+</div>
+```
+
+- First, the grid reserves 200px for the first column, then distrubutes whatever space remains to the other 2. This is how `flex-grow` works when we don't set `flex-basis` to 0.
+
+### Implicit Rows
+
+-
