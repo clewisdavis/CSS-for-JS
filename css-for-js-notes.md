@@ -4380,4 +4380,115 @@ img {
 
 ### Implicit Rows
 
+- CSS Gris is a two dimensional layout mode
+- In this example, it's a 2-column grid, and given 7 children. The default behavior or grid, every child gets it's own cell. Our grid will implicitly create as many rows as it needs to.
+
+``` HTML
+<style>
+  .wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .item {
+    border: 2px solid;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+  }
+</style>
+
+<div class="wrapper">
+  <div class="item">1</div>
+  <div class="item">2</div>
+  <div class="item">3</div>
+  <div class="item">4</div>
+  <div class="item">5</div>
+  <div class="item">6</div>
+  <div class="item">7</div>
+</div>
+```
+
+- How tall will these rows be? Htey gro and shrink as needd based on the children content.
+- Implicit rows are handy when we are rendering base on some data, like search results. We can throw a bunch of data into our grid and trust each row will be the right size for content.
+- But what if we want more control?
+
+### Explicit rows
+
+- When creating whole layouts in Grid, it's common to give each row an explicit height.
+- You can do this with `grid-template-rows` property.
+- Here, we have created three rows, 64px header, 100px tall footer, and a main content area that fills the remaining space.
+- Note: to fill the entire page, we can use our [min-height percentage trick](https://courses.joshwcomeau.com/css-for-js/01-rendering-logic-1/11-height) from mondule 1
+
+```HTML
+<style>
+  .wrapper {
+    display: grid;
+    grid-template-rows: 64px 1fr 100px;
+    min-height: 100%;
+  }
+</style>
+
+<div class="wrapper">
+  <header>My Website</header>
+  <main>Content goes here</main>
+  <footer>Copyright notice</footer>
+</div>
+```
+
+### Out of bounds items
+
+- Imagine you create an explicit Grid with 1 column and 3 rows.
+- What happens if you create more than 3 children?
+
+```HTML
+<style>
+  .wrapper {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    height: 100vh;
+  }
+</style>
+
+<div class="wrapper">
+  <div class="item">1</div>
+  <div class="item">2</div>
+  <div class="item">3</div>
+  <div class="item">4</div>
+</div>
+```
+
+- for the 4th row, the browser creates it and squeezes it in. It doesn't create an overflow, just mean less space for the other elements.
+- Misleading to think the entire grid is "implicit" or "explicit", more accurate to say individual rows/columns are implicit or explicit.
+- An explicit grid can still generate implicit columns or rows if we add additional children.
+
+### Gap
+
+- As with Flexbox, we can build gutters into our gird with `gap`
+
+```HTML
+<style>
+  .wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+</style>
+
+<div class="wrapper">
+  <div class="item">1</div>
+  <div class="item">2</div>
+  <div class="item">3</div>
+  <div class="item">4</div>
+  <div class="item">5</div>
+  <div class="item">6</div>
+  <div class="item">7</div>
+</div>
+```
+
+- What if we want there to be a gap between rows and not columns?
+- You can specify two values `gap: 8ps 0px`
+
+### The repeat function
+
 -
