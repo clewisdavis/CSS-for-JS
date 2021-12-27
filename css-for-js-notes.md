@@ -1895,6 +1895,24 @@ h2 {
 - PREFERRED - use the [percent-based trick from Module 1](https://courses.joshwcomeau.com/css-for-js/01-rendering-logic-1/11-height), passing percentages down so that they can be usdd wher eyou need them.
 - Tweak designs so that they don't need to fill the viewport exactly.
 
+```HTML
+<style>
+html, body {
+  height: 100%;
+}
+.wrapper {
+  min-height: 100%;
+  border: solid;
+}
+</style>
+
+<div class="wrapper">
+  <p>
+    I fill the viewport now!
+  </p>
+</div>
+```
+
 ## The desktop scrollbar issue
 
 - `vw` unit it's problems
@@ -2502,7 +2520,7 @@ export const QUERIES = {
 - Use `hsl` format
 - In your constants file, just use the values
 
-```JS
+```CODE
 export const COLORS = {
   white: '0deg 0% 100%',
   gray: {
@@ -2519,7 +2537,7 @@ export const COLORS = {
 
 - Then within your `globalStyles.js`, import your constants.js and then create css variables.
 
-```JS
+```CODE
 html {
   --color-white: hsl(${COLORS.white});
   --color-primary: hsl(${COLORS.primary});
@@ -3308,7 +3326,7 @@ p {
 - This tool can help, [SVG 2 JSX](https://svg2jsx.com/)
 - In Rewct for example Feathre's creator has created an NPM package, `react-feather`
 
-```JS
+```CODE
 import React from 'react';
 import { HelpCircle } from 'react-feather';
 
@@ -4491,4 +4509,76 @@ img {
 
 ### The repeat function
 
--
+- Say you had a 6 column layout, a calender with some meta data for example.
+- You could lay out the CSS like this.
+
+```CSS
+.calendar {
+  grid-template-columns:
+    250px 1fr 1fr 1fr 1fr 1fr;
+}
+```
+
+- But that is annoying to have to repeat for each column
+- For this, you can use `repeat()` function
+
+```CSS
+.calendar {
+  grid-template-columns: 250px repeat(5, 1fr);
+}
+```
+
+- We are saying, give me 6 columns, the first one is 250px, and the rest 1fr
+
+## Exercises with Grid
+
+- Build a Mondrifans style site with grid
+
+```HTML
+<style>
+html, body {
+  height: 100%;
+}
+.wrapper {
+  --blue: hsl(250deg 100% 55%);
+  --yellow: hsl(50deg 100% 50%);
+  --red: hsl(350deg 100% 45%);
+  --white: hsl(0deg 0% 100%);
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  grid-template-rows: 200px 1fr;
+  gap: 32px 16px;
+  min-height: 100%;
+}
+body {
+  background: hsl(0deg 0% 2%);
+  padding: 0;
+  margin: 0;
+}
+.blue-box {
+  background: var(--blue)
+}
+.red-box {
+  background: var(--red);
+}
+header {
+  background: var(--yellow);
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  padding: 8px 16px;
+}
+main {
+  background: var(--white);
+}
+</style>
+
+<div class="wrapper">
+  <div class="blue-box"></div>
+  <header>
+    <h1>Mondrifans</h1>
+  </header>
+  <div class="red-box">asdfasdf</div>
+  <main></main>
+</div>
+```
