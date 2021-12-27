@@ -4532,7 +4532,7 @@ img {
 
 ## Exercises with Grid
 
-- Build a Mondrifans style site with grid
+- Build a [Mondrifans style](https://courses.joshwcomeau.com/css-for-js/07-css-grid/05-grid-construction) site with grid
 
 ```HTML
 <style>
