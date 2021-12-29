@@ -4582,3 +4582,88 @@ main {
   <main></main>
 </div>
 ```
+
+- Build a Calendar Component
+
+```CODE
+function Calendar() {
+  return (
+    <Wrapper>
+      {DAYS.map(day => (
+        <Day key={day}>
+          {day}
+        </Day>
+      ))}
+    </Wrapper>
+  );
+}
+const Wrapper = styled.div`
+  border: 3px solid;
+  display: grid;
+  grid-template-columns: repeat(7, 2rem);
+  gap: 4px;
+  width: max-content;
+  padding: 16px;
+`;
+const Day = styled.div`
+  border: 2px solid;
+  border-radius: 4px;
+  height: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+const DAYS = [
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  13,
+  14,
+  15,
+  16,
+  17,
+  18,
+  19,
+  20,
+  21,
+  22,
+  23,
+  24,
+  25,
+  26,
+  27,
+  28,
+  29,
+  30,
+];
+render(<Calendar />);
+```
+
+## Alignment
+
+- CSS Grid is kinda similar to flexbox alignment `justify-content` and `align-items` but work a little different.
+- The default behavior in Grid is to stretch the clumns to take up all available space.
+- `justify-content: center` will overide this behaviour
+- In order to center the column, is has to look at the contents of each row and figure out which one is the widest.
+- Only if you don't specify an explicit width
+- Similar to Flexbox, you can use `start` and `end` but without the `flex-` part
+- We also have distrubuted options, like flexbox, `space-between`, `space-around`, and `space-evenly`. For when our grid has multiple columns
+- `justify-content` allos us to cahnge hwo our columns are distrubuted, but there is another property we need to know.
+- `justify-items`, at first glance this seems strange, columns aren't supposed to change their width across different rows. It should be consistent width
+- Looking closer, the columns are full width, just the items within the columns have been shrunk down and centered
+- Normally, a grid child will stretch across the entire width of it's column.
+- `justify-items` changes this behavior so the child elements moves aroudn within it's cell
+- In othe  words:
+  - `justify-content` applies to teh grid structure, changing the columns
+  - `justify-items` applies to the child elements, without affecting the shape of the grid
+- Different value  for `-content` and `-items`; don't have any "space" variants with `justify-items`
+- `space-` variants only work when trying to distribute multiple thigns in a shared space. `justify-items` is only concerned with a single item within it's own cell.
