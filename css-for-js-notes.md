@@ -4667,3 +4667,7 @@ render(<Calendar />);
   - `justify-items` applies to the child elements, without affecting the shape of the grid
 - Different value  for `-content` and `-items`; don't have any "space" variants with `justify-items`
 - `space-` variants only work when trying to distribute multiple thigns in a shared space. `justify-items` is only concerned with a single item within it's own cell.
+
+## Aligning rows
+
+-
