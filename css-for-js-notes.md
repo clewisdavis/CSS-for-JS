@@ -4670,4 +4670,226 @@ render(<Calendar />);
 
 ## Aligning rows
 
--
+- In Grid, `align-content` is how we align rows in our grid.
+
+```HTML
+<style>
+  header, section, footer {
+    border: 1px solid;
+  }
+  .wrapper {
+    display: grid;
+    align-content: space-between;
+    height: 300px;
+  }
+</style>
+
+<div class="wrapper">
+  <header>Hello World</header>
+  <section>Stuff here</section>
+  <footer>Copyright notice</footer>
+</div>
+```
+
+- Because `align-content` is set to `space-between`, the grid has shifted the rows to be as far apart from each other as possible. And because we haven't specified a height, the rows are given an "explicit" height.
+- Note, this only works because we geve our grid a fix height
+
+- What about `align-items`, it controls the elements vertical position within the row
+- With `align-items`, we control the placement of individual elements within each cell
+
+```HTML
+<style>
+  header, section, footer {
+    border: 1px solid;
+  }
+  .wrapper {
+    display: grid;
+    height: 300px;
+    align-items: center;
+    border: 2px solid pink;
+  }
+</style>
+
+<div class="wrapper">
+  <header>Hello World</header>
+  <section>Stuff here</section>
+  <footer>Copyright notice</footer>
+</div>
+```
+
+## Self-alignment
+
+- In flexbox, the `align-items` is used on the parent to control the cross axis position for all child elements.
+- But you can use `align-self` to overrule it:
+
+```HTML
+<style>
+  .wrapper {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    height: 100%;
+    padding: 16px;
+    border: 2px solid;
+  }
+
+  /*
+    The last child should sit at the top
+    of the row, instead of the center
+  */
+  .box:last-of-type {
+    align-self: flex-start;
+  }
+
+  .box {
+    width: 80px;
+    height: 80px;
+    background: black;
+  }
+
+  html, body {
+    height: 100%;
+  }
+</style>
+<div class="wrapper">
+  <div class="box"></div>
+  <div class="box"></div>
+  <div class="box"></div>
+  <div class="box"></div>
+</div>
+```
+
+- In CSS Grid, `align-self` works pretty muc hteh same way. We apply it to a specific grid children, and it changes the vertical (cross axis) position wihtin the grid cell.
+- We also have `justify-self` which changes an elements *horizontal* position within a grid cell
+
+```HTML
+<style>
+  .wrapper {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    align-items: center;
+    justify-items: center;
+    height: 100%;
+    border: 2px solid;
+  }
+
+  /*
+    The last child should move to the
+    bottom-right corner of its cell,
+    instead of the center.
+  */
+  .box:last-of-type {
+    align-self: end;
+    justify-self: end;
+  }
+
+  .box {
+    width: 80px;
+    height: 80px;
+    background: black;
+  }
+
+  html, body {
+    height: 100%;
+  }
+</style>
+<div class="wrapper">
+  <div class="box"></div>
+  <div class="box"></div>
+  <div class="box"></div>
+  <div class="box"></div>
+</div>
+```
+
+## When to use item vs content
+
+- With CSS Grid, by default, the children will fill the space
+- If you want to position items within each grid cell, then use `align-` and `justify-`
+- When to use `-items`, when you want to change how they are positioned relative to each other, use `-items`
+- If you want to change the entire group is positioned, then use `-content` property
+- Playground, play with the `-content` and `-items` to see the difference
+
+```HTML
+<style>
+body {
+  background: silver;
+}
+
+.card {
+  background: white;
+  padding: 16px;
+  border-radius: 8px;
+}
+
+.card h2 {
+  margin-bottom: 8px;
+}
+.wrapper {
+  display: grid;
+  grid-template-columns: 250px 250px;
+  justify-content: center;
+  align-items: start;
+  gap: 16px;
+}
+</style>
+
+<div class="wrapper">
+  <article class="card">
+    <h2>This card has a heading</h2>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce finibus lorem ac risus tincidunt vulputate. Aenean aliquet ultricies mauris sed interdum. Vestibulum faucibus condimentum porta.</p>
+  </article>
+  <article class="card">
+    <h2>This one does too!</h2>
+    <p>Curabitur vel tempus odio. Nunc et aliquet lectus, a ultrices metus. Nam scelerisque porta metus, vitae ultricies nisi mollis nec.</p>
+  </article>
+  <article class="card">
+    <h2>So does this one</h2>
+    <p>Integer at venenatis nunc. Sed in dui viverra, facilisis metus sed, varius risus. Interdum et malesuada fames ac ante ipsum primis in faucibus. Vivamus elementum tempor enim non maximus. Sed tellus ipsum, sollicitudin sit amet aliquam quis, semper sit amet eros.</p>
+  </article>
+  <article class="card">
+    <h2>Yep, another heading in this one</h2>
+    <p>Sed accumsan sed orci vel tristique. Aliquam erat volutpat. Vivamus id eros eleifend, mattis velit non, feugiat leo. Maecenas rutrum felis erat, in malesuada felis placerat ut.</p>
+  </article>
+</div>
+```
+
+## Exercises
+
+- Diagonals, use grid alignment to create a diagonal set of boxes
+
+```HTML
+<style>
+  .wrapper {
+  display: grid;
+  grid-template-rows: repeat(3, 1fr);
+  min-height: 100%;
+}
+
+.box {
+  width: 50%;
+}
+
+.box.one {
+  background-color: pink;
+  justify-self: end;
+}
+.box.two {
+  background-color: lavender;
+  justify-self: center;
+}
+.box.three {
+  background-color: peachpuff;
+  justify-self: start;
+}
+
+html, body {
+  height: 100%;
+}
+</style>
+<div class="wrapper">
+  <div class="box one"></div>
+  <div class="box two"></div>
+  <div class="box three"></div>
+</div>
+```
