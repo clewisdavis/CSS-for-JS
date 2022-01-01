@@ -4854,7 +4854,7 @@ body {
 </div>
 ```
 
-## Exercises
+## Grid Exercises
 
 - Diagonals, use grid alignment to create a diagonal set of boxes
 
@@ -4893,3 +4893,64 @@ html, body {
   <div class="box three"></div>
 </div>
 ```
+
+## Grid Areas
+
+- `grid-template-areas` and `grid-area` give you the ability to name regions of a grid and assign elements to them.
+- `grid-template-areas`, you have quotes `''` and multiple lines. And each line represents a row
+
+```CSS
+.wrapper {
+  display: grid;
+  grid-template-areas:
+   ''
+   '';
+}
+```
+
+- Then you choose a name for your areas
+
+```CSS
+.wrapper {
+  display: grid;
+  grid-template-areas:
+   'sidebar header'
+   'sidebar main';
+}
+```
+
+- Because `sidebar` area is used in multipe rows, it spans the rows
+- The next thing, you have to assign elements to the areas with `grid-area`
+- When you have areas with the same name, it will span those areas across columns
+
+```HTML
+<style>
+.wrapper {
+  display: grid;
+  grid-template-areas:
+   'sidebar header'
+   'sidebar main';
+}
+
+aside {
+  /* tells grid to span both cells in the same column */
+ grid-area: sidebar; 
+}
+
+header {
+ grid-area: header;
+}
+
+main {
+  grid-area: main;
+}
+</style>
+
+<div class="wrapper">
+  <aside>Aside</aside>
+  <header>Header</header>
+  <main>Main<main>
+</div>
+```
+
+## Exercise, Holy Grail Layout
