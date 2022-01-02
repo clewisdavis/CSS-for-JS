@@ -4898,6 +4898,7 @@ html, body {
 
 - `grid-template-areas` and `grid-area` give you the ability to name regions of a grid and assign elements to them.
 - `grid-template-areas`, you have quotes `''` and multiple lines. And each line represents a row
+- NOTE: you still have to specify your `grid-template-columns` and `grid-template-rows`
 
 ```CSS
 .wrapper {
@@ -4954,3 +4955,99 @@ main {
 ```
 
 ## Exercise, Holy Grail Layout
+
+- Try and create the holy grail layout
+- NOTE: when using `grid-template-areas` you have to specify the `grid-template-columns` and `grid-template-rows`
+
+```HTML
+<!--
+• The layout should span the entire page.
+• A header should use a <header> tag, and be 4rem tall.
+• The sidebar should use a <nav> tag, and be 200px wide.
+• The main content area should use <main>, and fill the available space.
+• The ad unit should use an <aside> tag, and be 150px wide.
+• The footer should use a <footer> tag, and be 5rem tall.
+-->
+
+<style>
+  /*
+  These styles are purely presentational,
+  to make your grid children more distinctive
+  */
+  header, nav, aside, main, footer {
+    border: 3px solid;
+    padding: 16px;
+  }
+
+  header {
+    border-color: hsl(45deg 100% 50%);
+    background-color: hsl(45deg 100% 50% / 0.2);
+  }
+  nav {
+    border-color: hsl(170deg 100% 35%);
+    background-color: hsl(170deg 100% 35% / 0.2);
+  }
+  main {
+    border-color: hsl(220deg 100% 50%);
+    background-color: hsl(220deg 100% 50% / 0.2);
+  }
+  aside {
+    border-color: hsl(300deg 100% 45%);
+    background-color: hsl(300deg 100% 45% / 0.2);
+  }
+  footer {
+    border-color: hsl(350deg 100% 60%);
+    background-color: hsl(350deg 100% 60% / 0.2);
+  }
+
+  body {
+    padding: 0;
+    margin: 0;
+  }
+  /* TODO */
+  html, body {
+   height: 100%;
+  }
+  
+  .wrapper {
+    display: grid;
+    min-height: 100%:
+    grid-template-columns: 200px 1fr 150px;
+    grid-template-rows: 4rem 1fr 5rem;
+    grid-template-areas:
+     'header header header'
+     'nav main aside'
+     'footer footer footer'
+     ;
+  }
+  
+  header {
+    grid-area: header;
+  }
+  
+  nav {
+    grid-area: nav;
+  }
+  
+  main {
+    grid-area: main;
+  }
+  
+  aside {
+    grid-area: aside;
+  }
+  
+  footer {
+    grid-area: footer;
+  }
+</style>
+
+/* TODO */
+<div class="wrapper">
+  <header>Header</header>
+  <nav>Nav</nav>
+  <main>Main</main>
+  <aside>Aside</aside>
+  <footer>Footer</footer>
+</div>
+```
