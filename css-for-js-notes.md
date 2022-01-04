@@ -5051,3 +5051,52 @@ main {
   <footer>Footer</footer>
 </div>
 ```
+
+## Tracks and Lines
+
+- `grid-template-areas` and `grid-area` is an API that is syntactic sugar, code that makes it easier to understand what is giong on.
+- To truly understand how CSS Grid works, we need to understand how the algorithm sees the grid structure.
+- Grids are composed of tracks and lines
+- We can use grid lines to assign children
+
+### How to control where an area sits in our grid, another way to do it
+
+- Imagine a 4 column grid, think of it as starting at grid line 1, and stops at grid line 2
+- If you want to place an item within a specific column, refer to the grid line numbers for column and row
+- `grid-column: 3 / 4;` tells CSS Grid to put that item within the column numbers 3 and 4
+- `grid-row: 2 / 3;` same as above, instructs CSS Grid to put this item within row numbers 2 and 3
+- The `/` is confusing, it's not division, just a sperator `3 / 4` we are saying, start at this line `3`, seperator `/`, and end at this line `4`
+- TRACK, in the specification, means either a row or column
+- If you are not going to span multiple rows or columns, you can omit the `/`, and just specify the starting line number, `grid-column: 3` for example, will put the item within that part of the grid, NOTE: this is just shorthand for the `3 / 4`
+
+### WHAT'S UP WITH THE NEGATIVE NUMBERS?
+
+- Two differ labels, positive and negative `3 / 4` or `-3 / -4`
+- The POSITIVE number start at top left corner and count down, left to right, top to bottom
+- The NEGATIVE number, is the opposite, start at the right, and go to the left, right to left, bottom to top
+- Why do we need two ways to do the same thing?
+- You can mix and match the values
+- For example, if you want to always span the entire width or height of something
+- Span the entire height of a grid, `grid-row: 1 / -1`, this will span as many tracks as you want
+- The lines, are always 0px thick
+- How does `gap` push things? Imagine it as the line getting thicker
+- The ability to span rows and columns, is a switch in mental model.
+
+```HTML
+<style>
+  .wrapper {
+    display: grid;
+    height: 100vh;
+    grid-template-columns: repeat(4, 1f);
+    grid-template-rows: repeat(4, 1fr);
+  }
+  .box {
+    background: pink;
+    grid-column: 3 / 4;
+    grid-row: 2 / 3;
+  }
+</style>
+<div class="wrapper">
+  <div class="box"></div>
+</div>
+```
