@@ -5471,9 +5471,11 @@ main {
     border-radius: 4px;
   }
   .grid {
+    /* variable to pick smaller of two values based on item size */
     --min-column-width: min(320px, 100%);
     display: grid;
     padding: 16px;
+    /* World Famous Snippet */
     grid-template-columns: repeat(auto-fill, minmax(var(--min-column-width), 1fr));
     gap: 16px;
   }
