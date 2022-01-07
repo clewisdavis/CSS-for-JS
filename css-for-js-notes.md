@@ -5100,3 +5100,391 @@ main {
   <div class="box"></div>
 </div>
 ```
+
+### Keyboard gotchas
+
+- Consider visually impaired users when layout your grid and positioning elements.
+- With `grid-column` and `grid-row` you can position an element within a Grid and the DOM order doesn't matter.
+- This can be disorienting for keyboard only visually impaired users.
+
+## Fluid Grids
+
+- One of the most famous CSS Grid snippets looks like this.
+- This snippet, creates a Grid with a dynamic number of columns and it will try and pack as many in as it can staying above the min size 150px.
+- This is also a complicated snippet
+
+```HTML
+<style>
+  body {
+  margin: 0;
+  padding: 0;
+}
+.grid {
+  padding: 16px;
+  }
+  .item {
+    height: 225px;
+    background: white;
+    border-radius: 8px;
+    padding: 16px;
+  }
+  .grid {
+    display: grid;
+    gap: 16px;
+    grid-template-columns:
+      repeat(auto-fill, minmax(150px, 1fr));
+  }
+</style>
+
+<main class="grid">
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+</main>
+```
+
+### Clamping with minmax
+
+- Ealier in the lesson we saw how `min`, `max` and `clamp` functions can be sued to contrain a value with upper and lower bounds.
+- CSS Grid has a similar function: `minmax`
+- Here is an example
+- What's going on here: you have two equal columns `1fr`, but the first column should never shrink below 50px. While the second should never shrink below 250px.
+- It's another way to set `min-width` on our grid columns.
+- You can also use for height, to set a `min-height` with `grid-template-rows`
+- NOTE: the flexible unit has to come last, because `1fr` isn't a valid minimum value, `minmax(250px, 1fr)`
+
+```HTML
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+  }
+  .grid {
+    padding: 16px;
+  }
+  .card {
+    height: 225px;
+    background: white;
+    border-radius: 8px;
+    padding: 16px;
+  }
+  .grid {
+    display: grid;
+    gap: 16px;
+    grid-template-columns:
+      minmax(50px, 1fr)
+      minmax(250px, 1fr);
+  }
+</style>
+
+<main class="grid">
+  <div class="card"></div>
+  <div class="card"></div>
+</main>
+```
+
+### Generating coluns with auto-fill
+
+- Earlier we saw how `repeat` function can save you a bit of typing
+
+```CSS
+.grid {
+  grid-template-columns: repeat(7, 1fr);
+  /*
+    ...is equivalent to:
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  */
+}
+```
+
+- `repeat` is another neat trick, it accepts special keywords in addition to numbers
+- Say ou have come cards that are 150px wide, and you want to fill the grid with as many cards as possible. You can do that with `auto-fill`
+- `grid-template-columns: repeat(auto-fill, 150px);`
+
+```HTML
+<style>
+  .grid {
+    display: grid;
+    gap: 16px;
+    grid-template-columns:
+      repeat(auto-fill, 150px);
+  }
+  body {
+    margin: 0;
+    padding: 0;
+  }
+  .grid {
+    padding: 16px;
+  }
+  .card {
+    height: 250px;
+    background: white;
+    border-radius: 8px;
+    padding: 16px;
+  }
+</style>
+
+<main class="grid">
+  <div class="card"></div>
+  <div class="card"></div>
+  <div class="card"></div>
+  <div class="card"></div>
+  <div class="card"></div>
+  <div class="card"></div>
+</main>
+```
+
+- When the availabel space isn't perfect multiple of 150px, we have some leftover space, we can control that with `justify-content`
+
+```HTML
+<style>
+  .grid {
+    display: grid;
+    gap: 16px;
+    grid-template-columns:
+      repeat(auto-fill, 150px);
+    justify-content: space-evenly;
+  }
+</style>
+
+<main class="grid">
+  <div class="card"></div>
+  <div class="card"></div>
+  <div class="card"></div>
+  <div class="card"></div>
+  <div class="card"></div>
+  <div class="card"></div>
+</main>
+```
+
+- `auto-fill` allows us to implement fliod principles in CSS Grid.
+
+### Putting them all together
+
+- Now we can put it all together in our cool grid snippet
+- `minmax` will let us clamp a value to a specific range
+- `repeat` takes a special value
+- `auto-fill` will generate a dynamic number of columns
+- Put it all together to create the snazzy Grid Snippet
+
+```HTML
+<style>
+  body {
+  margin: 0;
+  padding: 0;
+  }
+  .grid {
+    padding: 16px;
+  }
+  .item {
+    height: 225px;
+    background: white;
+    border-radius: 8px;
+    padding: 16px;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+  }
+  .grid {
+    padding: 16px;
+  }
+  .item {
+    height: 225px;
+    background: white;
+    border-radius: 8px;
+    padding: 16px;
+  }
+  /* Famous Snippet */
+  .grid {
+    display: grid;
+    gap: 16px;
+    grid-template-columns:
+      repeat(auto-fill, minmax(150px, 1fr));
+  }
+</style>
+
+<main class="grid">
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+</main>
+```
+
+### auto-fill vs. auto-fit
+
+- In addition to the `auto-fill` keyword, we also have `auto-fit`
+- Mostly can be used interchangeably, on differnce though
+- Le't pretend we are rendering a dynamic list of data, you could have 20 items, 40 or 2
+- What should happen with the extra space?
+- `auto-fill` you will have lots of empty columns
+- `auto-fit` will stretch to ultra-wide columns
+
+```HTML
+<style>
+  .grid {
+    display: grid;
+    justify-content: space-evenly;
+    gap: 16px;
+    /*
+      Try changing “auto-fill” to
+      ”auto-fit”, when fullscreened:
+    */
+    grid-template-columns:
+      repeat(auto-fill, 150px);
+  }
+</style>
+
+<main class="grid">
+  <div class="card"></div>
+  <div class="card"></div>
+</main>
+```
+
+### Responsive Tweaks
+
+- What happens if our minimum size is larger and causes an overflow situation?
+- Notice on smaller screens, this causes an overflow
+
+```HTML
+<style>
+  body {
+  margin: 0;
+  padding: 0;
+  }
+  .grid {
+    padding: 16px;
+  }
+  .item {
+    height: 225px;
+    background: white;
+    border-radius: 8px;
+    padding: 16px;
+  }
+  .grid {
+    display: grid;
+    gap: 16px;
+    grid-template-columns:
+      repeat(auto-fill, minmax(400px, 1fr));
+  }
+</style>
+
+<main class="grid">
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+</main>
+```
+
+- You can always use a media query to change the grid structure below a certain size
+- When the viewport is smaller, we stick with simple grid layout, single column
+- But on larger screens, we use Famous Snippet
+
+```CSS
+@media (min-width: 450px) {
+    .grid {
+      grid-template-columns:
+        repeat(
+          auto-fill,
+          minmax(400px, 1fr)
+        );
+    }
+```
+
+- Or use the **fliud approach**
+- What's going on here with this snippet?
+- The first part to get evaluated, `min(400px, 100%)`, 100% refers to the `.grid` elements width, if viewing on a large monitor at 800px wide, then 100% resolves to 800px.
+- `min()` picks the smaller of the two values, so on a large monitor, 400px is returned form the expression
+- On smaller screen, 100% might only be 250px, in this case 100% is returned since it's smaller than the alternative 400px option
+- Once we found which value is smaller, we plug it into the "Famous" snippet
+
+```HTML
+<style>
+  body {
+  margin: 0;
+  padding: 0;
+  }
+  .item {
+    height: 225px;
+    background: white;
+    border-radius: 8px;
+    padding: 16px;
+  }
+  .grid {
+    display: grid;
+    padding: 16px;
+    gap: 16px;
+    /* Famous Snippet */
+    grid-template-columns:
+      repeat(
+        auto-fill,
+        minmax(min(400px, 100%), 1fr)
+      );
+  }
+</style>
+
+<main class="grid">
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+</main>
+```
+
+## Exercise - World Famous Snippet
+
+- For this exercise, implement the world famous snippet without copy/paste
+- The `min` inside of the `minmax` is tricky to follow.
+- `min(320px, 100%)` is saying, pick the smaller of the two values based on size of the element. In cases with small screensizes, once it gets below 320px, it will choose the % value. Because the % value calculates smaller then 320px.
+- Good way to prevent overflow, on small screen sizes.
+
+```HTML
+<!--
+• 320px minimum column width
+• 16px gap
+• No overflow on smaller screens
+-->
+
+<style>
+  body {
+  margin: 0;
+  padding: 0;
+  }
+  .grid {
+    filter: drop-shadow(0px 2px 8px hsl(0deg 0% 0% / 0.25))
+  }
+  .item {
+    height: 75px;
+    background: white;
+    border-radius: 4px;
+  }
+  .grid {
+    --min-column-width: min(320px, 100%);
+    display: grid;
+    padding: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(var(--min-column-width), 1fr));
+    gap: 16px;
+  }
+</style>
+
+<main class="grid">
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+</main>
+```
