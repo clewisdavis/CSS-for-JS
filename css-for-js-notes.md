@@ -5490,3 +5490,176 @@ main {
   <div class="item"></div>
 </main>
 ```
+
+## Subgrid
+
+- One limitation of CS Grid v1, is every grid element must be a direct child of the grid parent.
+- For example, we have a list of items, we want each list item to be assigned to our CSS Grid
+- The grid children will be `header`, `aside` and `ul`
+- The `li` cannot participate in the grid, since they are grandchildren
+  
+```HTML
+<div class="grid">
+  <header>Header</header>
+  <aside>Sidebar</aside>
+  <ul>
+    <li>First Item</li>
+    <li>Second Item</li>
+  </ul>
+</div>
+```
+
+- CSS Grid v2, introduces subgrid, a keyword to allow grandchildren to access the grid structure
+- CANIUSE, this is only supported in Firefox, as I write this note, Jan, 8, 2022
+
+## Grid Dividers
+
+- Neat trick if you want to show some borders around your grid.
+- Can't do this with showing grid lines
+- Instead you use `background-color` and `gap` on the grid children and the entire grid
+- The grid container is given a hot-pink background, but it only shows in small spaces between and around the grid children using `gap`
+
+```HTML
+<style>
+  .wrapper {
+  max-width: 550px;
+  margin: 0 auto;
+  }
+
+  .story img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+
+  .featured.story {
+    grid-column: 1 / -1;
+  }
+  .wrapper {
+    --hot-pink: hsl(340deg 100% 50%);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 2px;
+    gap: 2px;
+    background-color: var(--hot-pink);
+  }
+  
+  .story {
+    background-color: white;
+    padding: 24px;
+  }
+</style>
+
+<div class="wrapper">
+  <article class="featured story">
+    <img src="/course-materials/meerkat.jpg" alt="A curious meerkat pops up" />
+    <h2>
+      Study: Meerkats unseat dolphins as nature's smartest animal
+    </h2>
+    <p>
+      Meanwhile, humans come in 4th, right after the surprisingly-wiley platypus.
+    </p>
+  </article>
+  <article class="story">
+    <img src="/course-materials/night-sky.jpg" alt="A vibrant shot of the night sky" />
+    <h2>
+      The Search for Extra-Terrestrial Life
+    </h2>
+    <p>
+      In Ukraine, a team of dedicated interdisciplinary professionals work to answer one of history's longest unanswered questions: what's going on, up there?
+    </p>
+  </article>
+  <article class="story">
+    <img src="/course-materials/wall-art.jpg" alt="A colorfully-lit hallway" />
+    <h2>
+      The TIFF's Must-Watch List
+    </h2>
+    <p>
+      As the Toronto International Film Festival picks up, 5 intrepid reporters will dedicate the week to watching every available film. At the top of the list so far: “Ephemeral Hallway”.
+    </p>
+  </article>
+</div>
+```
+
+## Inset Borders
+
+- Another approach, you can apply borders to specific grid children
+- And use padding to increase the distance
+
+```HTML
+<style>
+  .wrapper {
+  max-width: 550px;
+  margin: 0 auto;
+  }
+
+  .story img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 4px;
+  }
+
+  .featured.story {
+    grid-column: 1 / -1;
+  }
+  .wrapper {
+    --hot-pink: hsl(340deg 100% 50%);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border: 2px solid var(--hot-pink);
+    padding: 24px;
+  }
+  
+  .featured.story {
+    padding-bottom: 24px;
+    margin-bottom: 24px;
+    border-bottom:
+      2px solid var(--hot-pink);
+  }
+  
+  .story:nth-of-type(2n) {
+    padding-right: 24px;
+    border-right:
+      2px solid var(--hot-pink);
+  }
+  .story:nth-of-type(2n + 3) {
+    padding-left: 24px;
+  }
+</style>
+
+<div class="wrapper">
+  <article class="featured story">
+    <img src="/course-materials/meerkat.jpg" alt="A curious meerkat pops up" />
+    <h2>
+      Study: Meerkats unseat dolphins as nature's smartest animal
+    </h2>
+    <p>
+      Meanwhile, humans come in 4th, right after the surprisingly-wiley platypus.
+    </p>
+  </article>
+  <article class="story">
+    <img src="/course-materials/night-sky.jpg" alt="A vibrant shot of the night sky" />
+    <h2>
+      The Search for Extra-Terrestrial Life
+    </h2>
+    <p>
+      In Ukraine, a team of dedicated interdisciplinary professionals work to answer one of history's longest unanswered questions: what's going on, up there?
+    </p>
+  </article>
+  <article class="story">
+    <img src="/course-materials/wall-art.jpg" alt="A colorfully-lit hallway" />
+    <h2>
+      The TIFF's Must-Watch List
+    </h2>
+    <p>
+      As the Toronto International Film Festival picks up, 5 intrepid reporters will dedicate the week to watching every available film. At the top of the list so far: “Ephemeral Hallway”.
+    </p>
+  </article>
+</div>
+```
+
+## Grid Recipes
+
+### TWO LINE CENTER
