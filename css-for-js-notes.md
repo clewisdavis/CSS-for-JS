@@ -5663,3 +5663,229 @@ main {
 ## Grid Recipes
 
 ### TWO LINE CENTER
+
+- The good ole center horizontally and center vertically
+- With Flexbox, this because a lot easier, we can just do
+
+```HTML
+<style>
+/* Cosmetic styles */
+.wrapper {
+  height: calc(100vh - 16px);
+  border: 3px solid;
+}
+
+.box {
+  width: 100px;
+  height: 100px;
+  background: peachpuff;
+}
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+</style>
+
+<section class="wrapper">
+  <div class="box"></div>
+</section>
+```
+
+- In CSS Grid, we ues the same trick
+- For consistency, we will use `align-content` instead of `align-items`
+
+```HTML
+<style>
+  /* Cosmetic styles */
+  .wrapper {
+    height: calc(100vh - 16px);
+    border: 3px solid;
+  }
+
+  .box {
+    width: 100px;
+    height: 100px;
+    background: peachpuff;
+  }
+  .wrapper {
+    display: grid;
+    justify-content: center;
+    align-content: center;
+  }
+</style>
+
+<section class="wrapper">
+  <div class="box"></div>
+</section>
+```
+
+- SHORTHAND, because we are setting `justify-content` and `align-content` to the same value, we can take advantage of `place-content: center`
+
+```HTML
+<style>
+  /* Cosmetic styles */
+  .wrapper {
+    height: calc(100vh - 16px);
+    border: 3px solid;
+  }
+
+  .box {
+    width: 100px;
+    height: 100px;
+    background: peachpuff;
+  }
+  /* Grid shorthand */
+  .wrapper {
+    display: grid;
+    place-content: center;
+  }
+</style>
+<div class="wrapper">
+  <div class="box"></div>
+</div>
+```
+
+- `place-content` property will set both `justify-content` and `align-content` at the same time. That means we have a 2 decloration centering trick. Modern CSS is really cool.
+
+## Sticky Grids
+
+- You don't have to choose just one grid layout mode. You can mix and match
+- Super dense section, but here is the code for applying sticky elements wihtin a grid context
+- [Video overview](https://courses.joshwcomeau.com/css-for-js/07-css-grid/14-sticky-grids)
+
+```HTML
+<style>
+  .grid {
+    --header-height: 5rem;
+    display: grid;
+    grid-template-areas:
+      'header header'
+      'sidebar main'
+      'footer footer';
+    grid-template-columns: 14rem 1fr;
+    gap: 16px;
+    max-width: 1200px;
+    margin: 0 auto;
+    isolation: isolate;
+  }
+
+  header {
+    grid-area: header;
+    position: sticky;
+    z-index: 2;
+    top: 0;
+    display: grid;
+    place-content: center;
+    height: var(--header-height);
+    border-bottom: 3px solid;
+    background-color: white;
+  }
+
+  /*
+    The “aside” child is positioned according to
+    grid layout, filling the assigned grid area.
+  */
+  aside {
+    grid-area: sidebar;
+    position: relative;
+    z-index: 1;
+  }
+
+  .sticky-sidebar {
+    position: sticky;
+    top: var(--header-height);
+  }
+
+  main {
+    grid-area: main;
+    /*
+      Add a bunch of height, to simulate it
+      being full of content
+    */
+    min-height: 180vh;
+    border: 3px solid;
+  }
+
+  /*
+    NOTE: In the video, I added the following
+    CSS to the footer:
+
+    position: relative;
+    z-index: 2;
+
+    I've removed it from this final solution,
+    because our sidebar doesn't overlap the
+    footer anymore, so it isn't necessary.
+  */
+  footer {
+    grid-area: footer;
+    display: grid;
+    place-content: center;
+    height: 5rem;
+    border-top: 3px solid;
+    background-color: white;
+  }
+
+  .grid > * {
+    padding: 8px;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+  }
+</style>
+<div class="grid">
+  <header>
+    <h1>My Website</h1>
+  </header>
+  <aside>
+    <div class="sticky-sidebar">
+      <h2>Chicken Cacciatore</h2>
+      <nav>
+        <ol>
+          <li>Introduction</li>
+          <li>Prep</li>
+          <li>Cooking</li>
+          <li>Reviews</li>
+          <li>Introduction</li>
+          <li>Prep</li>
+          <li>Cooking</li>
+          <li>Reviews</li>
+          <li>Introduction</li>
+          <li>Prep</li>
+          <li>Cooking</li>
+          <li>Reviews</li>
+          <li>Introduction</li>
+          <li>Prep</li>
+          <li>Cooking</li>
+          <li>Reviews</li>
+          <li>Introduction</li>
+          <li>Prep</li>
+          <li>Cooking</li>
+          <li>Reviews</li>
+          <li>Introduction</li>
+          <li>Prep</li>
+          <li>Cooking</li>
+          <li>Reviews</li>
+          <li>Introduction</li>
+          <li>Prep</li>
+          <li>Cooking</li>
+          <li>Reviews</li>
+          <li>Introduction</li>
+          <li>Prep</li>
+          <li>Cooking</li>
+          <li>Reviews</li>
+        </ol>
+      </nav>
+    </div>
+  </aside>
+  <main>
+    Main Content
+  </main>
+  <footer>
+    Copyright notice
+  </footer>
+</div>
+```
