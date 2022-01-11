@@ -5889,3 +5889,140 @@ main {
   </footer>
 </div>
 ```
+
+## Full Bleed Layouts
+
+- What if you had a blog layout, and you wanted some media to break free of the flow, and bleed to full window width?
+- Having an element stretch edge to edge, "full-bleed", a term borrowed from the publishing world
+- Very common layout, blog post, single column
+
+```HTML
+<style>
+  /* Cosmetic baseline styles */
+  img {
+    max-width: 100%;
+  }
+  h1 {
+    margin: 32px 0;
+  }
+  p {
+    margin: 16px 0;
+  }
+  body {
+    padding: 0;
+    margin: 0;
+  }
+  .max-width-wrapper {
+    max-width: 30ch;
+    padding: 32px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+</style>
+
+<div class="max-width-wrapper">
+  <h1>Some Heading</h1>
+  <p>
+    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
+  </p>
+  <img
+    alt="a satisfied-looking cute meerkat"
+    src="/course-materials/meerkat.jpg"
+    class="meerkat"
+  />
+  <p>
+    It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+  </p>
+</div>
+```
+
+- In CSS Grid, offers a clever solution to this problem
+- Here is a solution with Grid
+- **Grid Contruction**
+  - 3 explicit columns
+  - `1fr` on the left and `1fr` on the right, this will center the middle column `min(30ch, 100%)`
+  - `min(30ch, 100%)`, this function clamps this value so that it never grows above 100% of the available space.
+  - The two side columns `1fr`, act like `auto margins` and take up remaining space, making sure the middle column is centered
+- **Column Assignments**
+  - We want all children of this grid to be assined to the middle column.
+  - So we use the wild card selector `*`
+  - `.wrapper > * { grid-column: 2;}`, this means every child will be assigned to the 2nd column
+  - Every child element of the grid will create it's own implicit row, and occupy the center column
+  - NOTE: urban legend that wildcard selectors are bad for performance.
+- **Full Bleed Children**
+  - We need a way to opt into the full bleed layout
+  - Any child element with the `.full-bleed` class will stretch from the first column line to the last
+  - Why the negative number? This tells grid to start at the first column on the left, and end on the first column on the right. And future proofs your grid, incase you want to add more columns in the fugure.
+  - This can lead to some very tall images. So you need to combine it with `object-fit`
+
+```CSS
+.full-bleed {
+  grid-column: 1 / -1;
+}
+```
+
+```CSS
+.meerkat {
+  display: block;
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+}
+```
+
+- **Adding Gutters**
+
+  -
+
+```HTML
+<style>
+  /* Cosmetic baseline styles */
+  h1 {
+    margin: 32px 0;
+  }
+  p {
+    margin: 16px 0;
+  }
+  body {
+    padding: 0;
+    margin: 0;
+  }
+  .wrapper {
+    display: grid;
+    grid-template-columns:
+      1fr
+      min(30ch, 100%)
+      1fr;
+  }
+  .wrapper > * {
+    grid-column: 2;
+  }
+  .full-bleed {
+    grid-column: 1 / -1;
+  }
+  
+  .meerkat {
+    display: block;
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+  }
+</style>
+
+<main class="wrapper">
+  <h1>Some Heading</h1>
+  <p>
+    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
+  </p>
+  <div class="full-bleed">
+    <img
+      alt="a satisfied-looking cute meerkat"
+      src="/course-materials/meerkat.jpg"
+      class="meerkat"
+    />
+  </div>
+  <p>
+    It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+  </p>
+</main>
+```
