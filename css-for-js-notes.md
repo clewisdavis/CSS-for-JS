@@ -5970,10 +5970,6 @@ main {
 }
 ```
 
-- **Adding Gutters**
-
-  -
-
 ```HTML
 <style>
   /* Cosmetic baseline styles */
@@ -6026,3 +6022,303 @@ main {
   </p>
 </main>
 ```
+
+- **Adding Gutters**
+  - Notice on small screens, things are very cramped
+  - How do we add any gap or padding to our grid, without affecting the full bleed?
+  - By adding some padding to the wrapper, our full bleed is no longer
+  - You solve this by using negative margin on our full bleed children
+  - The container adds 16px of padding, but the item you want to full bleed will undo that with the negative margin trick.
+
+```CSS
+.wrapper {
+  display: grid;
+  grid-template-columns:
+    1fr
+    min(30ch, 100%)
+    1fr;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+```CSS
+.full-bleed {
+    grid-column: 1 / -1;
+    /* negative margin trick to undo the padding and make full-bleed */
+    margin-left: -16px;
+    margin-right: -16px;
+  }
+```
+
+- Full snippet
+
+```HTML
+<style>
+  /* cosmetic styles */
+  .meerkat {
+  display: block;
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+  }
+  h1 {
+    margin: 32px 0;
+  }
+  p {
+    margin: 16px 0;
+  }
+  body {
+    padding: 0;
+    margin: 0;
+  }
+  /* CSS Grid styles */
+  .wrapper {
+    display: grid;
+    grid-template-columns:
+      1fr
+      min(30ch, 100%)
+      1fr;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+  .wrapper > * {
+    grid-column: 2;
+  }
+  .full-bleed {
+    grid-column: 1 / -1;
+    margin-left: -16px;
+    margin-right: -16px;
+  }
+</style>
+
+<main class="wrapper">
+  <h1>Some Heading</h1>
+  <p>
+    Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.
+  </p>
+  <div class="full-bleed">
+    <img
+      alt="a satisfied-looking cute meerkat"
+      src="/course-materials/meerkat.jpg"
+      class="meerkat"
+    />
+  </div>
+  <p>
+    It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+  </p>
+</main>
+```
+
+- Using CSS Variables, the only problem is this creates a dependency between the parent's padding and the child's margin. We can address this with CSS Variables.
+
+```CSS
+.wrapper {
+    --breathing-room: 16px;
+    display: grid;
+    grid-template-columns:
+      1fr
+      min(30ch, 100%)
+      1fr;
+    padding-left: var(--breathing-room);
+    padding-right: var(--breathing-room);
+  }
+  .wrapper > * {
+    grid-column: 2;
+  }
+  .full-bleed {
+    grid-column: 1 / -1;
+    margin-left: calc(
+      var(--breathing-room) * -1
+    );
+    margin-right: calc(
+      var(--breathing-room) * -1
+    );
+  }
+```
+
+## Managing Overflow
+
+- Say you have a grid child that holds a list of images. On smaller screens, you want to add a horizontal scrollbar.
+- `fr` units are a way to divvy up leftover space. But it also reacts based on it's contents
+- If we put a really large element in a grid child, the `fr` unit will grow to contain it
+- EXAMPLE; the fr unit grows to be 1000px wide in order to contain the element.
+
+```HTML
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: 175px 1fr;
+    gap: 16px;
+  }
+  
+  .box {
+    width: 1000px;
+    height: 200px;
+    background-color: peachpuff;
+  }
+</style>
+
+<div class="grid">
+  <div class="intro">
+    <h2>My Photos</h2>
+    <p>Here are some animals I saw on holiday:
+  </div>
+  <div class="box-container">
+    <div class="box"></div>
+  </div>
+</div>
+```
+  
+### Solution 1: Moving the overflow
+
+- We can solve this problem by moving our `overflow: auto` to the grid child directly:
+- Why does this work? Maybe `fr` has a exception built in: if the grid child has `overflow: auto`, it give it permission to shrink with the browser.
+
+```HTML
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: 175px 1fr;
+    gap: 16px;
+  }
+  
+  .box-container {
+    overflow: auto;
+  }
+  
+  .box {
+    width: 1000px;
+    height: 200px;
+    background-color: peachpuff;
+  }
+</style>
+
+<div class="grid">
+  <div class="intro">
+    <h2>My Photos</h2>
+    <p>Here are some animals I saw on holiday:
+  </div>
+  <div class="box-container">
+    <div class="box"></div>
+  </div>
+</div>
+```
+
+- Here is the original probelem, with multiple images to fit and scroll a list of images.
+
+```HTML
+<style>
+  .image-list img {
+  height: 200px;
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: 175px 1fr;
+    gap: 16px;
+  }
+  
+  .image-container {
+    overflow: auto;
+  }
+  
+  .image-list {
+    display: flex;
+    gap: 16px;
+    /*
+      No more 'overflow: auto' or
+      'max-width: 100%' here.
+    */
+  }
+</style>
+
+<div class="grid">
+  <div class="intro">
+    <h2>My Photos</h2>
+    <p>Here are some animals I saw on holiday:
+  </div>
+  <div class="image-container">
+    <ul class="image-list">
+       <li>
+        <img src="/course-materials/cat-four-300px.jpg" />
+      </li>
+      <li>
+        <img src="/course-materials/otter.jpg" />
+      </li>
+       <li>
+        <img src="/course-materials/dog-three-300px.jpg" />
+      </li>
+       <li>
+        <img src="/course-materials/meerkat.jpg" />
+      </li>
+    </ul>
+  </div>
+</div>
+```
+
+### Solution 2: Setting a minimum width
+
+- You can use `minmax` to tell CSS Grid, we are ok with shrinking below the child elements width
+- by changing `1fr` to `minmax(0, 1fr)` we are telling the column that it can be as small as it wants. Don't worry about trying to stretch around the child element.
+
+```HTML
+<style>
+  .image-list img {
+  height: 200px;
+  }
+
+  ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  .grid {
+    display: grid;
+    gap: 16px;
+    
+    /* This is the changed line: */
+    grid-template-columns:
+      175px minmax(0, 1fr);
+  }
+  
+  /* This stuff is unchanged: */
+  .image-list {
+    display: flex;
+    gap: 16px;
+    max-width: 100%;
+    overflow: auto;
+  }
+</style>
+
+<div class="grid">
+  <div class="intro">
+    <h2>My Photos</h2>
+    <p>Here are some animals I saw on holiday:
+  </div>
+  <div class="image-container">
+    <ul class="image-list">
+       <li>
+        <img src="/course-materials/cat-four-300px.jpg" />
+      </li>
+      <li>
+        <img src="/course-materials/otter.jpg" />
+      </li>
+       <li>
+        <img src="/course-materials/dog-three-300px.jpg" />
+      </li>
+       <li>
+        <img src="/course-materials/meerkat.jpg" />
+      </li>
+    </ul>
+  </div>
+</div>
+```
+
+## Grid Quirks
+
+-
