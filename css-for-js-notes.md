@@ -6321,4 +6321,115 @@ main {
 
 ## Grid Quirks
 
--
+- A handful of starnge quirks when working with CSS Grid
+
+### Row Limit
+
+- In Chrome, grids are limited to 1000 rows. If an implicit grid is gien 1002 children, the final three children will occupy the same cell. NOTE: This has been increase in Chrome 96, now it's 100,000 rows.
+
+### Margin Collapse
+
+- Just like Flexbox, the margin will not collapse on grid children, in either direction.
+- Margin collapse is a feature of Flow layout
+
+```HTML
+<style>
+  .wrapper {
+    display: grid;
+  }
+  
+  p {
+    margin: 30px;
+  }
+</style>
+
+<div class="wrapper">
+  <p>Hello World!</p>
+  <p>The margins on these paragraphs won't collapse.</p>
+  <p>Check it out in the devtools.</p>
+</div>
+```
+
+### z-index works with grid children
+
+- Normally `z-index` only works in positioned layout. The element neesd to be set to `position` to `relative` / `fixed` / `sticky`.
+- But an exception has been made for CSS Grid: A grid child can use `z-index` even if it doesn't change the `position` property.
+- Chagne the example below, by setting `z-index` on a grid child, it will change the stacking context.
+- NOTE: Keep this in mind when layering your design elements.
+
+```HTML
+<style>
+  .box {
+  width: 50px;
+  height: 50px;
+  border: 3px solid;
+  }
+  .box.grid {
+    background: pink;
+  }
+  .box.absolute {
+    background: silver;
+  }
+  .wrapper {
+    display: grid;
+  }
+  
+  .box.grid {
+    /*
+      Change me to '1' to see
+      the difference!
+    */
+    z-index: 3;
+  }
+  
+  .box.absolute {
+    position: absolute;
+    z-index: 2;
+    top: 20px;
+    left: 20px;
+  }
+</style>
+
+<div class="wrapper">
+  <div class="box grid"></div>
+  <div class="box absolute"></div>
+</div>
+```
+
+### Weirdness with "fr" on rows
+
+- The `fr` unit allows us to divvy up extra space in a grid container.
+- Fine in with rows and columns within a specified height container. Gets weird in other situatons.
+- The default behavior of a grid child, is that is grows to span the available area.
+- What is you have an unknown height?
+- The `fr` unit only works when you have a known amount of space
+- So it knows how much space to divide up.
+- If no height is speficied for the grid, the calculated height of the first grid child will become the definition for `1fr`
+- Which means, it will apply that to all the other `fr` rows
+- In the context of a row, when you don't have a specific height on a container, it's clever, maps itself to the grid children, in a way to make sure the grid contains the children.
+- Makes sure all our rows are big enough to contain the children.
+- [Video explanation](https://courses.joshwcomeau.com/css-for-js/video-archive/010-fr-in-depth)
+
+```HTML
+<style>
+  .grid {
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    /* no height is specified on the this element, remember, this is a flow layout element */
+    /* grid is only applied to child elements */
+  }
+  
+  .box {
+    border: 2px solid;
+  }
+  .box.one {
+    /* remove this height and watch what happens */
+    height: 100px;
+  }
+</style>
+<div class="grid">
+  <div class="box one"></div>
+  <div class="box two"></div>
+  <div class="box three"></div>
+</div>
+```
