@@ -6433,3 +6433,65 @@ main {
   <div class="box three"></div>
 </div>
 ```
+
+## Workshop, Grid Workshop
+
+- Build an online newspaper with CSS Grid, the New Grid Times
+- Just getting everything set up for the exercise, React app etc.
+
+## Exercise 1: Header
+
+- Make a desktop version of the header from a mobile first header
+- React app, using styled components
+- [Figma Design](https://www.figma.com/file/BDdNhCeVLye5mFHHxQhkgE/New-Grid-Times?node-id=0%3A1)
+- Instead of modifying the mobile version of the header to be desktop. Just hide the entire header with a media query, and turn on a new mobile header
+- Strategy for layout out the header, with logo in the center, and elements on the left and right.
+
+```JAVASCRIPT
+const MainHeader = styled(MaxWidthWrapper)`
+/* mobile first by default */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 32px;
+  margin-bottom: 48px;
+
+  @media ${QUERIES.laptopAndUp} {
+    /* desktop with a media query */
+    display: grid;
+    /* set three columns */
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    justify-content: start;
+  }
+`;
+```
+
+- Layout tricks for the subscribe button, to properly align the subscribe button
+- Uses a mix of CSS Grid, Absolute positioning, and Flow layout
+
+```JAVASCRIPT
+const SubscribeWrapper = styled.div`
+  display: none;
+  
+  /* desktop styles */
+  @media ${QUERIES.laptopAndUp} {
+    display: revert;
+    position: relative;
+    justify-self: end;
+  }
+`;
+
+const SubLink = styled.a`
+  /* absolute positioning for the link */
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  margin-top: 8px;
+  /* font properties */
+  font-size: 0.875rem;
+  color: var(--color-gray-900);
+  font-style: italic;
+  text-decoration: underline;
+`;
+```
