@@ -6439,7 +6439,7 @@ main {
 - Build an online newspaper with CSS Grid, the New Grid Times
 - Just getting everything set up for the exercise, React app etc.
 
-## Exercise 1: Header
+### Exercise 1: Header
 
 - Make a desktop version of the header from a mobile first header
 - React app, using styled components
@@ -6447,7 +6447,7 @@ main {
 - Instead of modifying the mobile version of the header to be desktop. Just hide the entire header with a media query, and turn on a new mobile header
 - Strategy for layout out the header, with logo in the center, and elements on the left and right.
 
-```JAVASCRIPT
+```CSS
 const MainHeader = styled(MaxWidthWrapper)`
 /* mobile first by default */
   display: flex;
@@ -6470,7 +6470,7 @@ const MainHeader = styled(MaxWidthWrapper)`
 - Layout tricks for the subscribe button, to properly align the subscribe button
 - Uses a mix of CSS Grid, Absolute positioning, and Flow layout
 
-```JAVASCRIPT
+```CSS
 const SubscribeWrapper = styled.div`
   display: none;
   
@@ -6493,5 +6493,52 @@ const SubLink = styled.a`
   color: var(--color-gray-900);
   font-style: italic;
   text-decoration: underline;
+`;
+```
+
+### Exercise 2: Fit and Finish
+
+#### Text Truncation
+
+- Ellipsis strategy for responsive views on the story preview.
+- `-webkit-line-clamp` with `overlfow: hidden`
+
+```CSS
+const Abstract = styled.p`
+  font-size: 1rem;
+  margin-bottom: 1em;
+  white-space: pre-wrap;
+  /* ellipsis strategy, truncates base on # of lines and adds ellipsis but doesn't hide overflow */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 8;
+  /* necessary for line-clamping */
+  overflow: hidden;
+
+  @media ${QUERIES.tabletAndUp} {
+    -webkit-line-clamp: 16;
+  }
+
+  @media ${QUERIES.laptopAndUp} {
+    -webkit-line-clamp: 10;
+  }
+`;
+```
+
+- Mixing CSS Grid and `line-clamp`, the two algorythms can conflict with one another. Leaving some unexpected results and partial lines being displayed after the ellipsis.
+- To solve for this, seperate the layout algorythms, and make the item holding the `line-clamp` flow layout. And add a wrapper that uses the `grid-area` layout.
+
+#### Story Borders
+
+- For each story, apply a border for more seperation using `last-of-type`
+
+```CSS
+const VerticalStoryWrapper = styled.div`
+  /* last of type, apply this style to all elements except the last one */
+  &:not(:last-of-type) {
+    border-bottom: 1px solid var(--color-gray-300);
+    padding-bottom: 16px;
+    margin-bottom: 16px;
+  }
 `;
 ```
