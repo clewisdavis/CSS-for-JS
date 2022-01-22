@@ -6542,3 +6542,15 @@ const VerticalStoryWrapper = styled.div`
   }
 `;
 ```
+
+### Opinion Avatars
+
+- Laying out sections using the world famous snippet, responsive card layouts
+
+```CSS
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(165px, 1fr));
+  gap: 16px;
+```
+
+- Check out your [repo and branch](https://github.com/clewisdavis/new-grid-times/tree/feature/my-workshop-branch) for Grid and responive tricks
