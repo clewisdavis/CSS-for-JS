@@ -6554,3 +6554,85 @@ const VerticalStoryWrapper = styled.div`
 ```
 
 - Check out your [repo and branch](https://github.com/clewisdavis/new-grid-times/tree/feature/my-workshop-branch) for Grid and responive tricks
+
+## Module 8 - ANIMATIONS
+
+- Animations help to make products feel premium, and helps our brain comprehend and make sense of things.
+- Just like the real world, things don't just appear and disappear. They pass by us, the come and go. Our brains are not built for things to just happen.
+- Apple understands this, and every interaction is considered with animations. When you lock/unlock and switch between devices. It brings a lot of life to the products.
+
+### Transforms
+
+- `transform` allows us to change a specified element in some way. We can move and contort our elements in many differ ways
+
+#### Transform Functions
+
+- Translation allos us to move an item around, x, y axis
+- `transform: translate(3px, -2px)`
+- We can use `translate` to shift an item along either axis, `x` side to side, `y` up and down.
+- *Note: the items in-flow poistion doesn't change. Layout algorithms are not changed.
+- Very similar to how `top`, `left`, `right`, `bottom` work with a positioned layout
+- When you want to move an item along a single axis, use `translateX`, and `translateY`
+
+```CSS
+.box {
+  transform: translateY(20px);
+  /* It's equivalent to: */
+  transform: translate(0px, 20px);
+}
+```
+
+- Using %'s is really powerful, the % refers to the elemetns own size, instead of the availael space in the parent container.
+
+```CSS
+.box {
+  transform: translate(-100%, 0%);
+}
+```
+
+- Setting `transform: translateY(-100%)` moves the box up by it's exact height, no matter what the height is, to the pixel.
+- Example of how transforms compares with other CSS properties like `left` absolute
+
+```HTML
+<style>
+  /* base styles */
+  .relative.box {
+  background: deeppink;
+  }
+  .transform.box {
+    background: navy;
+  }
+
+  .box {
+    width: 80px;
+    height: 80px;
+  }
+  .wrapper {
+    position: relative;
+    width: 90%;
+    max-width: 500px;
+    border: 4px solid;
+  }
+  /* comparison */
+  .relative.box {
+    position: relative;
+    left: 50%;
+  }
+  .transform.box {
+    transform: translateX(50%);
+  }
+</style>
+
+<div class="wrapper">
+  <div class="relative box"></div>
+  <div class="transform box"></div>
+</div>
+```
+
+- Using `calc` you can even add a buffer, the size of the element plus some extra spacing
+
+```CSS
+.box {
+  transform: translateX(calc(100% + -3px));
+}
+```
