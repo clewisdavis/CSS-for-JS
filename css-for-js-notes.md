@@ -6636,3 +6636,128 @@ const VerticalStoryWrapper = styled.div`
   transform: translateX(calc(100% + -3px));
 }
 ```
+
+#### Scale
+
+- Another transform function, `scale`, allow us to grow or shrink an element
+- `transform: scale(1)`, scale uses a unitless value that represents a multiple, similar to line-height. `scale(2)` mean that the element should be 2x as big as it would be.
+- We can also pass multiple values in to scale, for `x`, `y`, `transform: scale(1, 1)`
+- NOTE, we are not just scaling up the element, but all it's children
+- Since scale will stretch and squash all the elements contents. This make it useful for animation.
+
+#### Rotate
+
+- Yup, `rotate` will rotate our elements
+- `transform: rotate(0deg);`
+- Typically use `deg` as the unit for rotation, but there is another.
+- The `turn` unit represents how many turns the element should make. 1 turn is equal to 360 degrees. It's obscure but well supported.
+
+#### Skew
+
+- Finally the `skew` function, seldom used
+- `transform: skew(0deg);`
+- Same as `translate`, we can skew along either axis
+- Skew can be helpful for decorative element, like diagonal layouts, [see blog post](https://9elements.com/blog/pure-css-diagonal-layouts/)
+
+#### Transform Origin
+
+- Every element has an *origin*, the anchor point the transform functions execute from.
+- Can take multiple values, `transform-origin: left top`, see [mdn](https://developer.mozilla.org/en-US/docs/Web/CSS/transform-origin) for full list
+
+```CSS
+.box {
+  transform: rotate(0deg);
+  transform-origin: center;
+}
+```
+
+#### Combining multiple operators
+
+- We can string together multiple transform funcitons by space-seperating them.
+- `transform: translateX(0px) rotate(0deg);`
+- The order is important, they will be applied in order, sequentially.
+- The transform functions are applied from right to left.
+- Example animation, moon circling a planet.
+
+```HTML
+<style>
+  /* starter styles */
+  .wrapper {
+  position: relative;
+}
+
+  .planet {
+    width: 80px;
+    height: 80px;
+    background: dodgerblue;
+    border-radius: 50%;
+  }
+
+  .moon {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    width: 20px;
+    height: 20px;
+    background: silver;
+    border-radius: 50%;
+  }
+  /* animation */
+  @keyframes orbit {
+    from {
+      transform:
+        rotate(0deg)
+        translateX(80px);
+    }
+    to {
+      transform:
+        rotate(360deg)
+        translateX(80px);
+    }
+  }
+  
+  @media (
+    prefers-reduced-motion: no-preference
+  ) {
+    .moon {
+      animation:
+        orbit 6000ms linear infinite;
+    }
+  }
+</style>
+
+<div class="wrapper">
+  <div class="planet"></div>
+  <div class="moon"></div>
+</div>
+```
+
+### Inline Elements
+
+- Gatcha with transforms, is they don't work with inline elements in Flow layout.
+- Inline elements go with the flow, and wrap around some content.
+- Easiest fix si to switch it to use `display: inline-block`, or a different layout mode (Flexbox, Grid).
+
+```HTML
+<style>
+  .inline-fella {
+    background: hsl(50deg 90% 80%);
+    padding: 4px;
+  }
+  .inline-fella {
+    /* Doesn't work :( */
+    transform: rotate(-10deg);
+  }
+</style>
+
+<p>
+  Why
+  <span class="inline-fella">Hello</span>
+  there!
+</p>
+```
+
+#### Exercises, Animation
