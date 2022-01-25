@@ -6739,7 +6739,7 @@ const VerticalStoryWrapper = styled.div`
 
 - Gatcha with transforms, is they don't work with inline elements in Flow layout.
 - Inline elements go with the flow, and wrap around some content.
-- Easiest fix si to switch it to use `display: inline-block`, or a different layout mode (Flexbox, Grid).
+- Easiest fix is to switch it to use `display: inline-block`, or a different layout mode (Flexbox, Grid).
 
 ```HTML
 <style>
@@ -6761,3 +6761,130 @@ const VerticalStoryWrapper = styled.div`
 ```
 
 #### Exercises, Animation
+
+- A simple modal window with a centered viewport, and the close button sitting on top of the modal.
+
+```HTML
+<style>
+.dialog-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: hsl(0deg 0% 0% / 0.75);
+  /* Good center center shorthand */
+  display: grid;
+  place-content: center;
+}
+
+.dialog-content {
+  width: 600px;
+  max-width: 100%;
+  height: 400px;
+  background: white;
+  border-radius: 6px;
+  position: relative;
+}
+
+.close-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 16px;
+  background: transparent;
+  border: none;
+  font-weight: normal;
+  /* Note the 100%, which moves it up to the exact height of the element */
+  transform: translateY(-100%);
+  color: white;
+  border: 1px solid red;
+}
+</style>
+<div class="dialog-wrapper">
+  <div class="dialog-content">
+    <button class="close-btn">
+      Close
+    </button>
+  </div>
+</div>
+```
+
+### CSS Transitions
+
+- `transitions` allows us to smooth out the changes that happen in our applications. Instead of things happening instantly, they glide between the two states.
+- Here is an example of a button without a transition
+
+```HTML
+<style>
+  .btn {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: none;
+    background: slateblue;
+    color: white;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 1;
+  }
+  .btn:hover {
+    transform: translateY(-10px);
+  }
+</style>
+
+<button class="btn">
+  Hello World
+</button>
+```
+
+- We can instruct the browser to interpolate one state to another with `transition`
+
+```HTML
+<style>
+  /* starter style */
+  .btn {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: none;
+    background: slateblue;
+    color: white;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 1;
+  }
+  .btn {
+    transition: transform 250ms;
+  }
+  
+  .btn:hover {
+    transform: translateY(-10px);
+  }
+</style>
+
+<button class="btn">
+  Hello World
+</button>
+```
+
+- `transtion` is highly configurable, but only two values are required
+  - Name of the property we want to animate
+  - The duration of the animation
+- If you want to animate multiple properties, you pass in a comma-seperated list
+
+```CSS
+  .btn {
+    transition: transform 250ms, opacity 400ms;
+  }
+  .btn:hover {
+    transform: scale(1.2);
+    opacity: 0;
+  }
+```
+
+- NOTE: `transition-property` takes a special value of `all`, if may be tempting to use this value. But it's recommended to specify each property. In the future, someone may want to add a property and not want it to animate.
+
+#### Timing Functions
+
+-
