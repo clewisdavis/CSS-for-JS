@@ -6887,4 +6887,127 @@ const VerticalStoryWrapper = styled.div`
 
 #### Timing Functions
 
--
+- When we talk about motion on the web, we are talking about simulated motion. Remember keyframes in flash? It's more like a flipbook, each frame draws the element in a slightly differ position. If we do this fast enough, it appaers like a fluid motion.
+- Timing function, lenear timing function, when teh element moves at a constant pace. A circle moves the same amount each frame.
+- There are several timing functions available in CSS, you can specify which one you want with `transition-timing-function` property.
+
+```CSS
+.btn {
+  transition: transform 250ms;
+  transition-timing-function: linear;
+}
+```
+
+- Or we can pass it indirectly to the `transitino` shorthand
+
+```CSS
+.btn {
+  transition: transform 250ms linear;
+}
+```
+
+- `linear` is rately the best choice, nothing really moves like this in the real world.
+- `ease-out` comes in fast, but slows down at the end. When to use ease-out, when something is entering from off screen like a modal appearing, or a mobile menu slide out.
+- `ease-in`, opposite of `ease-in`, starts out slow and speeds up. Mostly used for when an element goes offscreen or invisible. Otherwise the sudden stop can be jarring.
+- `ease-in-out`, the combination of the two, it's symmetrical, equal amount of acceleration and deceleration.
+- `ease`, **default value**, very similar to `ease-in-out, the difference being it isn't symmetrical. Brief ramp up and lots of deceleration.
+- NOTE: time is constant, these functions describe how a value gets from 0 to 1 over a fixed tiem interval. Not how quickly the animation should complete.
+
+#### Custom Curves
+
+- You can define your own custom easing curve, using the cubic bezier timing function.
+- The values above are just presets of the `cubit-bezier` function.
+- The `linear` value can be defined as `cubic-bezier(0, 0, 1, 1)`.
+- Coming up with your own can be tricky, refer to [Josh's post](https://courses.joshwcomeau.com/css-for-js/treasure-trove/011-cubic-bezier), and this [tool](https://cubic-bezier.com/#.17,.67,.83,.67).
+- Or you can just choose from this preset [list of easing functions](https://easings.net/).
+
+#### Delays
+
+- Have you ever treid to mouse over a neted nav menu items, only to have it close before you get there? Like a sub nav item within a drop down popup.
+- This can be solved without reaching for JS, with `transition-delay`
+
+```CSS
+.dropdown {
+  opacity: 0;
+  transition: opacity 400ms;
+  transition-delay: 300ms;
+}
+.dropdown-wrapper:hover .dropdown {
+  opacity: 1;
+  transition: opacity 100ms;
+  transition-delay: 0ms;
+}
+```
+
+- This allows us to keep things as they are for a brief interval. In the example above, when the user move their mouse outside or `.dropdown-wrapper`, nothing happens for 300ms. After that, the `transition` kids in normally.
+
+#### Doom flicker
+
+- When you hover an element and it flickers because the animation has moved the element outside the hover.
+- Before code sample, flicker
+
+```HTML
+<style>
+  .btn {
+    width: 100px;
+    height: 100px;
+    border: none;
+    border-radius: 50%;
+    background: slateblue;
+    color: white;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 1;
+    transition: transform 250ms;
+  }
+  
+  .btn:hover {
+    transform: translateY(-10px);
+  }
+</style>
+
+<button class="btn">
+  Hello World
+</button>
+```
+
+- After solution, we seperate the trigger from the effect. We listen for the hovers on the parent `<button>` element and apply the animation to the child element. This ensures the hover target will not move outside the cursor.
+
+```HTML
+<style>
+  .btn {
+    width: 100px;
+    height: 100px;
+    border: none;
+    background: transparent;
+    padding: 0;
+  }
+  
+  .btn:hover .btn-contents {
+    transform: translateY(-10px);
+  }
+  
+  .btn-contents {
+    display: grid;
+    place-content: center;
+    height: 100%;
+    border-radius: 50%;
+    background: slateblue;
+    color: white;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 1;
+    transition: transform 250ms;
+  }
+</style>
+
+<button class="btn">
+  <span class="btn-contents">
+    Hello World
+  </span>
+</button>
+```
+
+#### Exercises, Translated cards
+
+- Update the set of cards to slide up on hover.
