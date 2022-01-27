@@ -7011,3 +7011,139 @@ const VerticalStoryWrapper = styled.div`
 #### Exercises, Translated cards
 
 - Update the set of cards to slide up on hover.
+- Solution
+
+```HTML
+<style>
+.wrapper {
+  display: grid;
+  grid-template-columns:
+    repeat(auto-fit, minmax(150px, 1fr));
+  gap: 8px;
+  padding: 16px;
+}
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+  background: white;
+  border-radius: 8px;
+  border: 2px solid hsl(240deg 100% 75%);
+}
+.card img {
+  width: 64px;
+  height: 64px;
+}
+
+.card {
+  transition: transform 250ms ease-out;
+}
+
+a.card-link:hover .card {
+ transform: translateY(-12px);
+}
+</style>
+<div class="wrapper">
+  <a href="/" class="card-link">
+    <article class="card">
+      <img
+        alt="Download Chrome"
+        src="/images/logos/chrome.svg"
+      />
+    </article>
+  </a>
+  <a href="/" class="card-link">
+    <article class="card">
+      <img
+        alt="Download Firefox"
+        src="/images/logos/firefox.svg"
+      />
+    </article>
+  </a>
+  <a href="/" class="card-link">
+    <article class="card">
+      <img
+        alt="Download Safari"
+        src="/images/logos/safari.png"
+      />
+    </article>
+  </a>
+  <a href="/" class="card-link">
+    <article class="card">
+      <img
+        alt="Download Edge"
+        src="/images/logos/edge.svg"
+      />
+    </article>
+  </a>
+  <a href="/" class="card-link">
+    <article class="card">
+      <img
+        alt="Download Opera"
+        src="/images/logos/opera.svg"
+      />
+    </article>
+  </a>
+</div>
+```
+
+#### Exercise: Photo Zoom
+
+- Zoom in on a set of photos, but the the photo should not go outside it's element.
+
+```HTML
+<style>
+  /* TODO */
+  .thumbnail {
+    transition: transform 500ms;
+  }
+  /* use overflow to hide the elements excess when zoomed */
+  .thumbnail-wrapper {
+    overflow: hidden;
+  }
+  
+  a.thumbnail-wrapper:hover .thumbnail {
+    transform: scale(1.2);
+  }
+</style>
+
+<div class="wrapper">
+  <a href="/" class="thumbnail-wrapper">
+    <img
+      alt="A balloon store"
+      class="thumbnail"
+      src="/course-materials/article-image-balloons.jpg"
+    />
+  </a>
+  <a href="/" class="thumbnail-wrapper">
+    <img
+      alt="A good-boy dog. Black and white."
+      class="thumbnail"
+      src="/course-materials/article-image-spot.jpg"
+    />
+  </a>
+  <a href="/" class="thumbnail-wrapper">
+    <img
+      alt="A cardboard standing-desk tool."
+      class="thumbnail"
+      src="/course-materials/article-image-standing.jpg"
+    />
+  </a>
+  <a href="/" class="thumbnail-wrapper">
+    <img
+      alt="A “tokyo drift” style sports car"
+      class="thumbnail"
+      src="/course-materials/article-image-car.jpg"
+    />
+  </a>
+  <a href="/" class="thumbnail-wrapper">
+    <img
+      alt="A young man amongst daisies in a field"
+      class="thumbnail"
+      src="/course-materials/article-image-flower-boy.jpg"
+    />
+  </a>
+</div>
+```
