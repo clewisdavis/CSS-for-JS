@@ -7147,3 +7147,251 @@ a.card-link:hover .card {
   </a>
 </div>
 ```
+
+### Keyframe Animations
+
+- CSS keyframe animations are declated using the `@keyframes` at rule. You specify a transition from one set of CSS declarations to another
+- Each `@keyframes` statement needs a name, think of it as a global variable
+- Keyframe animations are meant to be general and reusable. We can apply them to specific selectors with the `animation` property
+
+```CSS
+@keyframes slide-in {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0%);
+  }
+}
+```
+
+- Same as the `transition` property, `animation` requries a duration. Below we are saying that the animation should last 1 second (1000ms)
+- The browswer will interpolate the declarations with our `from` and `to` blocks, ov erthe duration defined.
+
+```HTML
+<style>
+  /* starter styles */
+  body {
+  padding: 32px 0;
+  }
+  .box {
+    width: 100px;
+    height: 100px;
+    background: slateblue;
+    padding: 8px;
+    display: grid;
+    place-content: center;
+    color: white;
+    text-align: center;
+  }
+  @keyframes slide-in {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(0%);
+    }
+  }
+
+  .box {
+    animation: slide-in 1000ms;
+  }
+</style>
+
+<div class="box">
+  Hello World
+</div>
+```
+
+- You can animate multiple properties in the same animation decloration.
+
+```HTML
+<style>
+  body {
+  padding: 32px;
+  }
+  .box {
+    width: 100px;
+    height: 100px;
+    background: slateblue;
+    padding: 8px;
+    display: grid;
+    place-content: center;
+    color: white;
+    text-align: center;
+  }
+  @keyframes drop-in {
+    from {
+      transform:
+        rotate(-30deg) translateY(-100%);
+      opacity: 0;
+    }
+    to {
+      transform:
+        rotate(0deg) translateY(0%);
+      opacity: 1;
+    }
+  }
+
+  .box {
+    animation: drop-in 1000ms;
+  }
+</style>
+
+<div class="box">
+  Hello World
+</div>
+```
+
+#### Timing functions
+
+- Same as `transitions`, keyframe animation default to an `ease` timing curve, but can be changed.
+- You can do this with the `animation-timing-function` property
+
+```HTML
+<style>
+  body {
+  padding: 32px;
+  }
+  .box {
+    width: 100px;
+    height: 100px;
+    background: slateblue;
+    padding: 8px;
+    display: grid;
+    place-content: center;
+    color: white;
+    text-align: center;
+  }
+  @keyframes drop-in {
+    from {
+      transform: translateY(-100%);
+    }
+    to {
+      transform: translateY(0%);
+    }
+  }
+
+  .box {
+    animation: drop-in 1000ms;
+    animation-timing-function: linear;
+  }
+</style>
+
+<div class="box">
+  Hello World
+</div>
+```
+
+#### Looped animations
+
+- By default, keyframe animations will only run once, but we can control this with `animation-iteration-count` property
+
+```HTML
+<style>
+  body {
+  padding: 32px 0;
+  }
+  .box {
+    width: 100px;
+    height: 100px;
+    background: slateblue;
+    padding: 8px;
+    display: grid;
+    place-content: center;
+    color: white;
+    text-align: center;
+  }
+  @keyframes slide-in {
+    from {
+      transform: translateX(-100%);
+      opacity: 0.25;
+    }
+    to {
+      transform: translateX(0%);
+      opacity: 1;
+    }
+  }
+
+  .box {
+    animation: slide-in 1000ms;
+    animation-iteration-count: 3;
+  }
+</style>
+
+<div class="box">
+  Hello World
+</div>
+```
+
+- Also a special value that comes in handy when creating spinners for loading. `animation-iteration-count: infinite;`
+
+```HTML
+<style>
+  .spinner {
+    display: block;
+    width: 32px;
+    height: 32px;
+  }
+  @keyframes spin {
+    from {
+      transform: rotate(0turn);
+    }
+    to {
+      transform: rotate(1turn);
+    }
+  }
+  
+  .spinner {
+    animation: spin 1000ms;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
+</style>
+
+<img
+  class="spinner"
+  alt="Loading…"
+  src="/course-materials/loader.svg"
+/>
+```
+
+#### Multi-step animations
+
+- In addition to `from` and `to` keywords, we can also use percentages. Allows us to add more then 2 steps in the animation
+- Each percentage refers to the progress through the animation. `from` is really just syntactic sugar for `0%`. `to` is sugar for `100%`
+
+```HTML
+<style>
+  @keyframes fancy-spin {
+    0% {
+      transform: rotate(0turn) scale(1);
+    }
+    25% {
+      transform: rotate(1turn) scale(1);
+    }
+    50% {
+      transform: rotate(1turn) scale(1.5);
+    }
+    75% {
+      transform: rotate(0turn) scale(1.5);
+    }
+    100% {
+      transform: rotate(0turn) scale(1);
+    }
+  }
+  
+  .spinner {
+    animation: fancy-spin 2000ms;
+    animation-iteration-count: infinite;
+  }
+</style>
+
+<img
+  class="spinner"
+  alt="Loading…"
+  src="/course-materials/loader.svg"
+/>
+```
+
+#### Altering animations
