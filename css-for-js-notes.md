@@ -7395,3 +7395,129 @@ a.card-link:hover .card {
 ```
 
 #### Altering animations
+
+- Let's say you want an element to breathe, inflating and deflating.
+- You can set up a 3-step animation for this
+- It spend the first half of the duration growing to be 1.5x, once it reaches that peak, it spend the second half shrinking back down to 1x
+
+```HTML
+<style>
+  @keyframes grow-and-shrink {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.5);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+  .box {
+    animation: grow-and-shrink 4000ms;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+  }
+</style>
+
+<div class="box"></div>
+```
+
+- This works, but there's a more elegant way, we can use the `animation-direction` property.
+- `animation-direction` controls the order of the keyframes. The default value is `normal`, giong from 0% to 100% over the course of a specified duration.
+- We can also set it to `reverse`, play the animation backwards, going from 100% to 0%.
+- The interesting part, we can set it to `alternate`, which will ping pong between `normal` and `reverse` on iterations.
+
+-
+
+```HTML
+<style>
+  .box {
+    width: 100px;
+    height: 100px;
+    background: slateblue;
+  }
+  @keyframes grow-and-shrink {
+    0% {
+      transform: scale(1);
+    }
+    100% {
+      transform: scale(1.5);
+    }
+  }
+
+  .box {
+    animation: grow-and-shrink 2000ms;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+  }
+</style>
+
+<div class="box"></div>
+```
+
+#### Shorthand values
+
+- All those properties is a lot of typing, we can use the shorthand to combine all of them.
+- The above animation can be re-written to the following.
+- And the good thing is **the order doesn't matter**
+
+```CSS
+.box {
+  /*
+  From this:
+    animation: grow-and-shrink 2000ms;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+  ...to this:
+  */
+  animation: grow-and-shrink 2000ms ease-in-out infinite alternate;
+}
+```
+
+- There is one excetion: `animation-delay`
+
+```CSS
+.box {
+  animation: grow-and-shrink 2000ms ease-in-out infinite alternate;
+  animation-delay: 500ms;
+}
+```
+
+### Fill Modes
+
+- We want our elements to fade out, but when it's over the element pops back into exsitence.
+
+```HTML
+<style>
+  .box {
+    width: 100px;
+    height: 100px;
+    background: slateblue;
+    padding: 8px;
+    display: grid;
+    place-content: center;
+    color: white;
+    text-align: center;
+  }
+  @keyframes fade-out {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+  
+  .box {
+    animation: fade-out 1000ms;
+  }
+</style>
+
+<div class="box">
+  Hello World
+</div>
+```
