@@ -7490,6 +7490,10 @@ a.card-link:hover .card {
 ### Fill Modes
 
 - We want our elements to fade out, but when it's over the element pops back into exsitence.
+- Why does the element jump back to full visibility? Teh declarations in the `from` and `to` blocks apply while the animation is running.
+- After the first 1000ms the animations is done. Leaving the with whatever CS declarations have been defined elsewhere.
+- SInce we haven't set the `opacity` for this element anywhere else, it snaps back to it's default value `1`.
+- Let's consider another approach, filling forwards
 
 ```HTML
 <style>
@@ -7521,3 +7525,141 @@ a.card-link:hover .card {
   Hello World
 </div>
 ```
+
+#### Filling forwards
+
+- Instead of relying on default declarations, another approach is `animation-fill-mode`
+- `animation-fill-mode` lets us persist the final value from the animation, forward in time.
+- The animation duration, and the final frame persist going forward. Sorta confusing.
+- `animaiton-fill-mode: forwards` is basically copying the declarations form the `to` block and persisting them as we scrub forward in time.
+
+```HTML
+<style>
+  .box {
+    width: 100px;
+    height: 100px;
+    background: slateblue;
+    padding: 8px;
+    display: grid;
+    place-content: center;
+    color: white;
+    text-align: center;
+  }
+  @keyframes fade-out {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
+    }
+  }
+  
+  .box {
+    animation: fade-out 1000ms;
+    animation-fill-mode: forwards;
+  }
+</style>
+
+<div class="box">
+  Hello World
+</div>
+```
+
+#### Filling backwards
+
+- By default, animations will run imediately as soon as the `animation` property is set.
+- Like the `transition` we can specify a delay if we'd like the animation to start a bit later.
+- But with this, we run into a similar issue, for the first half-second `animation-delay: 500` the element is fully visible.
+- For the first 500ms, no CSS from the animation is applied.
+- `animation-fill-mode` has another value, `backwards` which allows us to apply the animations initial state backwards in time.
+
+```HTML
+<style>
+  body {
+  padding: 32px 0;
+  }
+  .box {
+    width: 100px;
+    height: 100px;
+    background: slateblue;
+    padding: 8px;
+    display: grid;
+    place-content: center;
+    color: white;
+    text-align: center;
+  }
+  @keyframes slide-in {
+    from {
+      transform: translateX(-100%);
+      opacity: 0.25;
+    }
+    to {
+      transform: translateX(0%);
+      opacity: 1;
+    }
+  }
+
+  .box {
+    animation: slide-in 1000ms;
+    animation-delay: 500ms;
+  }
+</style>
+
+<div class="box">
+  Hello World
+</div>
+```
+
+- Essentially what we've said is to copy al the declarations in the `from` block and apply them to the element ASAP, before the animation ahs started.
+
+```HTML
+<style>
+  body {
+  padding: 32px 0;
+  }
+  .box {
+    width: 100px;
+    height: 100px;
+    background: slateblue;
+    padding: 8px;
+    display: grid;
+    place-content: center;
+    color: white;
+    text-align: center;
+  }
+  @keyframes slide-in {
+    from {
+      transform: translateX(-100%);
+      opacity: 0.25;
+    }
+    to {
+      transform: translateX(0%);
+      opacity: 1;
+    }
+  }
+
+  .box {
+    animation: slide-in 1000ms;
+    animation-delay: 500ms;
+    animation-fill-mode: backwards;
+  }
+</style>
+
+<div class="box">
+  Hello World
+</div>
+```
+
+- What if we want to persist the animation forwards and backwards? We can use a third value, `both`, which does both directions.
+- In general, you want the initial value in the keyframe to be applied during the delay. And the final value to be applied after the animation has ended.
+- Apply `animation-fill-mode: both` in most situations. It's not the default, so you have to set it.
+- Like all animation properties, it can be used in the shorthand.
+
+```CSS
+.box {
+  animation: slide-in 1000ms ease-out both;
+  animation-delay: 500ms;
+}
+```
+
+## Dynamic Updates
