@@ -7663,3 +7663,167 @@ a.card-link:hover .card {
 ```
 
 ## Dynamic Updates
+
+- So far, we've just seen animation running directly on the page, on page load.
+- More accurate way, is for an animation to start dynamically using JS at any point in time.
+- When the page loads, the `animation` property is set to `undefined`, and nothing happens
+- When the user clicks the "Enable Animation" button, that property is updated to `jump 1000ms infinate`.
+- The moment the animation is set to a valid value, the animation begins.
+- When the button is set again, `animation` is reverted back to `undefined`
+
+```JAVASCRIPT
+function App() {
+  const [
+    animated,
+    setAnimated
+  ] = React.useState(false);
+  
+  return (
+    <Wrapper>
+      <Box
+        style={{
+          animation: animated
+            ? 'jump 1000ms infinite'
+            : undefined,
+        }}
+      />
+      <button
+        onClick={() => {
+          setAnimated(!animated);
+        }}
+      >
+        {animated
+          ? 'Disable animation'
+          : 'Enable animation'
+        }
+      </button>
+    </Wrapper>
+  );
+}
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 32px;
+  height: 100vh;
+`;
+
+const Box = styled.div`
+  width: 80px;
+  height: 80px;
+  background: slateblue;
+`
+
+render(<App />);
+```
+
+```CSS
+@keyframes jump {
+  0% {
+    transform: translateY(0%);
+  }
+  30% {
+    transform: translateY(-50%);
+  }
+  50% {
+    transform: translateY(0%);
+  }
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+```
+
+### Playing and Pausing
+
+- In the sample above, disabling the animation can lead to some jarring transitions.
+- When we remove the `animation` property, all of the CSS in the `from` and `to` blocks dissapear immediately. The element wil revert back to it's default CSS.
+- This is known as "interuption" `@keyframes` animations don't handle interruptions well.
+- We can use **play states** to help in this situation.`animation-play-state`
+- Reminder, styles are "camelCased" when setting them in JS.
+- Before, we were dynamically applying and removing the animation altogether. In the updated example below, the animation is always applied, but we dynamically toggle between running and paused.
+- `paused` works liek a pause button on a remote control. Everything freezes in place. Toggling back to `running` will pick up from where it left off.
+
+```JAVASCRIPT
+function App() {
+  const [
+    animated,
+    setAnimated
+  ] = React.useState(false);
+  
+  return (
+    <Wrapper>
+      <Box
+        style={{
+          animationPlayState: animated
+            ? 'running'
+            : 'paused',
+        }}
+      />
+      <button
+        onClick={() => {
+          setAnimated(!animated);
+        }}
+      >
+        {animated
+          ? 'Pause animation'
+          : 'Start animation'
+        }
+      </button>
+    </Wrapper>
+  );
+}
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 32px;
+  height: 100vh;
+`;
+
+const Box = styled.div`
+  width: 80px;
+  height: 80px;
+  background: slateblue;
+  animation: jump 1000ms infinite;
+`
+
+render(<App />);
+```
+
+```CSS
+@keyframes jump {
+  0% {
+    transform: translateY(0%);
+  }
+  30% {
+    transform: translateY(-50%);
+  }
+  50% {
+    transform: translateY(0%);
+  }
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+```
+
+### Animations vs. transitions
+
+- When do you use `@keyframes` and when do you use `transition`?
+- Things only `@keyframes` can do:
+  - Looped animations
+  - Multi-step animations
+  - Pauseable animations
+- If an animation needs to run immediately when the page loads or a component mounts, it's easiest to use `@keyframes`
+- Use `transitinos` when your CSS will cahgne as the result of some state or user action. Smooth out a harse transtion between values.
+
+### With Styled-components
