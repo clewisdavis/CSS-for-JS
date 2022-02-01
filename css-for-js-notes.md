@@ -7827,3 +7827,38 @@ body {
 - Use `transitinos` when your CSS will cahgne as the result of some state or user action. Smooth out a harse transtion between values.
 
 ### With Styled-components
+
+- When you write CSS with styled-components, all our styles are coupled with a specific component. The `@keyframe` is meant to be set declared globally, how do we reconcile?
+- Easy, the library comes with a utility for this
+- We can import `keyframes` from the styled-components package. Example...
+
+```JAVASCRIPT
+import styled, { keyframes } from 'styled-components';
+
+function App() {
+  return <FloatingCircle />;
+}
+
+const float = keyframes`
+  from {
+    transform: translateY(10px);
+  }
+  to {
+    transform: translateY(-10px);
+  }
+`;
+
+const FloatingCircle = styled.div`
+  animation: ${float} 1000ms infinite alternate ease-in-out;
+`;
+```
+
+- The `keyframes` funciton is called using the tagged tempalte literals
+- To apply our animaiton, we interpolate it within the styles for a specific component
+- The advantage, it removes the possibility of naming conflicts
+- In vanilla CSS, `@keyframes` definitions are global. If we created a keyframe animaiton called `fadeIn`, any component in our app can use this animation. However, if another developer on our team decidees to name their animation `fadeIn`, one of the animations will overwrite the other
+- In styled components, each animaiton is given a unique, random name. Just like our component classes
+
+### Exercises, Popup help circle
+
+-
