@@ -7947,3 +7947,46 @@ Acceptance criteria:
 ### Exercises, Waving Hand
 
 - Update the "waving hand" emoji so that it actually waves at the user.
+- Animation doesn't work with inline elements, change it to a `inline-block` or `block` level element
+- The hand rotates on a odd origin, use `transform-origin` to update the position
+- Make it loop with with the `infinite` property
+- Use `alternate` to make the animation from `to` and `from`
+
+```HTML
+<style>
+  html, body {
+  height: 100%;
+  }
+  body {
+    display: grid;
+    place-content: center;
+  }
+  .wave {
+    font-size: 3rem;
+  }
+  
+  @keyframes wave {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(30deg);
+    }
+  }
+  .wave {
+     display: inline-block;
+     animation: wave 500ms infinite alternate ease-in-out;
+     transform-origin: 80% 75%;
+  }
+</style>
+
+<p>
+  <span
+    class="wave"
+    role="img"
+    aria-label="Waving hand"
+  >
+    👋
+  </span>
+</p>
+```
