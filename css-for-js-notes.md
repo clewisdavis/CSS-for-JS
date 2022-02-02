@@ -7862,7 +7862,7 @@ const FloatingCircle = styled.div`
 ### Exercises, Popup help circle
 
 - Animate the help circle to slide in from the bottom, after a short delay
-- My solution...
+- The solution...
 
 ```HTML
 <!--
@@ -7875,21 +7875,21 @@ Acceptance criteria:
 -->
 
 <style>
-  /* starter styles */
+  /* default style */
   .help-circle {
-  display: grid;
-  place-content: center;
-  width: 60px;
-  height: 60px;
-  color: white;
-  background: slateblue;
-  border-radius: 50%;
-  border: 3px solid white;
-  box-shadow:
-    0px 2px 8px hsl(0deg 0% 0% / 0.1),
-    0px 4px 16px hsl(0deg 0% 0% / 0.1),
-    0px 8px 32px hsl(0deg 0% 0% / 0.1);
-  cursor: pointer;
+    display: grid;
+    place-content: center;
+    width: 60px;
+    height: 60px;
+    color: white;
+    background: slateblue;
+    border-radius: 50%;
+    border: 3px solid white;
+    box-shadow:
+      0px 2px 8px hsl(0deg 0% 0% / 0.1),
+      0px 4px 16px hsl(0deg 0% 0% / 0.1),
+      0px 8px 32px hsl(0deg 0% 0% / 0.1);
+    cursor: pointer;
   }
   .help-circle img {
     width: 32px;
@@ -7907,39 +7907,43 @@ Acceptance criteria:
     border: 0;
   }
 
-  /* my styles */
-  .wrapper {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr;
-    width: 100%;
-    height: 100%;
-    align-items: end;
-    justify-items: end;
-  }
-  
+  /* Use calc to position the help circle off screen, with a CSS variable to account for the spacing */
   @keyframes slide-in {
     from {
-      transform: translateY(100%);
+      transform: translateY(
+        calc(100% + var(--spacing))
+      );
     }
     to {
       transform: translateY(0%);
     }
   }
+
+  /* Use fixed positioning to put the circle where you want it */
+
   .help-circle {
-    animation: slide-in 500ms;
-    animation-delay: 100ms;
+    /* Any CSS variable defined here, can be used in the animation keyframe associated with it */
+    --spacing: 32px;
+    position: fixed;
+    bottom: var(--spacing);
+    right: var(--spacing);
+    /* animate backwards to bring the icon up */
+    animation: slide-in 500ms backwards;
+    animation-delay: 1000ms
   }
 </style>
-<div class="wrapper">
-  <button class="help-circle">
-    <img
-      alt=""
-      src="/course-materials/help-white.svg"
-    />
-    <span class="visually-hidden">
-      Access help center
-    </span>
-  </button>
-</div>
+
+<button class="help-circle">
+  <img
+    alt=""
+    src="/course-materials/help-white.svg"
+  />
+  <span class="visually-hidden">
+    Access help center
+  </span>
+</button>
 ```
+
+### Exercises, Waving Hand
+
+- Update the "waving hand" emoji so that it actually waves at the user.
