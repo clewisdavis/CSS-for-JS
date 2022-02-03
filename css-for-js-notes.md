@@ -7964,7 +7964,7 @@ Acceptance criteria:
   .wave {
     font-size: 3rem;
   }
-  
+
   @keyframes wave {
     from {
       transform: rotate(0deg);
@@ -7989,4 +7989,43 @@ Acceptance criteria:
     👋
   </span>
 </p>
+```
+
+## Animation Performance
+
+- Sluggish animations can ruin a good UX
+- Not much room for error, in order for our brains to perceive motion as fluid and believeable, it need to run at 60 frams per second.
+- If an animation is to computationally expensive, it can appear janky and choppy. The device cannot keep up and the framerate drops.
+- Poor performance will often take the form of variable framerates.
+
+### The pixel pipeline
+
+- If we want to update the pixels on our screen, there is a pipeline of possible steps.
+
+1. Recalculating style, first we nee dto figure otu which CSS declaration to apply to which elements.
+2. Layout, next we need to figure out where each element sits on the page
+3. Paint, once we know wher eeverythgn is, we can start to painting them, This is the process of figuring out which color every pixel shoudl be "rasterization" adn nfilling it in
+4. Compositing, finally we can transform previously painted elements
+
+- Different CSS properties will trigger different steps in the pixel pipeline. If we animate an element's `height`, we will need to recalculate the layout.
+- For this reason, we try and avoid properties like `width`, `height`, `padding`, and `margin`
+- Propteries like `background-color` will never affect layout,
+- The `transform` property is special, it can animate a property without even triggering a paint step.
+- Two properties that can be animated with compositing alone: `transform` and `opacity`.
+- In Chrome, `filter` can also be composited.
+- This doen't mean you can only use those properties, it's a judgement call.
+
+### Hardware Acceleration
+
+- Depending on your browser and OS, you may occasionally notice a curious flicker on certain animations.
+- Sometiems you will notice elements glitch and the start and end of transitions.
+- This happens because of a hand-off between the computers CPU and GPU.
+- **Hardware Acceleration** when rasterizing the pixels in every frame, the computer will transfer everythign to the GPU as a texture. GPUs are very good at doing these kidns of texture based transformations, as a result we get a very slick and performant animation.
+- But GPUs and CPUs render thigns slighly differ. When the CPU hands it to the GPU, and visa versa, you get a snap of things shifting slightly.
+- We can change this by adding the property `will-change`
+
+```CSS
+.btn {
+  will-change: tranform;
+}
 ```
