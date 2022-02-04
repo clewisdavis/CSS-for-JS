@@ -8029,3 +8029,10 @@ Acceptance criteria:
   will-change: tranform;
 }
 ```
+
+- `will-change` is a property that allos us to tell the browser we are going to animate the selected element. And to optimize for this case.
+- It means, the browser will let the GPU handle this element all the time.
+- `will-change` let's us be intentional about which elements should be hardware-accelerated.
+- Check out MDN though, says to use it sparigly as a last resort.
+
+## Designing Animations
