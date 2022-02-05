@@ -8036,3 +8036,33 @@ Acceptance criteria:
 - Check out MDN though, says to use it sparigly as a last resort.
 
 ## Designing Animations
+
+- During the design to dev handoff, animation can get lost since most teams don't have a dedicated motion designer
+- Here are some high level tips to make it easier to design animations.
+
+### Types of Animations
+
+1. Transitions chang ethe content on the page in a significant way, like moving from one page to another, a modal opening or closing, of a multi-step wizard moving to the next step.
+2. Supplements add or remove informaiton from the page, without changing their location or task. For example a notification might pop up in the corner
+3. Feedback helps the user understnd how the applicaiton has responded to user input. For ex; an error message appearing when submititng a form. Or a button sliding down on click to indicate it's being depressed.
+4. Demonstrations are used fo reducation, a way of showing the user how something works. Like the animation demos in this course.
+5. Decoration are aesthetic and dont' affect the information on the page. For ex; confetti to celebrate a piece of good news being delivered to the user.
+
+- Every animaiton should have a purpose behind it. Don't just add animation for the sake of animating.
+- Animations can make the product feel more polished, but only when it's more thoughtful.
+
+### Animation Duration
+
+- When creating an animation in CSS, we need to specify a duration in milliseconds. So how long should it be?
+- A modal for example, if we pick a quick value (200ms) the motion is disorienting. To much to fast.
+- If we pick a value to slow, feels like the app is taking to long. Imagine if you do something 10 times a day, it becomes annoying.
+- A generally acceptable range of durations is from 200ms to 500ms.
+
+### Additional Reading
+
+- [Animation At Work](https://abookapart.com/products/animation-at-work) by Rachel Nabors
+- [Improving the payment experience with animation](https://medium.com/bridge-collection/improve-the-payment-experience-with-animations-3d1b0a9b810e)
+
+## Action Driven Animation
+
+-
