@@ -8065,4 +8065,43 @@ Acceptance criteria:
 
 ## Action Driven Animation
 
--
+- When most of us think of animations, we think in terms of states. model is either `opacity: 1` or closed `opacity: 2`. We use CSS transitions to animate the changes in state.
+- The problem with that, it doesn't distinguish between actions.
+- The animation for opening the modal is teh same as it would be when closing the modal.
+- [See the animation demo](https://courses.joshwcomeau.com/css-for-js/08-animations/10-action-driven-animation), try changing some of the properties.
+- Modal actions for example
+  - Enter duration: 500ms
+  - Enter timing function: ease-out
+  - Exit duration: 250ms
+  - Exit timing function: ease-in
+- How do we craete transitions based on actions?
+- If the animation is base don a pseudo-selector, like `:hover` we can do it by using different `transition` values
+
+```HTML
+<style>
+  .button {
+    width: 200px;
+    height: 50px;
+    border-radius: 6px;
+    border: 2px solid;
+    will-change: transform;
+  }
+  .button {
+    /* Exit animations */
+    transition: transform 500ms;
+  }
+  .button:hover {
+    transform: scale(1.1);
+    
+    /* Enter animation */
+    transition: transform 150ms;
+  }
+</style>
+
+<button class="button">
+  Hello World
+</button>
+```
+
+- When the mouse is resting atop the element, the `:hover` declarations apply, so the enter animation will be given the `transition: transform 150ms`. The moment the mouse leaves teh element, it falls back to the defualt `transition: transform 500ms` and uses that transition for the exit animation.
+- For more on the subject, check out [Meaningful Motion with Action-Driven Animation](https://tobiasahlin.com/blog/meaningful-motion-w-action-driven-animation/)
