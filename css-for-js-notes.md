@@ -8105,3 +8105,63 @@ Acceptance criteria:
 
 - When the mouse is resting atop the element, the `:hover` declarations apply, so the enter animation will be given the `transition: transform 150ms`. The moment the mouse leaves teh element, it falls back to the defualt `transition: transform 500ms` and uses that transition for the exit animation.
 - For more on the subject, check out [Meaningful Motion with Action-Driven Animation](https://tobiasahlin.com/blog/meaningful-motion-w-action-driven-animation/)
+
+## Exercises
+
+### Pushable Button
+
+- Action Driven animation
+- Provide differ transitions for differ states
+  - hover
+  - active
+- When you are exiting something, you don't want the animation to be to quick, a quick motion may distract them, happen slowly so it doesn't draw a lot of attention
+- 4th state, process of hover:active to :active
+- You can use JS events, onMouseDown, onMouseOut etc.
+- Deeper dive into [building a 3D button](https://www.joshwcomeau.com/animation/3d-button/)
+
+```HTML
+<style>
+  .pushable {
+    background: hsl(340deg 100% 32%);
+    border: none;
+    border-radius: 12px;
+    padding: 0;
+    cursor: pointer;
+  }
+  .front {
+    display: block;
+    padding: 12px 42px;
+    border-radius: 12px;
+    font-size: 1.25rem;
+    background: hsl(345deg 100% 47%);
+    color: white;
+  }
+  .front {
+    transform: translateY(-4px);
+    /* default transition */
+    transition: transform 500ms;
+  }
+  
+  .pushable:hover .front {
+    transform: translateY(-6px);
+    /* hover transition */
+    transition: transform 250ms;
+  }
+
+  .pushable:active .front {
+    transform: translateY(-2px);
+    /* active transition */
+    transition: transform 50ms;
+  }
+</style>
+
+<button class="pushable">
+  <span class="front">
+    Push me
+  </span>
+</button>
+```
+
+## Orchestration
+
+- Instead of everything animating in at once, you sequence the elements, staggered.
