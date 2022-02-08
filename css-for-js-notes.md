@@ -8162,6 +8162,37 @@ Acceptance criteria:
 </button>
 ```
 
-## Orchestration
+### Orchestration
 
 - Instead of everything animating in at once, you sequence the elements, staggered.
+- It may seem overkill, but this technique is critical for making next level animations. It's what makes a product feel more polished.
+- Companies like Apple understand this, it's why their products feel so polished.
+
+### Implementing orchestration
+
+- So how do we take advantage or orchestrations? With a lot of ternaries, yikes
+- Because we want seperate enter/exit animations, we need to set different values for a bunch of stuff base don `isOpen` is set to true or not.
+- See full demo here [Modal transitions](https://courses.joshwcomeau.com/playground/modal-orchestrations)
+- Check out some React libraries, [react-spring](https://react-spring.io/) and [GPAP](https://greensock.com/gsap/)
+
+### Accessibility
+
+- Animations are an imprtant part of UX, but not everyone experiences in the same way.
+- For some folks, this can trigger physical symbtoms, like nausea, dizzines, and malaise.
+- Modern operating systems offe ra remedy for this, they can opt out of animations.
+- And now web apps and websites can acces this value and use it for our CSS and JS.
+
+### Vestibular disorders
+
+- The vestibular ssytem includes part of the inner ear and parts of the brain, and manages oru sense of balance.
+- For example, when you spin really fast an it makes you dizzy. By spinning you are sloshing fluid around in yoru inner ear and the brain uses that fliud to determine which way is up.
+- So when you are spinning, your brain receives incompatible info form differ sources. Your ear-fluid is claming one thing, while your eyes are claiming another. This is very disorienting.
+- For some people, their vestibular system feeds the brain bad information.
+- The most commonly known symptom of this is called vertigo; someone will feel gravity pulling them in the wrong diretion.
+- Troubling, animations can be a trigger for some folks, leading to a range of unpleasant side-effects: vertigo, dizziness, nausea, headached, malaise.
+- It can feel as it our website is reaching out and spinning the person in their office chair.
+- Estimated that up to 35% of adults 40+ in teh US have experience smoe form of vestibular dysfunciton, with 5% reporting chronic problems.  
+
+### Opting out of animations
+
+- There is a media query for this.
