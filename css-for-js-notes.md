@@ -7675,9 +7675,9 @@ a.card-link:hover .card {
 function App() {
   const [
     animated,
-    setAnimated
+    setAnimated,
   ] = React.useState(false);
-  
+
   return (
     <Wrapper>
       <Box
@@ -7714,7 +7714,7 @@ const Box = styled.div`
   width: 80px;
   height: 80px;
   background: slateblue;
-`
+`;
 
 render(<App />);
 ```
@@ -7752,9 +7752,9 @@ body {
 function App() {
   const [
     animated,
-    setAnimated
+    setAnimated,
   ] = React.useState(false);
-  
+
   return (
     <Wrapper>
       <Box
@@ -7792,7 +7792,7 @@ const Box = styled.div`
   height: 80px;
   background: slateblue;
   animation: jump 1000ms infinite;
-`
+`;
 
 render(<App />);
 ```
@@ -8195,4 +8195,102 @@ Acceptance criteria:
 
 ### Opting out of animations
 
-- There is a media query for this.
+- There is a media query for this in the app settings > accessibility > reduce motion
+- Setting is in all mainstream OS
+- You can just google reduce animaitons for your operating system to find the instructions
+- Apple introduced the setting, `prefers-reduced-motion` and other browsers have followed suit.
+- It has [good browser support](https://caniuse.com/?search=prefers-reduced-motion)
+
+### Accessing in CSS
+
+- To tell if they've reqeusted reduced motion, we can use a media query
+- If a user selected "reduce animations" in their OS, `prefers-reduced-motion` will be set to `reduce`
+- The CSS rules tn that media query will apply, disabling the trnsition on our `.fancy-box` selector
+
+```CSS
+.fancy-box {
+  width: 100px;
+  height: 100px;
+  transform: scale(1);
+  transition: transform 300ms;
+}
+.fancy-box:hover {
+  transform: scale(1.2);
+}
+@media (prefers-reduced-motion: reduce) {
+  .fancy-box {
+    transition: none;
+  }
+}
+```
+
+- A better way to think about it, start without animations and enable them if the user wishes.
+- `no-preference` is the default value, if a user hav never fiddled with their settings, `prefers-reduced-motion` will be set to `no-preference`
+- By switching up sot hat `transition` is set from within a media query, we ensure that the animation is disabled by default for user on devices that don't support this property.
+
+```CSS
+.fancy-box {
+  width: 100px;
+  height: 100px;
+  transform: scale(1);
+  /* No more `transition` here! */
+}
+.fancy-box:hover {
+  transform: scale(1.2);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .fancy-box {
+    transition: transform 300ms;
+  }
+}
+```
+
+### Accessing in JS
+
+- The media query shown above works great for animations that take place entirely from within CSS. But a lot of animations that cannot be done entirely through CSS.
+
+  - Animations using spring physics
+  - Animations involving the cursor coordinates, scroll positions
+  - HTML5 Canvas Aaimations
+  - Some SVG animations
+
+```JAVASCRIPT
+function getPrefersReducedMotion() {
+  const mediaQueryList = window.matchMedia(
+    '(prefers-reduced-motion: no-preference)',
+  );
+  const prefersReducedMotion = !mediaQueryList.matches;
+  return prefersReducedMotion;
+}
+```
+
+- This function nwill return `true` is the user prefers resduced motion.
+- If it returns `false` it mean the user has no preference, and we should enable our animations
+- We can also use event listeners to update this value when it changes
+
+```JAVASCRIPT
+const mediaQueryList = window.matchMedia(
+  '(prefers-reduced-motion: no-preference)',
+);
+const listener = (event) => {
+  const getPrefersReducedMotion = getPrefersReducedMotion();
+};
+mediaQueryList.addListener(listener);
+// Later:
+mediaQueryList.removeListener(listener);
+```
+
+- This listener will fire when the user toggles the "Reduce Motion" checkbox in their OS
+
+### Motion vs. Animation
+
+- Nnot all animations involve motion.
+- The most common triggers for folks with vestibular disorders are multi-layered parallax animations, or page wide transition. Big sweeping motion
+- Should we disable all animations, or only the ones with significant motion?
+- If an element moves more then a few pixels, we can disable it using the techniques above.
+- But you don't have to disable small fadin-in and fading-out color changes. Or if an element moves a few pixels.
+- How much is to much? small bits of animation motion doesn't seem to bother most people with vvestibular issues. But err on the side of caution.
+
+## Exercises, Update the Help Circle
+
+- Update the help circle animation from earlier so it doesn't animate for users who have enabled the "reduced" motion setting.
