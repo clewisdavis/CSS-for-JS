@@ -8294,3 +8294,103 @@ mediaQueryList.removeListener(listener);
 ## Exercises, Update the Help Circle
 
 - Update the help circle animation from earlier so it doesn't animate for users who have enabled the "reduced" motion setting.
+- The default option for people unable to provide a preference, should be the safer one.
+- You can optimize for both cases, for people with vestibular disorders, have it fade in, and for others, you have slide in.
+
+```HTML
+<style>
+  /* starter styles */
+  .help-circle {
+    display: grid;
+    place-content: center;
+    width: 60px;
+    height: 60px;
+    color: white;
+    background: slateblue;
+    border-radius: 50%;
+    border: 3px solid white;
+    box-shadow:
+      0px 2px 8px hsl(0deg 0% 0% / 0.1),
+      0px 4px 16px hsl(0deg 0% 0% / 0.1),
+      0px 8px 32px hsl(0deg 0% 0% / 0.1);
+    cursor: pointer;
+  }
+  .help-circle img {
+    width: 32px;
+    height: 32px;
+  }
+
+  .visually-hidden {
+    position: absolute;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    width: 1px;
+    margin: -1px;
+    padding: 0;
+    border: 0;
+  }
+  
+  @keyframes slide-in {
+    from {
+      transform: translateY(
+        calc(100% + var(--spacing))
+      );
+    }
+    to {
+      transform: translateY(0%);
+    }
+  }
+  /* fade in option by default */
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  .help-circle {
+    --spacing: 32px;
+    position: fixed;
+    bottom: var(--spacing);
+    right: var(--spacing);
+    animation: fade-in 500ms backwards;
+    animation-delay: 1000ms;
+    /*
+    animation: slide-in 500ms backwards;
+    animation-delay: 1000ms;
+    */
+  }
+  
+  /* 
+  @media (prefers-reduced-motion: reduce) {
+    .help-circle {
+      animation: none;
+      animation-delay: none;
+    }
+  }
+  */
+  
+  /* Media query for those for everyone else, reduce motion disabled in preferences */
+  @media (prefers-reduced-motion: no-preference) {
+    .help-circle {
+      animation: slide-in 500ms backwards;
+      animation-delay: 1000ms;
+    }
+  }
+  
+  
+</style>
+
+<button class="help-circle">
+  <img
+    alt=""
+    src="/cfj-mats/help-white.svg"
+  />
+  <span class="visually-hidden">
+    Access help center
+  </span>
+</button>
+```
