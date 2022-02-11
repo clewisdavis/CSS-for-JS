@@ -8394,3 +8394,120 @@ mediaQueryList.removeListener(listener);
   </span>
 </button>
 ```
+
+## Ecosystem World Tour Animation
+
+- Take a look at the modern landscape of animaitons libraries and APIs.
+- A little React heavy
+
+### The Web Animations API
+
+- The web animations API is a low-level animation API built into the browswer. We can build animation sequences and control them with JS.
+- It mirros the `@keyframes` API
+
+```JAVASCRIPT
+const elem = document.querySelector('.box');
+const frames = [
+  { opacity: 0, transform: 'translateY(100%)' },
+  { opacity: 1, transform: 'translateY(0%)' },
+];
+elem.animate(
+  frames,
+  {
+    duration: 1000,
+    iterations: Infinity,
+  },
+);
+```
+
+- This is equivalent to the following CSS
+
+```CSS
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+}
+.box {
+  animation: pop-in 1000ms infinite;
+}
+```
+
+- Web Animations API can be thought of as "CSS keyframe animations in JS".
+- There are some differences, the Web Animations API will let us apply a single timing fuction for the whole animation. Each step isnt' given it's own easing by default.
+- You can provide custom timing functions to each step in the web animations API.
+
+```HTML
+<style>
+.box {
+  width: 50px;
+  height: 50px;
+  background: slateblue;
+  margin: 64px;
+  border-radius: 4px;
+}
+
+html {
+  height: 100%;
+}
+body {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+</style>
+<div class="box"></div>
+
+<script>
+  const elem = document.querySelector('.box');
+
+  const frames = [
+    {
+      transform: 'translate(-20px, -10px)',
+      easing: 'ease-out',
+    },
+    {
+      transform: 'translate(0px, 10px)',
+      easing: 'ease-in',
+    },
+    {
+      transform: 'translate(20px, -10px)',
+      easing: 'ease-out',
+    },
+    { transform: 'translate(-20px, -10px)' },
+  ]
+  
+  elem.animate(
+    frames,
+    {
+      duration: 2000,
+      iterations: Infinity,
+      easing: 'ease',
+    }
+  )
+</script>
+```
+
+- Pros
+  - it's built into the browswer, so no hefty package needs
+  - it has good performance
+  - solid browswer support
+  - bit more customization copared to CSS keyframe animations
+- Cons
+  - it' snot fundamentally differ from CSS keyframe animations
+  - some parts are easy to get tripped up on vs. the CSS keyframe animations
+
+- Resources
+  - [MDN Animations API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Animations_API/Using_the_Web_Animations_API)
+  - [CSS Animations vs. Web Animations](https://css-tricks.com/css-animations-vs-web-animations-api/)
+  - Note: [Motion One](https://motion.dev/)
+
+### Framer Motion
+
+-
