@@ -8510,4 +8510,51 @@ body {
 
 ### Framer Motion
 
+- Framer Motion is not the same thing as Framer / Framer X, the design tool. It's produced by the same company but a differ thing.
+- Framer Motion is a production-ready library for React. It can animate CSS properties that aren't normally able to be animated.
+- Framer Motion works by calculating a sequence of transforms required to interpolate the start and end positions, sounds really hard.
+- Because it uses tranforms, animations are highly performant.
+- Framer Motion can animate just about any CSS change.
+- For example, if your element goes from being a child in a grid continer to setting position absolute, Framer Motion can animate that transition.
+- It can even animate between components
+
+- Pros
+  - Can animate all kidns of things tha twould normally not be animatable, leadin g o next level user experiences.
+  - Uses hardware-accelerated transforms for performatne transitions
+  - Supports using spring physics instead of Bezier curves
+  - Ties in nicely with Rect. Can add sophisticated animations with small amount of code.
+- Cons
+  - All taht magic comes at a cost, package is ~32kb gzip
+  - Runs in the main thread, so may become choppy is the thread is busy
+  - Only works in React
+
+- Resources
+  - [Treasure Trove Framer Motion](https://courses.joshwcomeau.com/css-for-js/treasure-trove/009-framer-motion)
+  - [Official Docs](https://www.framer.com/motion/)
+
+### React Spring
+
+- React SPring allows us to model our animations base don spring physics, rather then Bezier curves
+- Entirely differ model for running animations.
+- With spring physics, we don't pick a duaton for our animations; instead we configure the characteristics of a spring.
+- Spring physics are modeled on the natual world, and convinces our breain in a way that Bezier curves can't fully imitate.
+- React Spring is the most common way to animate using spring phusics in React.
+
+- Pros
+  - Fluid, organic motion compared with CSS transitions / keyframe animations.
+  - Highly optimized performance.
+  - Reletively small 18bg gzip
+  - A rich APi with lots of advanced optoins,
+  - Ties in with an ecosystem created by the same folks.
+  - At it's core, React Spring is a number generator
+- Cons
+  - It can't do Magic animations like the way Framer Motion can. And Framer Motion does not support spiring physics.
+  - The leanring curve is pretty steep, both with spring physics and this library.
+  - Like all JS based animations libraries, teh animation might be janky if the main thread becomes occupied.
+- Resources
+  - [React Spring](https://react-spring.io/)
+  - [Josh's intro to spring phycics](https://www.joshwcomeau.com/animation/a-friendly-introduction-to-spring-physics/)
+
+### GreenSock GSAP
+
 -
