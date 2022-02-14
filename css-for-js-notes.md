@@ -8557,4 +8557,30 @@ body {
 
 ### GreenSock GSAP
 
+- GSAP is one of th oldest and most well known animation libraries.
+- It offers advanced Bezier based easing. And a timeline to manage orchestration
+- Bundle size is similar to other libraries. 24kb gzip
+- Pros
+  - Large active community
+  - Can be used iwth any framework, not just React
+  - Highly optimized for perf
+  - RIch plugin ecosystem for things like adding scrol based triggers
+- Cons
+  - Does not support true spring physics
+  - Because it is framework agnostic, it will not tie in as neatly as a framework specific solutions
+- Resources
+  - [Official site and docs](https://greensock.com/gsap/)
+  - Sara Drasner, [How to animate on the web sith greensock](https://css-tricks.com/how-to-animate-on-the-web-with-greensock/)
+
+### Other libraries
+
+- Lots of other options, but most try to replicate CSS transitions and keyframe animations.
+- Focus on tools that do htings not otherwise possible in CSS.
+- For small straightforward animations, CSS animations is your best bet.
+- Reach for modern tools in two cases:
+  - The naimation is too complet to be done with CSS
+  - The animation is very prominent, and want to make it stand out a little more with sprint physics.
+
+## Workshop, Add animation to our Sole and Ankle store
+
 -
