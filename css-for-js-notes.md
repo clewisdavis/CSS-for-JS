@@ -8570,7 +8570,7 @@ body {
   - Because it is framework agnostic, it will not tie in as neatly as a framework specific solutions
 - Resources
   - [Official site and docs](https://greensock.com/gsap/)
-  - Sara Drasner, [How to animate on the web sith greensock](https://css-tricks.com/how-to-animate-on-the-web-with-greensock/)
+  - Sara Drasner, [How to animate on the web with greensock](https://css-tricks.com/how-to-animate-on-the-web-with-greensock/)
 
 ### Other libraries
 
@@ -8583,4 +8583,209 @@ body {
 
 ## Workshop, Add animation to our Sole and Ankle store
 
--
+- [Check out my repo here](https://github.com/clewisdavis/sole-and-ankle-animated)
+
+## Module 9 - Big Little Details
+
+- Learn about the small details to add a lot of polish to your websites and apps
+
+### CSS Filters
+
+- CSS Filters allow us to leverage the power of SVG filters from within CSS.
+- SVG's are an image file format that allows us to create vector graphics using an HTML like syntax
+- One of the powerful thigns about SVGs, they have a rich filter API
+- The cool thing, we can access a SVG filter from within CSS
+
+```CSS
+.box {
+  filter: drop-shadow(4px 8px 5px hsl(0deg 0% 0% / 0.2));
+}
+```
+
+- CSS has access to about a dozen common SVG filters, through the use of filter funcitons like `drop-shadow()`
+
+### Color Manipulation
+
+- A good chunk of CSS filters manipulate color in some way.
+- Similar to Photoshop filters.
+- Some examples
+
+```CSS
+img {
+  width: 300px;
+  border-radius: 8px;
+}
+.brightness {
+  filter: brightness(150%);
+}
+.contrast {
+  filter: contrast(60%);
+}
+.sepia {
+  filter: sepia(100%);
+}
+.mixed {
+  filter: contrast(200%) grayscale(90%);
+}
+section {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+}
+```
+
+- These color manipulating filters take a percentage. For example, `brightness` has a default value of `100%`, and we can make it less or more bright.
+- We can apply multipele filters to the same element by space-seperating them:
+
+```CSS
+.image {
+  filter:
+    brightness(120%)
+    contrast(110%)
+    grayscale(50%);
+}
+```
+
+- These filters are often used on images, but can work on any DOM nodes.
+- For example, a button using transition to animate the effect.
+
+```HTML
+<style>
+  .btn {
+    padding: 16px 64px;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+  .btn {
+    background: linear-gradient(
+      to top,
+      hsl(260deg 80% 40%),
+      hsl(260deg 80% 50%)
+    );
+    transition: filter 600ms;
+  }
+  .btn:hover, .btn:focus {
+    transition: filter 250ms;
+    filter: brightness(150%);
+  }
+</style>
+
+<button class="btn">
+  Push me
+</button>
+```
+
+- The effect is similar to animating `background-color` but more flexible since it works with teh gradients and background images as well.
+
+### Hue rotation
+
+- The `hue-rotate` filter funciton shifts the color of every pixel in the element.
+
+```HTML
+<style>
+  .btn {
+    padding: 16px 64px;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+  .btn {
+    background: linear-gradient(
+      to top,
+      hsl(260deg 80% 40%),
+      hsl(260deg 80% 50%)
+    );
+    transition: filter 600ms;
+  }
+  .btn:hover, .btn:focus {
+    transition: filter 250ms;
+    filter:
+      brightness(110%)
+      hue-rotate(60deg);
+  }
+</style>
+```
+
+### Blur Filter
+
+- The CSS filter `blur` applies a Gaussian blur to the selected element.
+- And example, hover over the image to unblur.
+- However, blurring can be a very expensive operation, even with hardware acceleration.
+
+```HTML
+<style>
+  img {
+    display: block;
+    width: 300px;
+    border-radius: 8px;
+  }
+  img {
+    filter:
+      blur(6px)
+      brightness(50%);
+    transition: filter 800ms ease-in-out;
+  }
+  
+  a:hover img,
+  a:focus img {
+    filter:
+      blur(0px)
+      brightness(100%);
+    transition: filter 300ms;
+  }
+</style>
+
+<a href="/">
+  <img
+    alt="A colourful busy street in Tokyo, Japan"
+    src="/cfj-mats/akihabara.jpg"
+  />
+</a>
+```
+
+- A11y, blurring is comsmetic, we obfuscate it visually. It someone is using a screenreader, they will be abel to access the element and won't have any idea the content is meant to be concealed.
+- This can be a problem if lurring serves a purpose, like a quiz ina game and answer is blurred. In this case use `aria-hidden` to hide the content from screen readers. And remove the blur and aria attribute at the same time.
+- If you want a sharp edge on your element, you can use `overflow: hidden` on the parent container.
+
+```HTML
+<style>
+  img {
+    display: block;
+    width: 300px;
+    filter:
+      blur(6px)
+      brightness(50%);
+    transition: filter 800ms ease-in-out;
+  }
+  a:hover img,
+  a:focus img {
+    filter:
+      blur(0px)
+      brightness(100%);
+    transition: filter 300ms cubic-bezier(0.05, 0.66, 0.33, 1);
+  }
+  a {
+    /* Crop the blurred edge */
+    overflow: hidden;
+    /*
+      Move the border-radius up,
+      to preserve the sharp corner
+      as well
+    */
+    border-radius: 8px;
+  }
+</style>
+
+<a href="/">
+  <img
+    alt="A colourful busy street in Tokyo, Japan"
+    src="/cfj-mats/akihabara.jpg"
+  />
+</a>
+```
