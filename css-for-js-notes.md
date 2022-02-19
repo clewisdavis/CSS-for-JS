@@ -8789,3 +8789,345 @@ section {
   />
 </a>
 ```
+
+### Blurred Glow
+
+- Neat design secret to glow an element with the blur fitler.
+- Take two elements and stack them on top of one another, then blur the background element.
+
+```HTML
+<style>
+  body {
+    overflow: hidden;
+  }
+  .wrapper {
+    position: relative;
+  }
+  .gradient {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background-image: linear-gradient(
+      deeppink,
+      red,
+      coral,
+      gold,
+      white
+    );
+  }
+  .blurry {
+    position: absolute;
+    filter: blur(40px);
+    transform: scale(1.3) translateX(10%) rotate(30deg);
+  }
+  .regular {
+    filter: drop-shadow(0px 0px 25px hsl(0deg 0% 0% / 0.3));
+  }
+</style>
+
+<div class="wrapper">
+  <div class="gradient blurry"></div>
+  <div class="gradient regular"></div>
+</div>
+```
+
+### Backdrop Fitlers
+
+- The `filter` property wil apply an SVG filter to the selected element, btu what if we want to blur everything behind the element?
+- For example, a card  in front of a photo, blurring the background.
+- Unfortunately FireFox does not support this feature.
+- You can accomplish this task using the `backdrop-filter` property.
+
+```HTML
+<style>
+  img {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    object-fit: cover;
+  }
+  .blur-circle {
+    position: absolute;
+    top: 50vh;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100vh;
+    height: 100vh;
+    border-radius: 50%;
+    border: 4px solid white;
+  }
+
+  body {
+    /*
+      Don't allow the circle to
+      introduce a scrollbar.
+    */
+    max-height: 100vh;
+    overflow: hidden;
+  }
+  .blur-circle {
+    backdrop-filter: blur(10px);
+    /* Vendor prefix for Safari: */
+    -webkit-backdrop-filter: blur(10px);
+  }
+</style>
+
+<img
+  alt="A colourful busy street in Tokyo, Japan"
+  src="/cfj-mats/akihabara.jpg"
+/>
+<div class="blur-circle"></div>
+```
+
+- You can use `backdrop-filter` to obfuscate content behind a sticky header.
+
+```HTML
+<style>
+  body {
+  /* Make sure there's enough to scroll */
+  min-height: 150vh;
+}
+
+  header {
+    position: sticky;
+    top: 0;
+    padding: 32px;
+    text-align: center;
+  }
+
+  main {
+    padding: 32px;
+  }
+
+  h2 {
+    margin-bottom: 16px;
+  }
+
+  .intro {
+    font-size: 1.125rem;
+    margin-bottom: 64px;
+  }
+
+  ol {
+    font-size: 1.125rem;
+    margin-bottom: 16px;
+  }
+  header {
+    background: hsl(0deg 0% 100% / 0.5);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+</style>
+
+<header>
+  <h1>Course Platform</h1>
+</header>
+
+<main>
+  <h2>Module 1: Rendering Logic I</h2>
+  <p class="intro">Flow layout is the “OG” layout algorithm of the web, and it's still used heavily today. In this module, we explore how to best use Flow layout in modern times. We'll also deepen our understanding of common fundamentals like the Box Model.</p>
+  
+  <ol>
+    <li>
+      Built-in Declarations and Inheritance
+    </li>
+    <li>
+      The Cascade
+    </li>
+    <li>
+      Directions
+    </li>
+    <li>
+      The Box Model
+      <ol>
+        <li>
+          Padding
+        </li>
+        <li>
+          Border
+        </li>
+        <li>
+          Margin
+        </li>
+      </ol>
+    </li>
+    <li>
+      Flow Layout
+      <ol>
+        <li>
+          Width Algorithms
+        </li>
+        <li>
+          Height Algorithms
+        </li>
+      </ol>
+    </li>
+    <li>
+      Margin Collapse
+      <ol>
+        <li>
+          Rules of Margin Collapse
+        </li>
+        <li>
+          Will It Collapse?
+        </li>
+        <li>
+          Using Margin Effectively
+        </li>
+      </ol>
+    </li>
+    <li>
+      Workshop: Agency page
+    </li>
+</main>
+```
+
+### Fallbacks
+
+- `backdrop-filter` has decent browswer support but missing in Firefox.
+- In cases where the effect causes legibility issues. You need a fallback.
+- Use `@supports` query so that all users are served a decent experience.
+
+```CSS
+/*
+  The fallback experience, for IE/Firefox users.
+  MUCH less transparency.
+*/
+header {
+  background: hsl(0deg 0% 100% / 0.95);
+}
+@supports (backdrop-filter: blur(12px)) {
+  /*
+    The main experience, for Chrome/Safari users.
+    Blurry backdrops.
+  */
+  header {
+    background: hsl(0deg 0% 100% / 0.5);
+    backdrop-filter: blur(12px);
+  }
+}
+```
+
+### Lots of combinations
+
+- `backdrop-filter` unlocks a lot of interesting possibilities. It supports all the filters, and be combined with multiple filters.
+
+```CSS
+.header {
+  backdrop-filter:
+    brightness(150%)
+    hue-rotate(30deg)
+    blur(5px);
+}
+```
+
+## Border Radius
+
+- The `border-radius` property lets us round corners of our boxes
+- But that is just the start of it, you can do some cool things with `border-radius`
+
+```HTML
+<style>
+  .card {
+    width: 200px;
+    height: 200px;
+    background: white;
+    border-radius: 16px;
+  }
+</style>
+
+<article class="card"></article>
+```
+
+### Percentages
+
+- Have you ever trid to use a percentage border-radius on a non-square element? You get some funky results.
+
+```HTML
+<style>
+  .card {
+    width: 300px;
+    height: 150px;
+    background: white;
+    border-radius: 10%;
+  }
+</style>
+
+<article class="card"></article>
+```
+
+- Border radius is shorthand for 4 distict CSS properties.
+  - `border-top-left-radius`
+  - `border-top-right-radius`
+  - `border-bottom-left-radius`
+  - `border-bottom-right-radius`
+
+- Each of these properties accepts two values, horizontal and vertical radius.
+
+```HTML
+<style>
+  .card {
+    width: 300px;
+    height: 150px;
+    background: white;
+    border-top-left-radius: 40px 20px;
+  }
+</style>
+
+<article class="card"></article>
+```
+
+- The first value is used as the horizontal radiufor an ellipse. The second value is used as the vertical radius.
+- This is how `border-radius` works under the hood. When we pass a value like `32px`, that single value is used 8 times.
+- With %'s, it gets strange, the horizontal radius will be based on the width, and teh vertical radius wil be based on the height.
+- The ellipse wil be proportional tot he element itself. If our element has a width of 300px and a eight of 150px, it will have an aspect ratio of 2:1.
+- If we set the radisu to 50%, that mean sthe diameter is 100%. So we end up with an elipses that is the same width and height as the element itself.
+
+### Full shorthand syntax
+
+- `border-radius` actually takes 8 seperate values: 4 corners, and each corner can specify a horizontal and vertical radius.
+- We can pass all 8 values to the `border-radius` shrohand with our friend the `/` delimiter
+
+```CSS
+.box {
+  border-radius: 10% 20% 30% 40% / 50% 60% 70% 80%;
+}
+```
+
+- The first 4 numbers are all horizontal radiuses. We specify then in clockwise orer, starting from the top-left corner.
+- The last 4 numbers are the vertical radiuses, also specified in teh clockwise order from the top left.
+- If on ly the first 4 numbers are provided, they are copied over to the last 4:
+
+```CSS
+.box {
+  /* These two declarations are equivalent: */
+  border-radius: 10% 20% 30% 40%;
+  border-radius: 10% 20% 30% 40% / 10% 20% 30% 40%;
+}
+```
+
+- And if only a single value is provided, it's copied over all 8 values:
+
+```CSS
+.box {
+  /* These two declarations are equivalent: */
+  border-radius: 100px;
+  border-radius: 100px 100px 100px 100px / 100px 100px 100px 100px;
+}
+```
+
+### Blobby shapes
+
+- By using all 8 border-rdius values, ew can create some pretty neat blobby shapes.
+- Check out this tool by [9Elements](https://9elements.github.io/fancy-border-radius/):
+- You can use this tool to get some neat shapes with border radius.
+
+## Nested Radiuses
+
+-
