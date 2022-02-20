@@ -9130,4 +9130,139 @@ header {
 
 ## Nested Radiuses
 
+- A common mistke people make, nesting radius.
+- A rounded element in a rounded corner. We use the same border-radius for both parent and child.
+- The corners dont' quite look right do they? They are uneven in the middle.
+
+```HTML
+<style>
+  .card {
+    width: min-content;
+    background: white;
+    text-align: center;
+  }
+  .avatar {
+    display: block;
+    width: 250px;
+  }
+  .card p {
+    padding: 4px;
+  }
+  .card {
+    border-radius: 16px;
+    padding: 8px;
+  }
+  .avatar {
+    border-radius: 16px;
+  }
+</style>
+
+<article class="card">
+  <img
+    class="avatar"
+    alt="Dog avatar"
+    src="/cfj-mats/article-image-spot.jpg"
+  />
+  <h2>Spot</h2>
+  <p>Perennial Good Boy. Parlimentary candidate, district 22. Dog park YIMBY.</p>
+</article>
+```
+
+- By using the same `border-radius`, both orners are being rounde according to their own circles.
+- Our corner would look more consistent if the two corners shared the same center point.
+- How do we calculate this? We need to figure out the radius of the larger circle.
+- To do that we need to sum pu teh inner circle's radius as well as any padding or other spacing
+- In the case above, the correct outer radius is 24px (16px inner radius + 8px padding)
+- We can use `calc` and CSS variables to do this calculation for us:
+
+```HTML
+<style>
+  .card {
+    --inner-radius: 16px;
+    --padding: 8px;
+    border-radius: calc(
+      var(--inner-radius) + var(--padding)
+    );
+    padding: var(--padding);
+  }
+  .avatar {
+    border-radius: var(--inner-radius);
+  }
+</style>
+
+<article class="card">
+  <img
+    class="avatar"
+    alt="Dog avatar"
+    src="/cfj-mats/article-image-spot.jpg"
+  />
+  <h2>Spot</h2>
+  <p>Perennial Good Boy. Parlimentary candidate, district 22. Dog park YIMBY.</p>
+</article>
+```
+
+- What if the outer radius is known, and we want to calculat ethe inner radius?
+- You do the same calculation except ew subtract the padding instead of adding it:
+
+```HTML
+<style>
+  .card {
+    width: min-content;
+    background: white;
+    text-align: center;
+  }
+  .avatar {
+    display: block;
+    width: 250px;
+  }
+  .card p {
+    padding: 4px;
+  }
+    .card {
+    --outer-radius: 24px;
+    --padding: 8px;
+    border-radius: var(--outer-radius);
+    padding: var(--padding);
+  }
+  .avatar {
+    border-radius: calc(
+      var(--outer-radius) - var(--padding)
+    );
+  }
+</style>
+
+<article class="card">
+  <img
+    class="avatar"
+    alt="Dog avatar"
+    src="/cfj-mats/article-image-spot.jpg"
+  />
+  <h2>Spot</h2>
+  <p>Perennial Good Boy. Parlimentary candidate, district 22. Dog park YIMBY.</p>
+</article>
+```
+
+### Circular Radius
+
+- The `border-radius` has a built in limit, it won't allow the corners to grow so large that they run into each other.
+- If our element is 200 X 100, each corner will have a maximum radius of 50px. It cannot grow any larger.
+
+```HTML
+<style>
+  .card {
+    width: 200px;
+    height: 100px;
+    border: 3px solid hsl(225deg, 12%, 40%);
+  }
+  .card {
+    /* Yowza! */
+    border-radius: 6000px;
+  }
+</style>
+
+<article class="card"></article>
+```
+
+### Asymmetric Circles
+
 -
