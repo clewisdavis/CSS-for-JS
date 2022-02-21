@@ -9265,4 +9265,105 @@ header {
 
 ### Asymmetric Circles
 
+- What if you wanted to create a asymmtric shape?
+- You can give the top corners a differ value then the bottom ones, creating a asymmetrical effect.
+
+```HTML
+<style>
+  .card {
+    width: 300px;
+    height: 200px;
+    border: 3px solid hsl(225deg, 12%, 40%);
+    border-radius: 5000px 5000px 1000px 1000px;
+  }
+</style>
+
+<article class="card"></article>
+```
+
+## Shadows
+
+- Shadows give you app a sense of lighting and depth.
+- And they are surprisingly deep.
+- There are three main ways we can apply shadows in CSS: `box-shadow`, `text-shadow` and `filter: drop-shadow`
+
+### box-shadow
+
+- It's based on the box model. When you appy `box-shadow` to an element, that element's box will cast a simulated shadow behind it.
+
+```HTML
+<style>
+  .card {
+    box-shadow:
+      2px 4px 8px hsl(0deg 0% 0% / 0.25);
+  }
+</style>
+
+<article class="card">
+  <h2>Hello World</h2>
+</article>
+```
+
+- `box-shadow` is most commonly calded with 4 arguments:
+
+1. Horizontal offset
+2. Vertical offset
+3. Blur radius
+4. Color
+
+- The blue radius is the strength of the blurring effect.
+- The color can be any valid color value, but recommend using `hsl` or `hsla`. Using a solid color like black can be very aggressive shadow.
+
+### filter: drop-shadow
+
+- `filter` property allows us to access SVG filter mechanics rfom wihtin the CSS language.
+- `fitler: drop-shadow()` is one of those filters.
+
+```HTML
+<style>
+  .card {
+    filter: drop-shadow(
+      2px 4px 8px hsl(0deg 0% 0% / 0.25)
+    );
+  }
+</style>
+
+<article class="card">
+  <h2>Hello World</h2>
+</article>
+```
+
+- The API looks quite similar: it also accepts 4 values, of the same types in the same order.
+- But the differnce is, under the hood, the `drop-shadow` filter funciton uses Gaussian blurring. This is a differnt mathematical way of blur. And produces slighly differ results.
+- Instead of a simple blur radius, the third argumane specifies a "standard deviation".
+- Compared to `box-shadow`, the `fitler` produces a softer, more blended shadow.
+
+### text-shadow
+
+- `text-shadow` is a shadow that applies only to the typography wihtin the selected element.
+
+```HTML
+<style>
+  .card {
+    width: 200px;
+    max-width: 100%;
+    background: white;
+    border-radius: 4px;
+    padding: 32px;
+  }
+  p {
+    text-shadow:
+      2px 4px 8px hsl(0deg 0% 0% / 0.25);
+  }
+</style>
+
+<p>
+  This text has a subtle shadow!
+</p>
+```
+
+- One of the most common use case for `text-shadow` is to increase the contrast between light color text and a light background.
+
+## Contoured Shadows
+
 -
