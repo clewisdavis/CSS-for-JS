@@ -9366,4 +9366,202 @@ header {
 
 ## Contoured Shadows
 
--
+- Many CSS filters are designed ot work well with images. Like they were plucked out from PSD.
+- For example, in Photoshop, when you add a drop shadow to layer, it applies that shadow to he opaque pixxels in thelayer. It doesn't do the rectangle itself.
+- This means that if we use `filter: drop-shadow` on an image that aupports transparency, png, gif, svg, the shadow wil apply tot he non-transparent parts of the image:
+- This effect isn't limeted to images, it works for any DOM node.
+- We can apply `filter: drop-shadow` to an alement, and it contours that element and all of its descendants and applies the shadow tot hat shape.
+- Example;
+
+```HTML
+<style>
+  /* starter styles */
+  body {
+  overflow: hidden;
+  }
+  .card {
+    position: relative;
+    width: 200px;
+    max-width: 100%;
+    height: 250px;
+    background: white;
+    border-radius: 4px;
+    padding: 32px;
+    text-align: center;
+  }
+  .card h2 {
+    font-size: 1rem;
+  }
+  .decoration {
+    position: absolute;
+    border: 4px solid white;
+    border-radius: 50%;
+  }
+  .decoration.one {
+    top: 0;
+    right: 0;
+    width: 80px;
+    height: 80px;
+    background: hotpink;
+    transform: translate(50%, -50%);
+  }
+  .decoration.two {
+    top: 50px;
+    right: -70px;
+    width: 50px;
+    height: 50px;
+    background: dodgerblue;
+  }
+  /* shadow */
+  .card {
+    filter: drop-shadow(
+      2px 4px 8px hsl(0deg 0% 0% / 0.4)
+    );
+  }
+</style>
+
+<article class="card">
+  <h2>Hi!</h2>
+  <div class="decoration one"></div>
+  <div class="decoration two"></div>
+</article>
+```
+
+- We can even apply `filter: drop-shadow` to a group of elements, to make sure we don't have any shadow overlap. Like a stack of cards.
+- This can prevent the overlap that happens when `box-shadow` is use don tightly grouped siblings.
+
+```HTML
+<style>
+  body {
+  margin: 0;
+  padding: 0;
+  }
+
+  .item {
+    height: 75px;
+    background: white;
+    border-radius: 4px;
+  }
+
+  .grid {
+    display: grid;
+    padding: 16px;
+    grid-template-columns:
+      repeat(auto-fill, minmax(100px, 1fr));
+    gap: 8px;
+    margin-bottom: 164px;
+    max-width: 100vw;
+    margin: 64px auto;
+  }
+  /*
+    Apply the shadow to the grid parent,
+    not the individual grid elements!
+  */
+  .grid {
+    filter: drop-shadow(
+      2px 4px 32px hsl(0deg 0% 0% / 0.4)
+    );
+  }
+</style>
+
+<main class="grid">
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+  <div class="item"></div>
+</main>
+```
+
+- When should you use `filter: drop-shadow` vs `box-shadow`, box-shadow still has some uses
+
+## Single Sided Shadows
+
+- Sometimes we want our shadows to be cast in a single direction. We want the shadow to be underneath the element, not spilling out in all directions.
+- `box-shadow` is qualified to solve this problem. Because it alone takes an optional fifth argument: spead radius.
+
+```CSS
+.box {
+  box-shadow: 0px 2px 4px 10px red;
+  /*                       ^-- Spread! */
+}
+```
+
+- The spread radius allows us to increase or decrease the size of the shadow.
+- By default, the spread is 0, meaning the shadow is the same size as the element.
+- A spread of `2px`, mean sthe shadow grows in every direction by 2px, becoming 4px wider and 4px taller.
+- Example; Bottom Edge, the most common shadow
+
+```HTML
+<style>
+  html, body {
+  height: 100%;
+  }
+  body {
+    padding: 0;
+    display: grid;
+    place-content: center;
+  }
+
+  .box {
+    width: 200px;
+    max-width: 100%;
+    border-radius: 8px;
+    background: white;
+    padding: 16px 20px;
+    display: grid;
+    place-content: center;
+    font-size: 2rem;
+  }
+  .box {
+    --blur: 8px;
+    --spread: calc(var(--blur) * -1);
+    --offset: 12px;
+    
+    box-shadow:
+      0px var(--offset)
+      var(--blur) var(--spread)
+      hsl(0deg 0% 0% / 0.2);
+  }
+</style>
+<div class="box">
+  Hello
+</div>
+```
+
+- You can change the direction by tweaking the horiontal/vertical offsets.
+
+```HTML
+<style>
+  html, body {
+  height: 100%;
+  }
+  body {
+    padding: 0;
+    display: grid;
+    place-content: center;
+  }
+
+  .box {
+    width: 100px;
+    height: 100px;
+    border-radius: 8px;
+    background: white;
+  }
+  .box {
+    --blur: 8px;
+    --spread: calc(var(--blur) * -1);
+    
+    box-shadow:
+      12px 0px
+      var(--blur) var(--spread)
+      hsl(0deg 0% 0% / 0.2);
+  }
+</style>
+<div class="box"></div>
+```
+
+- Teh `drop-shadow` filter function deos not take a `spread` argument, this feature is unique to `box-shadow`
+
+## Inset Shadows
