@@ -9565,3 +9565,146 @@ header {
 - Teh `drop-shadow` filter function deos not take a `spread` argument, this feature is unique to `box-shadow`
 
 ## Inset Shadows
+
+- One trick exlusive to `box-shadow`, we can use it to create inner shadows!
+- The inset shadows allo wus to create the illusion that an element is lower than it's surrouding environment.
+
+```HTML
+<style>
+  html, body {
+  height: 100%;
+  }
+  body {
+    padding: 0;
+    display: grid;
+    place-content: center;
+  }
+
+  .wrapper {
+    background-color: hsl(0deg 0% 92%);
+    border-radius: 16px;
+    padding: 64px;
+  }
+  .wrapper {
+    box-shadow:
+      inset
+      2px 2px 8px
+      hsl(0deg 0% 0% / 0.33);
+  }
+</style>
+
+<div class="wrapper">
+  Hello World
+</div>
+```
+
+- One cool trick, is to create a moat
+
+```HTML
+<style>
+  html, body {
+  height: 100%;
+  }
+  body {
+    padding: 0;
+    display: grid;
+    place-content: center;
+  }
+
+  .wrapper {
+    /* Using the nested radius trick discussed earlier! */
+    --radius: 16px;
+    --padding: 8px;
+    background-color: hsl(230deg 80% 90%);
+    padding: var(--padding);
+    border-radius: var(--radius);
+  }
+  .box {
+    width: 200px;
+    max-width: 90vw;
+    border-radius: calc(var(--radius) - var(--padding));
+    background: white;
+    padding: 16px 20px;
+    display: grid;
+    place-content: center;
+    font-size: 2rem;
+  }
+  .wrapper {
+    box-shadow:
+      inset
+      2px 2px 8px
+      hsl(0deg 0% 0% / 0.33);
+    /*
+     The '.box' has a non-inset shadow.
+     We don't want it to bleed beyond
+     its wrapper.
+    */
+    overflow: hidden;
+  }
+  .box {
+    box-shadow:
+      2px 2px 8px
+      hsl(0deg 0% 0% / 0.33);
+  }
+</style>
+
+<div class="wrapper">
+  <div class="box">
+    Moat!
+  </div>
+</div>
+```
+
+## Exercises, Shadows
+
+- Tooltip with shadow, we want the whole element to have a shadow, including the tip.
+
+```HTML
+<style>
+  /* base styles */
+  .tooltip {
+    position: relative;
+    width: 160px;
+    padding: 16px;
+    background: white;
+    border-radius: 8px;
+    text-align: center;
+  }
+
+  .tooltip::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    margin: auto;
+    background: inherit;
+    width: 24px;
+    height: 24px;
+    transform: translateY(-100%);
+    /*
+      “clip-path” cuts out the triangle
+      shape. We'll learn more about it
+      later this module!
+    */
+    clip-path:
+      polygon(0% 100%, 50% 0%, 100% 100%);
+  }
+  .tooltip {
+  /*
+    box-shadow:
+      0px 0px 16px hsl(0deg 0% 0% / 0.5);
+  */
+  /* use filter instead of box-shadow to get the entire element */
+  filter: drop-shadow(
+    0px 0px 16px hsl(0deg 0% 0% / 0.4)
+    );
+  }
+</style>
+
+<div class="tooltip">
+  Lorem ipsum dolor hello
+</div>
+```
+
+- Scrapbooking, create an scrapbooking inspired UI
