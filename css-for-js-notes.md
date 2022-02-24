@@ -9708,3 +9708,84 @@ header {
 ```
 
 - Scrapbooking, create an scrapbooking inspired UI
+
+```HTML
+<!--
+Acceptance criteria:
+
+• The <article> should be 90% or 500px wide,
+  whichever is smaller. It should be centered.
+• The inset shadow should have:
+  • 1px horizontal offset
+  • 2px vertical offset
+  • 4px blur radius
+  • Black color @ 30% opacity
+• The “heart” sticker should have a shadow.
+  (use your judgment for the params)
+-->
+
+<style>
+  body {
+  padding: 64px 32px;
+  }
+  .wrapper {
+    background: peachpuff;
+    padding: 64px;
+  }
+  .card {
+    padding: 16px;
+    background: white;
+  }
+  .sticker {
+    font-size: 5rem;
+  }
+  .wrapper {
+    width: 90%;
+    max-width: 500px;
+    margin: 0 auto;
+    box-shadow: 
+        inset 1px 2px 4px hsl(0deg 0% 0% / 0.3);
+    border-radius: 1px;
+  }
+  .card {
+  position: relative;
+    box-shadow: 
+       1px 2px 4px hsl(0deg 0% 0% / 0.3);
+   border-radius: 1px;
+  }
+  .photo {
+    display: block;
+    width: 100%;
+    border-radius: 1px;
+  }
+  .sticker {
+    position: absolute;
+    top: 0;
+    left: 0;
+    line-height: 5rem;
+    transform: translate(-40%, -40%);
+    filter: drop-shadow(
+      1px 2px 6px hsl(0deg 0% 0% / 0.5)
+    );
+  }
+</style>
+
+<article class="wrapper">
+  <div class="card">
+    <img
+      class="photo"
+      alt="A girl sits on a boulder overlooking a mountain"
+      src="/cfj-mats/girl-mountain.jpg"
+    />
+    <div
+      class="sticker"
+      role="img"
+      aria-label="heart sticker"
+    >
+      💖
+    </div>
+  </div>
+</article>
+```
+
+## Designing Shadows
