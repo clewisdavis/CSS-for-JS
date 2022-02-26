@@ -9789,3 +9789,38 @@ Acceptance criteria:
 ```
 
 ## Designing Shadows
+
+- It's one thing to know hwo to use shadow CSS properties, it's another thing to create realistic, lush-looking shadows.
+- Why even use shadows? Shadows allow us to create the illusion of depth, deffer element son the apge floating at differ levels.
+- The best website and apps, feel tactile and genuine. Shadows help to sell that illusion.
+- The benefit, is you can draw attention to elements that fee closest to us. So by elevating a dialog box, we make it more likely hat the user focuse on it first.
+- When you use shadows, you eithe rwant to increase the prominence of a specific element, or I want to make my app feel more tactile and life-like.
+- In order to do this, you need a holistic view of the shadows in our app.
+
+### Creating a consistent environment
+
+- Most of us are not using shadows correctly. When we want a shadow, we drop a `box-shadow` on an element and mess with the numbers.
+- The problem is, we end up with a mess of inconsistent shadows. Our goal is to creat an illution of depth. We need each shadow to match, other wise it just looks like a blob of burry borders.
+- In the real world, shadows are cast from a light source, the direction of the shadows depends ont he positino of the light.
+- In general, we should decide on a single light soruce from all elements on the page. It's common for that light soruce to be above and slightly to the left.
+- If CSS ha da real lighting system, we would specify a position for one or more lights. But CSS has no such thing.
+- INstead we shift teh shadow around by specifying a horizontal offset adn a vertical offset.
+- Here is the first trick: **Every shadow on teh page should share the same ratio**
+- It makes it seem like, every element is lit fom the same very-far-away light source. Like the sun.
+- **Elevation**, how can we create the illusion that an element is lifting up tward teh user?
+- We need to tweak all 4 variables in tandom to creat a cohesive experience.
+- `box-shadow: 2.0px 4.0px 4.0px hsl(0deg 0% 0% / 0.44);`
+- The first two numbers, horizontal and vertical offset, scale together in tandem.
+- *the vertical offset is always 2x the horizontal one*
+- The two other things that happen
+  - The blur radius get larger
+  - The shadow becomes less opaque
+- Think about what happens when you put your hand near your desk and slowly lift it up. Notice how the shadow changes, it moves further away from your hand (larger offset), it becomes fuzzier (larger blur radius) and starts to fade away (lower opacity).
+- Apply your intuition when it comes to designing shadows.
+- **Summarize**
+  - Each element on the apge should be lit form the same global light source.
+  - The `box-shadow` property represents the light soruce position using horizontal and vertical offsets. For consistency, each shadow should use hte same ratio between tehse two numebrs.
+  - As an elemtn gets closer tot he user, the offset shold increase, teh blur radius should increase, and teh shadow's opacity should decrease.
+  - Skip the calculations and use your intuition.
+
+## Layering
