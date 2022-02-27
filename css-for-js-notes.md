@@ -9824,3 +9824,175 @@ Acceptance criteria:
   - Skip the calculations and use your intuition.
 
 ## Layering
+
+- Modern 3D tools like Blender can produce realistic chadows and lighting by using a technique known as raytracing.
+- Uses hundreds of beams of lights shot out from the camera, bouncing off of surfaces in the scene hundreds of times.
+- `box-shadow` is much more simple, as a result shadows will never look photo-realistic, but we can use a technique called *layering*
+- Instead of using a single box-shadow, we can stakk a handful on top of each other, slighly differ offsets and radiuses:
+
+```HTML
+<style>
+  /* default */
+  .wrapper {
+    display: flex;
+    gap: 32px;
+  }
+
+  .box {
+    width: 100px;
+    height: 100px;
+    border-radius: 8px;
+    background-color: white;
+  }
+  /* example */
+  .traditional.box {
+    box-shadow:
+      0 6px 6px hsl(0deg 0% 0% / 0.3);
+  }
+  .layered.box {
+    box-shadow:
+      0 1px 1px hsl(0deg 0% 0% / 0.075),
+      0 2px 2px hsl(0deg 0% 0% / 0.075),
+      0 4px 4px hsl(0deg 0% 0% / 0.075),
+      0 8px 8px hsl(0deg 0% 0% / 0.075),
+      0 16px 16px hsl(0deg 0% 0% / 0.075)
+    ;
+  }
+</style>
+
+<section class="wrapper">
+  <div class="traditional box"></div>
+  <div class="layered box"></div>
+</section>
+```
+
+- By layering multiple shadows, we create a more realistic shadow.
+- More detail in this blog post by Tobias, Smoother and [Sharper Shadows with Layered box-shadow](https://tobiasahlin.com/blog/layered-smooth-box-shadows/)
+- Also check out Josh's tool: [Shadow Palette](https://www.joshwcomeau.com/shadow-palette/)
+- and his blog post on how to use it: [Intro to Shadow Palette Generator](https://www.joshwcomeau.com/css/introducing-shadow-palette-generator/)
+
+### Color Matched Shadows
+
+- So far we have used semi-transparent black, `hsl(0deg 0% 0% / 0.4`, this is less then ideal.
+- When we layer black over a background color, it desaturates it quite a bit.
+- Check out the two examples:
+
+```HTML
+<style>
+  .wrapper {
+    display: flex;
+    gap: 32px;
+  }
+  .box {
+    width: 100px;
+    height: 100px;
+    border-radius: 8px;
+  }
+  body {
+    background-color:
+      hsl(220deg 100% 80%);
+  }
+  .black.box {
+    background-color:
+      hsl(0deg 0% 0% / 0.25);
+  }
+  .darker.box {
+    background-color:
+      hsl(220deg 100% 72%);
+  }
+</style>
+
+<section class="wrapper">
+  <div class="black box"></div>
+  <div class="darker box"></div>
+</section>
+```
+
+- The box on the left uses a transparent black, the box ont he right matches the color's hue and stauration, but lowers the lighness. We end up with a much more vibrant box.
+- A similar effect happens when we use a darker color for our shadows:
+
+```HTML
+<style>
+  .wrapper {
+    display: flex;
+    gap: 32px;
+  }
+  .box {
+    width: 100px;
+    height: 100px;
+    border-radius: 8px;
+    background: white;
+  }
+  body {
+    background-color:
+      hsl(220deg 100% 80%);
+  }
+  
+  .black.box {
+    --shadow-color: hsl(0deg 0% 0% / 0.25);
+  }
+  .darker.box {
+    --shadow-color: hsl(220deg 100% 55%);
+  }
+  .box {
+    filter: drop-shadow(
+      1px 2px 8px var(--shadow-color)
+    );
+  }
+</style>
+
+<section class="wrapper">
+  <div class="black box"></div>
+  <div class="darker box"></div>
+</section>
+```
+
+- Still takes some experimenting to get it right:
+
+```HTML
+<style>
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+  .box {
+    width: 200px;
+    height: 100px;
+    border-radius: 8px;
+    background: white;
+    display: grid;
+    place-content: center;
+  }
+  body {
+    background-color:
+      hsl(220deg 100% 80%);
+  }
+  .black.box {
+    --shadow-color: hsl(0deg 0% 0% / 0.5);
+  }
+  .darker.box {
+    --shadow-color: hsl(220deg 100% 50%);
+  }
+  .goldilocks.box {
+    --shadow-color: hsl(220deg 60% 50%);
+  }
+  .box {
+    filter: drop-shadow(
+      1px 2px 8px var(--shadow-color)
+    );
+  }
+</style>
+
+<section class="wrapper">
+  <div class="black box">Too grey</div>
+  <div class="darker box">Too bright</div>
+  <div class="goldilocks box">Just right</div>
+</section>
+```
+
+- By matcing the hue and lowerin gthe saturatoin/lightness, we can create an authentic shadow that doesn't have that "washd out" grey quality.
+
+## Puting it all together
+
+-
