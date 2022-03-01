@@ -10102,7 +10102,7 @@ const ELEVATIONS = {
   - 2. What elvel of support are you aimingfor? AA or AAA guideliens. AAA is more strict. Companies generally settl on AA.
 - Here are the minumum acceptable contrast ratios:
 
-|             | Nornal text | Large text    |
+|             | Normal text | Large text    |
 | ----        |----         |          ---  |
 | AA          | 4.5         | 3             |
 | AAA         | 7           | 4.5           |
