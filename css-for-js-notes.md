@@ -9993,6 +9993,118 @@ Acceptance criteria:
 
 - By matcing the hue and lowerin gthe saturatoin/lightness, we can create an authentic shadow that doesn't have that "washd out" grey quality.
 
-## Puting it all together
+### Puting it all together
 
--
+- So far we have covered 3 distinct ideas.
+  - Creating a cohesive environment by coordinating our shadows
+  - Using layering to create more-realistic shadows
+  - Tweaking the coolorsto prevent washed out shadows
+- Example of all three:
+
+```HTML
+<style>
+  body {
+  background-color:
+    hsl(220deg 100% 80%);
+  }
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+  }
+  .box {
+    border-radius: 8px;
+    background: white;
+    display: grid;
+    place-content: center;
+  }
+  .first.box {
+    width: 50px;
+    height: 50px;
+    box-shadow:
+      0.5px 1px 1px hsl(220deg 60% 50% / 0.7);
+  }
+  .second.box {
+    width: 100px;
+    height: 100px;
+    box-shadow:
+      1px 2px 2px hsl(220deg 60% 50% / 0.333),
+      2px 4px 4px hsl(220deg 60% 50% / 0.333),
+      3px 6px 6px hsl(220deg 60% 50% / 0.333);
+  }
+  .third.box {
+    width: 150px;
+    height: 150px;
+    box-shadow:
+      1px 2px 2px hsl(220deg 60% 50% / 0.2),
+      2px 4px 4px hsl(220deg 60% 50% / 0.2),
+      4px 8px 8px hsl(220deg 60% 50% / 0.2),
+      8px 16px 16px hsl(220deg 60% 50% / 0.2),
+      16px 32px 32px hsl(220deg 60% 50% / 0.2);
+  }
+</style>
+
+<section class="wrapper">
+  <div class="first box"></div>
+  <div class="second box"></div>
+  <div class="third box"></div>
+</section>
+```
+
+### Fitting into a design system
+
+- With everyone moving toward design systems, can we "tokenize" our shadows?
+- Yes, you can here is an example using styled components.
+
+```JAVASCRIPT
+const ELEVATIONS = {
+  small: `
+    0.5px 1px 1px hsl(var(--shadow-color) / 0.7)
+  `,
+  medium: `
+    1px 2px 2px hsl(var(--shadow-color) / 0.333),
+    2px 4px 4px hsl(var(--shadow-color) / 0.333),
+    3px 6px 6px hsl(var(--shadow-color) / 0.333)
+  `,
+  large: `
+    1px 2px 2px hsl(var(--shadow-color) / 0.2),
+    2px 4px 4px hsl(var(--shadow-color) / 0.2),
+    4px 8px 8px hsl(var(--shadow-color) / 0.2),
+    8px 16px 16px hsl(var(--shadow-color) / 0.2),
+    16px 32px 32px hsl(var(--shadow-color) / 0.2)
+  `
+}
+```
+
+- This uses a static `ELEVATIONS` object, which defines 3 dlevations. The color data for each shadow uss a CSS variable, `--shadow-color`
+
+## Colors
+
+- Color perception varies quite a lot form person to person. We need to consider how we can use color more respsible in our projects.
+- Not just about contrast ratios, we need to make sure we aren't relying on colors that can' tbe distinguished by everybody.
+- Coming up with a nice color palette? Take a look at [Josh's Color Palettes](https://courses.joshwcomeau.com/css-for-js/treasure-trove/014-color-palettes) article.
+
+### Accessibility Color
+
+- When using color in our interfaces, there are two questions we nee dto ask ourselves
+  - Is there enough contrast between the text/UI and background?
+  - Can folks who are color blind understand this UI?
+
+#### Color Contrast
+
+- In order for text to be legible, it needs to have significant amount of contrast between it and it's background.
+- WCAG has a mathmatical number formula to checking contrast ratios.
+- It accepts two colors, and spits our a number. The bigger the number, the greater the contrast
+- The scale reanges from 1 (no contrast) to 21 (max contrast)
+- What's the min acceptable number? Two things to consider
+  - 1. How big is the text? Large text (headings) are allowed to hae lower contrast ratios than normal text (para)
+  - 2. What elvel of support are you aimingfor? AA or AAA guideliens. AAA is more strict. Companies generally settl on AA.
+- Here are the minumum acceptable contrast ratios:
+
+|             | Nornal text | Large text    |
+| ----        |----         |          ---  |
+| AA          | 4.5         | 3             |
+| AAA         | 7           | 4.5           |
+
+- You can check the color contrast with this handy tool: [Color Review](https://color.review/)
