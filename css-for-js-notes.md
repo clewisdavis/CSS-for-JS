@@ -10108,3 +10108,332 @@ const ELEVATIONS = {
 | AAA         | 7           | 4.5           |
 
 - You can check the color contrast with this handy tool: [Color Review](https://color.review/)
+- If you color has low contrast, the rool will show you visually where the thresholds are.
+- Chrome also has an inspector while hovering over the element selector.
+
+### Color picking
+
+- What if it isn't clear what the colors are, for example, text in front of image.
+- You wil need to sample some colors to see what the contrast is like. You can find a colo r picker browsewr extensions to get pixel values of an image.
+- Try and find h the low contrast parts of the photo to check.
+
+### Color Blindness
+
+- Color blindness is hte inability to see certain colors. It is estimated that between 5 to 10% of t people have some amount of color blindness.
+- Ther are several categories of color blindness
+  - Red/green color blindness (protanopia, deuteranopia)
+  - Blue/yellow (tritanopia)
+  - Complete colorblindness (monochromacy)
+- The most common form of color blindness is red/green. To those individuals, red adn green both appear brownish
+- Hard for us to know what thsi experience is like. So we need to simuate it. Check out [Josh's simulation tool](https://courses.joshwcomeau.com/css-for-js/09-little-big-details/04.01-color-accessibility)
+- In our work, we have to be careful not to rely to heavily on color to communicate meaning. This is an easy mistake to make.
+- For example, some people associate green with success and red with failure, but these two colors are identical from most colorblind folks.
+- We can still use color as an enhancement, but it needs to be a secondary indicator. Not the only one.
+- Browser dev tools allow us to simulate colorblindness.
+- [Chrome Emulate vision deficiencies](https://developer.chrome.com/blog/new-in-devtools-83/#vision-deficiencies)
+- [FireFox dev tools COlor vision simulation](https://developer.mozilla.org/en-US/docs/Tools/Accessibility_inspector/Simulation)
+
+### Exercises, Colors Accessibility
+
+- Fix this UI has several contrast and color issues.
+- Use the browser dev tools to look for contrast issues.
+- If you have an element that is partially transparent, take a screen grab, drop in Figma, draw a new square, and use color picker to grab any colors at pixel leve.
+- Watch out for red and green combos. If a chart, you can use a differ line style, dotted to differentiate.
+
+## Selection Colors
+
+- How do you control the colors of other things within the DOM, text selection, scrollbars, native form controls.
+
+### Selection colors
+
+- By default, when you select text, a blue background is applied.
+- We can tweak both the background and text color for the seleciton box using the `::selection` pseudo-element.
+- Small details but can be surpisingly cool.
+
+```HTML
+<style>
+  ::selection {
+    color: hsl(25deg 100% 20%);
+    background-color: hsl(55deg 100% 60%);
+  }
+</style>
+
+<p>
+  Try selecting some of the text in these paragraphs!
+</p>
+<p>
+  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.
+</p>
+```
+
+### Tweaking selection styles by element
+
+- Sometimes yo may wish to use different seleciton styles for difer elements on teh page, rather than a single global selection style.
+
+```HTML
+<style>
+  p::selection {
+    color: black;
+    background-color: yellow;
+  }
+</style>
+
+<p>
+  This paragraph has <em>some emphasized text</em>, in the middle.
+</p>
+```
+
+- Seleciotn styles are not inheritable, they should be, but no major browser implements it correctly. So you can do some neat stuff via CSS variables.
+
+```HTML
+<style>
+  ::selection {
+    color: var(--selection-color);
+    background-color:
+      var(--selection-background);
+  }
+  
+  html {
+    /*
+      Define global defaults
+      for selection colors…
+    */
+    --selection-color:
+      hsl(25deg 100% 20%);
+    --selection-background:
+      hsl(55deg 100% 60%);
+  }
+  
+  figure {
+    /*
+      …But then override those values
+      for specific parts of the page!
+    */
+    --selection-color: hsl(0deg 0% 0%);
+    --selection-background:
+      hsl(333deg 100% 50%);
+  }
+</style>
+```
+
+- This example, every element on the page has the same `::selection` style, but they rely on CSS variables rather than hardcoded values. When we change the value of a CSS variable, the seleciotn styles change, for that element and all of its decendants.
+- However, there are accessibility concerns, it can cause confusion, especially for people who are developing computer literacy.
+
+### Accent Colors
+
+- When styling certain types of UI (checkboxes, radio buttons, sliders), we typically have two choices
+  - Use teh browser defaults pretty much as is
+  - Rebuild the elemtn from scratch, suing more-flexible tags like `<buuton>`
+- An upcomong addition to the CSS language is going to give us a thrid choice: `accent colors`
+- With the `accent-color` property, we wil eb abelt o change the colors used in a handful of HTML elemtns.
+- Post by [Adam Argyle and Joey](https://web.dev/accent-color/) Arhar on setting accent color
+- Support is getting better, [Can I Use](https://caniuse.com/mdn-css_properties_accent-color)
+
+## Gradients
+
+- CSS has a surprisingly deep and sophisticated set of gradient functions:
+
+### Linear Gradients
+
+- If we provide two colors to `linear-gradient` it will interpolate between them, starting from the top and going down
+
+```HTML
+<style>
+  .box {
+    width: 200px;
+    height: 200px;
+    border: 3px solid;
+    background-image: linear-gradient(
+      deeppink,
+      gold
+    );
+}
+</style>
+<div class="box"></div>
+```
+
+- If we want that gardient to run at a differ angle, we can pass that as an optional first argument.
+
+```CSS
+.box {
+  width: 200px;
+  height: 200px;
+  border: 3px solid;
+  background-image: linear-gradient(
+    45deg,
+    deeppink,
+    gold
+  );
+}
+```
+
+- The default angel for gradients is `180deg`. If we set it to `0deg`, the gradeint would run from bottom to the top.
+- We can also specify cardinal directions with the `to` keyword
+
+```CSS
+.box {
+  background-image: linear-gradient(to right, color1, color2);
+  /* Is equivalent to: */
+  background-image: linear-gradient(90deg, color1, color2);
+}
+```
+
+- We can pass more than two colors, to create richer gradients:
+
+```HTML
+<style>
+  .box {
+    width: 200px;
+    height: 200px;
+    border: 3px solid;
+    background-image: linear-gradient(
+      90deg,
+      deeppink,
+      red,
+      coral,
+      gold,
+      white
+    );
+  }
+</style>
+<div class="box"></div>
+```
+
+- Gradients have color stops, points along the spectrum where the color is fully applied. By default, these colors will be equidistant:
+- We can change their placement, thought, with percentages.
+
+```CSS
+.box {
+  width: 200px;
+  height: 200px;
+  border: 3px solid;
+  background-image: linear-gradient(
+    90deg,
+    deeppink,
+    red 10%,
+    coral 20%,
+    gold 70%,
+    white
+  );
+}
+```
+
+- We can use color stops to do something pretty neat and unexpected. We can create sharp lines by positioning the stops very close together.
+
+```CSS
+.box {
+  width: 200px;
+  height: 200px;
+  border: 3px solid;
+  background-image: linear-gradient(
+    90deg,
+    deeppink 0%,
+    deeppink 9.99%,
+    red 10%,
+    red 19.99%,
+    coral 20%,
+    coral 29.99%,
+    gold 30%,
+    gold 39.99%,
+    white 40%
+  );
+}
+```
+
+### Gradient Hints
+
+- In addtition to color stops, we have color hints. A color hint allows us to move the midpoint between two colors
+
+```HTML
+<style>
+  .box.one {
+  background-image: linear-gradient(
+    deeppink,
+    30%,
+    gold
+  );
+}
+.box.two {
+  background-image: linear-gradient(
+    deeppink,
+    80%,
+    gold
+  );
+}
+
+.box {
+  width: 200px;
+  height: 200px;
+  border: 3px solid;
+  margin: 16px;
+}
+</style>
+<div class="box one"></div>
+<div class="box two"></div>
+```
+
+## Radial Gradients
+
+- A radial gradient emanates outwards in a circle from a single point.
+
+```HTML
+<style>
+  .box {
+  width: 200px;
+  height: 200px;
+  border: 3px solid;
+  background-image: radial-gradient(
+    deeppink,
+    red,
+    coral,
+    gold,
+    white
+  );
+}
+</style>
+<div class="box"></div>
+```
+
+- A few differences between radial and linear gradients.
+- The optional first argument for radial gradients is a little differ.
+
+```CSS
+.box {
+  width: 200px;
+  height: 200px;
+  border: 3px solid;
+  background-image: radial-gradient(
+    50% 100%,
+    deeppink,
+    gold
+  );
+}
+```
+
+- We are saying that the gradient core should span half teh available width and the full height. This creates a tall skinny ellipse.
+- You can use the `circle at` prefeix, to simplify things. A sunset effect for example;
+
+```HTML
+<style>
+  .box {
+  width: 200px;
+  height: 200px;
+  border: 3px solid;
+  background-image: radial-gradient(
+    circle at 50% 100%,
+    white 0%,
+    yellow 10%,
+    gold 20%,
+    coral 30%,
+    skyblue
+  );
+}
+</style>
+<div class="box"></div>
+```
+
+- More in-depth info on [MDN](https://developer.mozilla.org/en-US/docs/Web/CSS/gradient/radial-gradient())
+
+## Conic Gradients
+
+-
