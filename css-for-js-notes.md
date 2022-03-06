@@ -10436,4 +10436,103 @@ const ELEVATIONS = {
 
 ## Conic Gradients
 
--
+- Cnic gradients are what whould happen if you took a straight line aith a linear gradient, and formed it into a cicle
+- Similar to other gradient functions:
+
+```HTML
+<style>
+.box {
+  width: 200px;
+  height: 200px;
+  border: 3px solid;
+  background-image: conic-gradient(
+    deeppink,
+    red,
+    coral,
+    gold,
+    white
+  );
+}
+</style>
+<div class="box"></div>
+```
+
+### Smoothing it out
+
+- By default, you end up with a harsh line running vertically through the top half. This is because our start and end colors are so different.
+- If oru gradient ends with the same color it started with, we can create a smoother effect.
+
+```HTML
+<style>
+ .box {
+  width: 200px;
+  height: 200px;
+  border: 3px solid;
+  background-image: conic-gradient(
+    deeppink,
+    coral,
+    gold,
+    coral,
+    deeppink /* <-- same color! */
+  );
+}
+</style>
+<div class="box"></div>
+```
+
+- Or you can make all the lines harse, by shifting the colro stops to be adjacent.
+- Really useful for creating pie charts.
+
+```HTML
+<style>
+.box {
+  width: 200px;
+  height: 200px;
+  border: 3px solid;
+  border-radius: 50%;
+  background-image: conic-gradient(
+    deeppink 0%,
+    deeppink 33.3%,
+    gold 33.4%,
+    gold 66.6%,
+    slateblue 66.7%,
+    slateblue 100%
+  );
+}
+</style>
+<div class="box"></div>
+```
+
+### Gradient angle and position
+
+- Lineaer gradient are given an angle (`45deg`) and radial gradients are given a position `circle at 50% 100%`. Conic gradients take both.
+- The format is: `from <angle> at <position>`
+
+### Recipes
+
+- Some things you can do with conic gradients
+
+### Edge glow
+
+- One of the most practical  cases is to create a glow effect.
+
+```HTML
+<style>
+.box {
+  width: 200px;
+  height: 200px;
+  border: 3px solid;
+  background-image: conic-gradient(
+    from 90deg at 50% 100%,
+    hsl(220deg 80% 55%) 50%,
+    hsl(220deg 90% 75%) 62.5%,
+    hsl(220deg 100% 85%) 75%,
+    hsl(220deg 80% 75%) 87.5%,
+    hsl(220deg 80% 55%) 100%
+  );
+}
+</style>
+<div class="box"></div>
+```
+
+## Easing Gradients
