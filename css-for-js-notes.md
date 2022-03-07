@@ -10536,3 +10536,64 @@ const ELEVATIONS = {
 ```
 
 ## Easing Gradients
+
+- Timing funcitons like linear an ease-out used by the `transition` property.
+- Those timing functions refer to how a value should be interpolated over time.
+- Those same functions can also refer to how to interpolate something **over space**.
+- Imaging we are moving a box by 100px over 10 seconds. In a linear timing function, it will move by 10px every second.
+- Imagine we are drawing a gradient from a hue of 0 degrees, to a hue of 40 degres, over 10em. A lineear timing function, teh color changes by 4 degres every rem.
+- **Just like you can choose different timing functions for motion, we can choose differ timing functions for gradients**
+- No matter which timing funciton you choose, the start and end colors remain constant.
+
+### Using Easing Gradients
+
+- But, esing gradients is not part fo the CSS language yet.
+- In the future, hopefully it will be as simple as adding in the property.
+- For now, we will use a toll tha twill simulate these timing functions by generating a bunch of color stops:
+
+```CSS
+.box {
+  /* Simulated "ease-in-out": */
+  background-image: linear-gradient(
+    to bottom,
+    hsl(330, 100%, 45.1%) 0%,
+    hsl(331, 89.25%, 47.36%) 8.1%,
+    hsl(330.53, 79.69%, 48.96%) 15.5%,
+    hsl(328.56, 70.89%, 49.96%) 22.5%,
+    hsl(324.94, 63.52%, 50.4%) 29%,
+    hsl(319.21, 54.99%, 50.3%) 35.3%,
+    hsl(310.39, 46.14%, 49.68%) 41.2%,
+    hsl(296.53, 39.12%, 49.7%) 47.1%,
+    hsl(280.63, 42.91%, 53.43%) 52.9%,
+    hsl(265.14, 47.59%, 56.84%) 58.8%,
+    hsl(250.13, 52.52%, 59.88%) 64.7%,
+    hsl(235.88, 59.2%, 60.91%) 71%,
+    hsl(225.81, 68.23%, 57.85%) 77.5%,
+    hsl(218.93, 74.97%, 54.21%) 84.5%,
+    hsl(213.89, 79.63%, 49.97%) 91.9%,
+    hsl(210, 100%, 45.1%) 100%
+  );
+}
+```
+
+- A easing tool you can use is by [Andreas Larsen](https://larsenwork.com/easing-gradients/#editor), also a[post-CSS version](https://github.com/larsenwork/postcss-easing-gradients)
+- It's a small detail, but upgrading to easing gradients can really make a product feel polished.
+- Note: the tool's snippet is incomplete. It produces a snippet that looks like...
+
+```CSS
+.forNow {
+  linear-gradient(
+    /* values here */
+  );
+};
+```
+
+- This is incomplete, linear-gradient is a value, but it's missing the property. Update it to use `background-image`
+
+```CSS
+.forNow {
+  background-image: linear-gradient(
+    /* values here */
+  );
+};
+```
