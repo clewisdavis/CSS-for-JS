@@ -10666,3 +10666,208 @@ figcaption {
   <figcaption>“Dogs From Above”</figcaption>
 </figure>
 ```
+
+### OVerlapping shapes
+
+- Gradients can be used to create some pretty nifty patterns. Like overlapping triangles and circles.
+- Need to stack gradients, two gradients, you can stack them as long as one is transparent.
+- And how to draw the sharp lines.
+- Can use `linear-gradient` and `radial-gradient` fuctions to create neat decorative effects.
+
+```HTML
+<style>
+  /* base */
+  html, body {
+    height: 100%;
+  }
+  body {
+    background: var(--blue-bg);
+  }
+  .background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+  html {
+    --blue-bg: hsl(230deg 40% 20%);
+    --blue-darker: hsl(230deg 40% 24%);
+    --blue-dark: hsl(230deg 40% 28%);
+  }
+  
+  .linear-slopes {
+    background: linear-gradient(
+      calc(180deg - 20deg),
+      transparent 0%, 
+      transparent 49.99%,
+      var(--blue-dark) 50%,
+      var(--blue-dark) 100%
+    ), linear-gradient(
+      calc(180deg + 20deg),
+      transparent 0%, 
+      transparent 49.99%,
+      var(--blue-darker) 50%,
+      var(--blue-darker) 100%
+    );
+  }
+  
+  .radial-slopes {
+    background: radial-gradient(
+      circle at 100% 120%,
+      var(--blue-dark) 0%, 
+      var(--blue-dark) 49.99%,
+      transparent 50%,
+      transparent 100%
+    ), radial-gradient(
+      circle at 0% 100%,
+      var(--blue-darker) 0%, 
+      var(--blue-darker) 49.99%,
+      transparent 50%,
+      transparent 100%
+    );
+  }
+</style>
+
+<div class="background radial-slopes"></div>
+```
+
+### Trophy Display
+
+- Use Conic gradients to create a glow / spotlight effect on a trophy graphic.
+
+```HTML
+<style>
+  body {
+    padding: 64px 0;
+  }
+  html {
+    --dark-gold: hsl(34deg 90% 45%);
+    --gold: hsl(44deg 80% 70%);
+    --light-gold: hsl(44deg 100% 85%);
+  }
+  .wrapper {
+    position: relative;
+    height: 325px;
+    max-width: 550px;
+    display: flex;
+    justify-content: center;
+    margin: auto;
+    background-color: var(--gold);
+    border-radius: 10000px 10000px 1000px 1000px;
+    background-image: conic-gradient(
+      from 90deg at 50% 100%,
+      var(--dark-gold) 50%,
+      var(--gold) 62.5%,
+      var(--light-gold) 75%,
+      var(--gold) 87.5%,
+      var(--dark-gold) 100%
+    );
+  }
+  
+  .trophy {
+    transform-origine: center bottom;
+    transform: scale(1.4) translateY(16px);
+    /* opacity: 0; */
+  }
+</style>
+
+<div class="wrapper">
+  <img
+    class="trophy"
+    alt="gold trophy"
+    src="/cfj-mats/gold-trophy.png"
+  />
+</div>
+```
+
+### Gradient Dead Zones
+
+- Sometimes gradients get a big "grey" in the middle?
+- That happens because gradients in CSS are essentially like yoru car's GPS, they try to take the shortest most direct route between two colors, using RGB values.
+- Imagine a color wheel, with a straight line from one color to the other.
+- What is instead, if we curve around teh color wheel. We end up with a much nicer looking gradient.
+- By picking the saturated midpiont colors, we create a much more vibrant gradient.
+- How do you come up iwth teh right midpoint values? Tricky, but we have a tool for that.
+- [Gradient Generators](https://courses.joshwcomeau.com/css-for-js/treasure-trove/013-gradient-generator)
+
+## Mobile UX Improvements
+
+- Mobile browsers are a little unique, look at some usability improvements.
+
+### Tap rectangles and text selection
+
+- When tapping an interactive elementon mobile devices, the browswer will flash a "tap rectangle" briefly.
+- There is a grey rectangle that flashes quickly. The box can suerve as helpful feedback to confirm that you have successfully tapped an interactive element. But our button has plenty of feedback as is with the 3D effect.
+- You can remove it with this declaration.
+
+```CSS
+.pushable {
+  -webkit-tap-highlight-color: transparent;
+}
+```
+
+- in iOS, if the button is held down for a second, the phone will try and select the text within teh button
+- The `user-select` property allows us to set an element to be unselectable:
+
+```CSS
+.pushable {
+  user-select: none;
+}
+```
+
+### Increasing target sizes
+
+- There are several categories of input devices:
+  - fine pointers, like mouse or trackpad
+  - coarse pointers, like a finger or a touchscreen
+  - non-pointer devices, liek a keyboard
+
+- With a coarse pointer, it's hard to be precise. Mobile users typically use a touchscren wtih a finger, we need to ensure a large enough tappable area.
+- Apple recommends a minimum tap target of 44px by 44px. This is the minimum, though it's better to overshoot this target.
+- Here is the thing, this doesn't mean we have to make everything visually bigger.
+
+```HTML
+<style>
+  button {
+    padding: 0 16px;
+    background: hsl(230deg 80% 25%);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+
+  button:active {
+    background: hsl(230deg 80% 10%);
+  }
+  button {
+    position: relative;
+    height: 32px;
+  }
+  
+  button::after {
+    --tap-increment: -8px;
+    content: '';
+    position: absolute;
+    top: var(--tap-increment);
+    left: var(--tap-increment);
+    right: var(--tap-increment);
+    bottom: var(--tap-increment);
+  }
+</style>
+
+<button>
+  Push me
+</button>
+```
+
+- Our button has a pseudo-element that extends outwards by 8px in every direction. Our button may only be 32px tall, but the tap target size is 48px;
+- How it Works:
+  - Make sure the link/button is a containling block for positioned elements by setting the `position: relative`
+  - Add a child pseudo-element, and make it absolutely-positioned.
+  - Set `top` / `left` / `right` / `bottom` to a negative value, so that it extends outwards.
+  - The trick allow you to increase the size of the tap target without eafecting the design.
+
+- [CodePen on auto increase click targets](https://codepen.io/third774/pen/XWgXZRY)
