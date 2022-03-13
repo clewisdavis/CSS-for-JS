@@ -10871,3 +10871,97 @@ figcaption {
   - The trick allow you to increase the size of the tap target without eafecting the design.
 
 - [CodePen on auto increase click targets](https://codepen.io/third774/pen/XWgXZRY)
+
+## Pointer Events
+
+- The `pointer-events` property allows us to get an element to be a hologram: you can see it , but you can't touch it.
+
+```HTML
+<style>
+  button {
+    pointer-events: none;
+  }
+</style>
+
+<button>
+  Try clicking me!
+</button>
+```
+
+- We can still focus the button using the keyboard, and select the text. But click events pass right through.
+- Here is the wild thing, we can undo pointer-events in descendants
+- For example, if you have a toast or message that overlays a button. You can set a parent element (toast message) to ignore pointer events, but then restore the default value to a child. The child will support clicks/taps btu the parent won't.
+
+```HTML
+<style>
+  .toast-wrapper {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 32px;
+    display: grid;
+    place-content: center;
+  }
+  .toast {
+    background: hsl(208deg 68% 45%);
+    padding: 8px 32px;
+    border-radius: 4px;
+    color: white;
+    font-size: 0.875rem;
+  }
+  .random {
+    position: fixed;
+    left: 16px;
+    bottom: 16px;
+  }
+  .toast-wrapper {
+    pointer-events: none;
+  }
+  
+  .toast {
+    pointer-events: auto;
+  }
+</style>
+
+<button class="random">
+  Random button
+</button>
+
+<div class="toast-wrapper">
+  <div class="toast">
+    Your tweet was sent.
+  </div>
+</div>
+```
+
+- The `.toast-wrapper` wil ignore clicks, so that we can click the `.random` button behind it.
+- Being able to selectively ignore clicks without locking anything in for the element's descendants is a pretty wild power. A trick to keep in your back pocket.
+
+## Clipping with Clip-Path
+
+- One of the most underrated CSS properties is `clip-path`.
+- `clip-path` allows us to trim a DOM node into a specific shape. For example, to make a triangle.
+
+```HTML
+<style>
+  .triangle {
+    width: 100px;
+    height: 80px;
+    background-color: deeppink;
+    clip-path: polygon(
+    0% 100%,
+      50% 0%,
+      100% 100%
+    );
+  }
+</style>
+
+<div class="triangle"></div>
+```
+
+- For a long time we had to rely on hacky tricks like using transparent borders to create shapes in CSS. These days it's way easier with `clip-path`
+- Several ways to make a `clip-path`, the `polygon()` function is one of them.
+- For clip path, the order matters, adn anything outside that is clipped out.
+- You can clip out anything, a DOM element, image or video.
+- Tool for helping you with clip paths, [Clippy](https://courses.joshwcomeau.com/css-for-js/treasure-trove/001-clippy)
