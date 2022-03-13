@@ -10965,3 +10965,333 @@ figcaption {
 - For clip path, the order matters, adn anything outside that is clipped out.
 - You can clip out anything, a DOM element, image or video.
 - Tool for helping you with clip paths, [Clippy](https://courses.joshwcomeau.com/css-for-js/treasure-trove/001-clippy)
+
+### Animations with Clip Path
+
+- You can animate a `clip-path` using the `transition` property or keyframe animations.
+
+```HTML
+<style>
+  .triangle-wrapper {
+    border: none;
+    background: transparent;
+    padding: 0;
+  }
+  .triangle {
+    display: block;
+    width: 100px;
+    height: 80px;
+    background-color: deeppink;
+  }
+  .triangle {
+    clip-path: polygon(
+      0% 100%,
+      50% 0%,
+      100% 100%
+    );
+    transition: clip-path 250ms;
+    will-change: transform;
+  }
+  
+  .triangle-wrapper:hover .triangle,
+  .triangle-wrapper:focus .triangle {
+    clip-path: polygon(
+      0% 50%,
+      100% 0%,
+      50% 100%
+    );
+  }
+</style>
+
+<button class="triangle-wrapper">
+  <span class="triangle" />
+</button>
+```
+
+- In order for `transitinos` to work, both `polygon` definistions need to have the same number of points. It works by interpolating each point.
+
+### Rounded Shapes
+
+- The `polygon` function is great for cutting a shapre out of straight lines, but what if we want rounded shapes?
+- `clip-path` supports both a `circle` function and an `ellipse` function
+
+```HTML
+<style>
+  .wrapper {
+    width: 200px;
+    height: 200px;
+  }
+  .wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .wrapper {
+    clip-path: ellipse(
+      100px 80px at 50% 50%
+    );
+  }
+</style>
+
+<div class="wrapper">
+  <img src="/cfj-mats/architecture-joel-filipe.jpg" />
+</div>
+```
+
+- The syntax looks like this:
+
+```CSS
+.wrapper {
+  clip-path: ellipse(
+    xRadius yRadius at xPosition yPosition
+  )
+}
+```
+
+- This is like a powerful `border-radius` where we can choose which part fo the element we want to crop. And make mor abstract shapes.
+
+```HTML
+<style>
+  .wrapper {
+    width: 200px;
+    height: 200px;
+  }
+  .wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .wrapper {
+    clip-path: ellipse(
+      100px 200px at 50% 80%
+    );
+  }
+</style>
+
+<div class="wrapper">
+  <img src="/cfj-mats/architecture-joel-filipe.jpg" />
+</div>
+```
+
+- You can also animate circular clip-paths. Focus/Hovering over the image below:
+
+```HTML
+<style>
+  .wrapper {
+    width: 200px;
+    height: 200px;
+    border: none;
+    background: transparent;
+    padding: 0;
+  }
+  .wrapper img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .wrapper img {
+    clip-path: circle(
+      80px at 100px 100px
+    );
+    transition: clip-path 400ms;
+    will-change: transform;
+  }
+  
+  .wrapper:hover img,
+  .wrapper:focus img {
+    clip-path: circle(
+      100px at 100px 100px
+    );
+    transition: clip-path 200ms;
+  }
+</style>
+
+<button class="wrapper">
+  <img src="/cfj-mats/architecture-joel-filipe.jpg" />
+</button>
+```
+
+### With Shadows
+
+- To add a drop-shadow, make sure it's on the parent element.
+- You have to use `filter: drop-shadow` because `box-shadow` will not contour the cliped shape. IT will add a shadow around the rectangular box-model container.
+
+```HTML
+<style>
+  .triangle {
+    width: 100px;
+    height: 80px;
+    background-color: deeppink;
+  }
+  .wrapper {
+    filter: drop-shadow(
+      1px 2px 4px hsl(0deg 0% 0% / 0.5)
+    );
+  }
+  .triangle {
+    clip-path: polygon(
+      0% 100%,
+      50% 0%,
+      100% 100%
+    );
+  }
+</style>
+
+<div class="wrapper">
+  <div class="triangle"></div>
+</div>
+```
+
+### Exercises, animation clip-path
+
+- Animate in a some text element
+
+```HTML
+<style>
+@keyframes unfurl {
+  from {
+    transform: translateY(-10px);
+    clip-path: polygon(
+    /* each value is interperalted seperately */
+      0% 0%, 
+      100% 0%, 
+      100% 0%, 
+      0% 0% 
+    );
+  }
+  to {
+    transform: translateY(0);
+    clip-path: polygon(
+      0% 0%, /* top left - clockwise */
+      100% 0%, /* top right */
+      100% 100%, /* bottom right */
+      0% 100% /* bottom left */
+    );
+  }
+}
+  .highlighted {
+    background: hsl(50deg 100% 70%);
+    padding: 12px 24px;
+    font-size: 1.25rem;
+    font-weight: bold;
+    width: -moz-fit-content;
+    width: fit-content;
+    border-radius: 4px;
+    animation: unfurl 1000ms;
+  }
+</style>
+
+<p class="highlighted">
+  The World's Best Keyboard
+</p>
+```
+
+- Rising nav link, in React
+- Duplicate the nav, then create a reveal effect as you hover
+
+```JAVASCRIPT
+function NavLink({ href, children }) {
+  return (
+    <NavLinkAnchor href={href}>
+      {children}
+      <Revealed aria-hidden={true}>
+        {children}
+      </Revealed>
+    </NavLinkAnchor>
+  );
+}
+
+const NavLinkAnchor = styled.a`
+  display: block;
+  position: relative;
+  text-decoration: none;
+  color: inherit;
+  font-weight: 500;
+  font-size: 1.25rem;
+`;
+
+const Revealed = styled.span`
+  color: hsl(333deg 100% 50%);
+  position: absolute;
+  top: 0;
+  left: 0;
+  filter: drop-shadow(0px 0px 4px white);
+  clip-path: polygon(
+    0% 100%,
+    100% 100%,
+    100% 100%,
+    0% 100%
+  );
+  transition: clip-path 1000ms;
+  
+  ${NavLinkAnchor}:hover & {
+    clip-path: polygon(
+      0% 0%,
+      100% 0%,
+      100% 100%,
+      0% 100%
+    );
+    transition: clip-path 300ms;
+  }
+`
+
+render(
+  <header>
+    <a class="logo" href="/">
+      Logo
+    </a>
+    <nav>
+      <ul>
+        <li>
+          <NavLink href="/">
+            One
+          </NavLink>
+        </li>
+        <li>
+          <NavLink href="/">
+            Two
+          </NavLink>
+        </li>
+        <li>
+          <NavLink href="/">
+            Three
+          </NavLink>
+        </li>
+      </ul>
+    </nav>
+  </header>
+);
+```
+
+```CSS
+body {
+  margin: 0;
+  padding: 0;
+}
+header {
+  position: sticky;
+  top: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  background: white;
+  padding: 16px 32px;
+}
+
+ul {
+  display: flex;
+  gap: 16px;
+  list-style-type: none;
+  padding: 0;
+}
+.nav-link {
+  font-weight: 500;
+  text-decoration: none;
+  color: inherit;
+}
+.logo {
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: inherit;
+}
+```
