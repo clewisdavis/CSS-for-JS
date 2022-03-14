@@ -11295,3 +11295,64 @@ ul {
   color: inherit;
 }
 ```
+
+## Optical Alignment
+
+- Instead of aligning things basd on the mathematical values, we should align things based on their perveived symmetry. This is known as optical alignment.
+- For example; the difference in space from an elements container and the characters themselves.
+
+### Translating designs
+
+- In design software, the text nodes are handled differently. The numbers in our software like Figma, can't be trusted because typography is handled differently between design software and the web.
+- How do you manage to get the consistency? Use the mac screenshot tool to get alignment figures (Shift + Cntrl + 4) to get alignment figures between design software and code.
+- This little details matter in the aggragate. They don't matter on their own, but when you add them up, you end up with a polished and high end product. That's why Apple can charge so much for their products, because they have a reputation for these little details that make products feel polished and refined. Attention to detail.
+- Because Apple has these details fine tuned, they are seen as a premium brand, so they can charge more.
+
+### Reconciling optical alignment and design tokens
+
+- In modern design ssytems, it's common to use space tokens which rorrespond to specific pixel/rem values
+- `p-1`: 0.25rem, `p-2`: 0.5rem, and so on...
+- The goal of these spacing systems is to ensure consistent spacing across an app.
+- By exclusively selecting values from the spacing system, you are ensuring your app wil have a inconsistent spacing.
+- The only real choice is to step outside the scale and apply custom spacing when necessary.
+
+### Utility components
+
+- A react utility component for shifting things around.
+
+```JAVASCRIPT
+function ShiftBy({
+  x = 0,
+  y = 0,
+  children,
+  as = "div",
+  style = {},
+  ...delegated
+}) {
+  const Element = as;
+  return (
+    <Element
+      style={{ transform: `translate(${x}px, ${y}px)` }}
+      {...delegated}
+    >
+      {children}
+    </Element>
+  );
+}
+```
+
+- And use the component like this
+
+```JAVASCRIPT
+<Notifications>
+  <ShiftBy y={1}>
+    {numOfNotifications}
+  </ShiftBy>
+</Notifications>
+```
+
+- Pixel Perfection, for more check out write up, [Chasing the Pixel-Perfect Dream](https://www.joshwcomeau.com/css/pixel-perfection/)
+
+## Scrolling
+
+-
