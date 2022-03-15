@@ -10073,8 +10073,8 @@ const ELEVATIONS = {
     4px 8px 8px hsl(var(--shadow-color) / 0.2),
     8px 16px 16px hsl(var(--shadow-color) / 0.2),
     16px 32px 32px hsl(var(--shadow-color) / 0.2)
-  `
-}
+  `,
+};
 ```
 
 - This uses a static `ELEVATIONS` object, which defines 3 dlevations. The color data for each shadow uss a CSS variable, `--shadow-color`
@@ -11194,7 +11194,7 @@ function NavLink({ href, children }) {
   return (
     <NavLinkAnchor href={href}>
       {children}
-      <Revealed aria-hidden={true}>
+      <Revealed aria-hidden>
         {children}
       </Revealed>
     </NavLinkAnchor>
@@ -11233,11 +11233,11 @@ const Revealed = styled.span`
     );
     transition: clip-path 300ms;
   }
-`
+`;
 
 render(
   <header>
-    <a class="logo" href="/">
+    <a className="logo" href="/">
       Logo
     </a>
     <nav>
@@ -11259,7 +11259,7 @@ render(
         </li>
       </ul>
     </nav>
-  </header>
+  </header>,
 );
 ```
 
@@ -11320,12 +11320,12 @@ ul {
 
 - A react utility component for shifting things around.
 
-```JAVASCRIPT
+```CODE
 function ShiftBy({
   x = 0,
   y = 0,
   children,
-  as = "div",
+  as = 'div',
   style = {},
   ...delegated
 }) {
@@ -11343,16 +11343,89 @@ function ShiftBy({
 
 - And use the component like this
 
-```JAVASCRIPT
+```CODE
 <Notifications>
   <ShiftBy y={1}>
     {numOfNotifications}
   </ShiftBy>
-</Notifications>
+</Notifications>;
 ```
 
 - Pixel Perfection, for more check out write up, [Chasing the Pixel-Perfect Dream](https://www.joshwcomeau.com/css/pixel-perfection/)
 
 ## Scrolling
 
--
+- Scrolling is the most fundamental gesture on the web. Not good practice to mess with the scroll gesture itself, but a ton of small things we can do to improve it.
+- Like, smooth scroll to element, mobile style scroll snapping and more.
+
+### Smooth Scrolling
+
+- Smooth scrolling use to be a hard JS problem, now easily solved with CSS.
+- In this example, when the user clicks "Skip to Next Chapter" they will be scrolled down the page, to that Chapter III headign is at the top of the viewport.
+- The user is taken to the new location. What if we could smooth otu the process?
+
+```HTML
+<h2 id="chapter-2">Chapter Two</h2>
+<a href="#chapter-3">Skip to Next Chapter</a>
+<p><!-- Content excluded --></p>
+<p><!-- Content excluded --></p>
+<p><!-- Content excluded --></p>
+<p><!-- Content excluded --></p>
+<h2 id="chapter-3">Chapter III</h2>
+```
+
+- We can enable smooth scrolling site wide with one decloration:
+
+```CSS
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+```
+
+- It's important to put this property behind a `prefers-reduced-motion` media query. The fast scrolling animation is exaclty the sort of motion that can be problematic for some people.
+- Smooth scrollign is disabled by defualt. The default vallue for the `scroll-behavior` property is `auto`, which jump cuts the user to thenew location.
+- NOTE: Not a good idea to implement for general scrolling, as users scroll though the page. It's known as "scroll-jacking". People hate when a website cahnges how it feels to scroll up/down the page.
+
+### Customizing the scroll behavior
+
+- `scroll-behavior` doesn't let us tweak teh duration or easing of the scroll animation. That is up to the browser and OS.
+- Smooth scrolling provides continuity, a sense of cohesion between whre you started and where you landed. Helps to prevent disorientation when suddenly being teleported to a differ part of the page.
+
+### Accessign in JS
+
+- Sometimes you want to control the scroll position from within JS, for example we wnt to scroll the user to the top fo the page when they submit a form:
+
+```CODE
+function handleSubmit(ev) {
+  window.scrollTo(0, 0);
+}
+```
+
+- By default, the `scrollTo` method will inherit the behavior specified in CS. If you ahve added `scroll-behavior: smooth` to he html tag. `window.scrollTo` will automatically be smooth.
+- You can slso manually specify the scroll behaviour with this method.
+
+```CODE
+window.scrollTo({
+  top: 0,
+  left: 0,
+  behavior: 'smooth',
+});
+```
+
+### Scrolling into view
+
+- The `scrollTo` method takes a pixel value. This is goof ro scrolling user to the very op of the page. But what if you want to scroll to a particular element? Like the title of the page?
+- The `scrollIntoView` method is perfect for this:
+
+```CODE
+const target = document.querySelector('.title');
+target?.scrollIntoView({
+  behavior: 'smooth',
+});
+```
+
+- the `?` operator is called [Optional Chaining operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining)
+
+### SPA Trouble
