@@ -11429,3 +11429,79 @@ target?.scrollIntoView({
 - the `?` operator is called [Optional Chaining operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining)
 
 ### SPA Trouble
+
+- When working on a SPA app, enabling smooth scrolling app-wide can produce some strange results.
+- Instead, do it on a case by case basis
+
+### Scroll Snapping
+
+- For when you want to implement scroll snapping, when the user stops scrolling, the scroll automatically shifts so the nearest element is fitted to the screen.
+- We can do this with a couple lines of CSS!
+- [Browswer support](https://caniuse.com/css-snappoints) is good in all modern browsers and partial support in IE
+- There are two primary scroll-snap properties:
+  - `scroll-snap-type` this controls the direction and precision of the scroll snapping
+  - `scroll-snap-align` this controls which part of teh child we want to snap.
+
+```HTML
+<style>
+  /* starter styles */
+  html, body {
+    height: 100%;
+    padding: 0px;
+  }
+
+  .wrapper {
+    display: flex;
+    display: flex;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+  }
+
+  .box {
+    min-width: 100%;
+    height: 100%;
+    display: grid;
+    place-content: center;
+  }
+  .box.one {
+    background-color: peachpuff;
+  }
+  .box.two {
+    background-color: lavender;
+  }
+  .box.three {
+    background-color: navy;
+    color: white;
+  }
+  .box.four {
+    background-color: hotpink;
+  }
+  /* oh snap */
+  .wrapper {
+    scroll-snap-type: x mandatory;
+  }
+  .box {
+    scroll-snap-align: start;
+  }
+</style>
+<div class="wrapper">
+  <div class="box one">
+    First Box
+  </div>
+  <div class="box two">
+    Second Box
+  </div>
+  <div class="box three">
+    Third Box
+  </div>
+  <div class="box four">
+    Fourth Box
+  </div>
+</div>
+```
+
+- `scroll-snap-type` goes otn he parent, and we control which axis we want to snap to. We also need to give it a precision, either `mandatory` or `proximity`
+- `mandatory` means that the element will always snap, no matter what. IF the element has been scrolled by 40%, it will snap back tothe beginning. If it's 51%, it wil jump to the next one
+- `proximity` is more subtle, and only triggers a snap when the user is near a snap point
+- What exa...
