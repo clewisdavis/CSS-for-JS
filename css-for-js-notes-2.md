@@ -904,3 +904,17 @@ button {
 - It doesn't actually matter that this element is empty; the fact that it exists causes the parent to grow to include the entire floated element, and the 0px-tall element below.
 
 ## Conclusion
+
+- March 20, 2022, completed this course. Over 200+ lessons and many many hours.
+- Still more stuff to check out in the [video archive](https://courses.joshwcomeau.com/css-for-js/video-archive) and [treasure trove](https://courses.joshwcomeau.com/css-for-js/treasure-trove).
+
+## Bonus Material
+
+- Intro to Figma
+- Figma is a design tool, and accessible enough for developers to use it.
+- Limited set of things to do when not have create account. But you can sign up for free
+- [Intro to React](https://courses.joshwcomeau.com/css-for-js/bonus/02-intro-to-react)
+- Other resoruces
+  - Ali Spittel's, [The beginners Guide to React 2020](https://welearncode.com/beginners-guide-react-2020/)
+  - FreeCodeCamp, [React Beginner's Handbook](https://www.freecodecamp.org/news/react-beginner-handbook/)
+  - [Official Docs](https://reactjs.org/docs/getting-started.html)
